@@ -1,0 +1,9 @@
+﻿*~
+*.swp
+Debug/*
+Release/*
+LuaSDL/Debug/*
+LuaSDL/Release/*
+*.sdf
+*.opensdf
+*.suo
