@@ -15,6 +15,8 @@ namespace LuaSDL {
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Window, "show", show);
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Window, "hide", hide);
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Window, "update", update);
+			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Window, "updateRects", updateRects);
+
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Window, "maximize", maximize);
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Window, "minimize", minimize);
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Window, "restore", restore);
@@ -74,20 +76,24 @@ namespace LuaSDL {
 		}
 
 		int inline LOBJECT_METHOD(restore, SDL_Window * window){
-			assert(window);
 			SDL_RestoreWindow(window);
 			return 0;
 		}
 
 		int inline LOBJECT_METHOD(raise, SDL_Window * window){
-			assert(window);
 			SDL_RaiseWindow(window);
 			return 0;
 		}
 
 		int inline LOBJECT_METHOD(update, SDL_Window * window){
-			assert(window);
 			state.push_boolean(SDL_UpdateWindowSurface(window) == 0);
+			return 1;
+		}
+
+		int LOBJECT_METHOD(updateRects, SDL_Window * window){
+			const SDL_Rect * rects= nullptr;
+			int num_rects=0;
+			state.push_boolean(SDL_UpdateWindowSurfaceRects(window, rects, num_rects) == 0);
 			return 1;
 		}
 
