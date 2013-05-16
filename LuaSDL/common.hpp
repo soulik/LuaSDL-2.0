@@ -20,6 +20,7 @@
 
 #include <SDL.h>
 #include "objects/rect.hpp"
+#include "objects/pixelformat.hpp"
 #include "objects/displaymode.hpp"
 #include "objects/surface.hpp"
 #include "objects/gl_context.hpp"
@@ -39,6 +40,7 @@ namespace LuaSDL{
 	void init_displaymode(lutok::state &, moduleDef & module);
 	void init_rect(lutok::state &, moduleDef & module);
 	void init_surface(lutok::state &, moduleDef & module);
+	void init_pixelformat(lutok::state &, moduleDef & module);
 }
 
 #endif

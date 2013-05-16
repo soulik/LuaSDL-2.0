@@ -9,8 +9,25 @@ namespace LuaSDL {
 	public:
 		LOBJECT_DEFINE_CLASS(Lua_SDL_Surface, SDL_Surface*, "Surface") {
 			
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "hasIntersection", null_method);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "x", null_method, null_method);	
+			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "blit", blit);
+			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "lowerBlit", lowerBlit);
+			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "upperBlit", upperBlit);
+			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "softStretch", softStretch);
+			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "convert", convert);
+			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "convertFormat", convertFormat);
+			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "fillRect", fillRect);
+			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "lock", lock);
+			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "unlock", unlock);
+
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "format", getFormat, null_method);	
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "w", getW, null_method);	
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "h", getH, null_method);	
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "pitch", getPitch, null_method);	
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "clipRect", getClipRect, null_method);	
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "refcount", getRefCount, setRefCount);	
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "pixels", getPixels, setPixels);	
+
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "colorKey", getColorKey, setColorKey);	
 
 		}
 
@@ -18,10 +35,85 @@ namespace LuaSDL {
 			SDL_FreeSurface(surface);
 		}
 
-		int inline LOBJECT_METHOD(equals, SDL_Surface * surface){
+		int LOBJECT_METHOD(blit, SDL_Surface * surface);
+		int LOBJECT_METHOD(lowerBlit, SDL_Surface * surface);
+		int LOBJECT_METHOD(upperBlit, SDL_Surface * surface);
+		int LOBJECT_METHOD(softStretch, SDL_Surface * surface);
+		int LOBJECT_METHOD(convert, SDL_Surface * surface);
+
+		int LOBJECT_METHOD(convertFormat, SDL_Surface * surface){
+			Lua_SDL_Surface * s = LOBJECT_INSTANCE(Lua_SDL_Surface);
+
+			SDL_Surface * new_surface = SDL_ConvertSurfaceFormat(surface, state.to_integer(1), state.to_integer(2));
+			if (new_surface){
+				s->push(new_surface);
+				return 1;
+			}else{
+				return 0;
+			}
+		}
+
+		int LOBJECT_METHOD(fillRect, SDL_Surface * surface);
+		int LOBJECT_METHOD(getClipRect, SDL_Surface * surface);
+		int LOBJECT_METHOD(setClipRect, SDL_Surface * surface);
+		int LOBJECT_METHOD(getFormat, SDL_Surface * surface);
+		int LOBJECT_METHOD(setFormat, SDL_Surface * surface);
+
+		int inline LOBJECT_METHOD(lock, SDL_Surface * surface){
+			state.push_boolean(SDL_LockSurface(surface) == 0);
+			return 1;
+		}
+
+		int inline LOBJECT_METHOD(unlock, SDL_Surface * surface){
+			SDL_UnlockSurface(surface);
 			return 0;
 		}
 
+		int inline LOBJECT_METHOD(getW, SDL_Surface * surface){
+			state.push_integer(surface->w);
+			return 1;
+		}
+		int inline LOBJECT_METHOD(getH, SDL_Surface * surface){
+			state.push_integer(surface->h);
+			return 1;
+		}
+		int inline LOBJECT_METHOD(getPitch, SDL_Surface * surface){
+			state.push_integer(surface->pitch);
+			return 1;
+		}
+		int inline LOBJECT_METHOD(getPixels, SDL_Surface * surface){
+			state.push_lightuserdata(surface->pixels);
+			return 1;
+		}
+		int inline LOBJECT_METHOD(setPixels, SDL_Surface * surface){
+			surface->pixels = (void*)state.to_lightuserdata(1);
+			return 0;
+		}
+		int inline LOBJECT_METHOD(getRefCount, SDL_Surface * surface){
+			state.push_integer(surface->refcount);
+			return 1;
+		}
+		int inline LOBJECT_METHOD(setRefCount, SDL_Surface * surface){
+			surface->refcount = state.to_integer(1);
+			return 0;
+		}
+		int inline LOBJECT_METHOD(getColorKey, SDL_Surface * surface){
+			Uint32 colorKey;
+			if (SDL_GetColorKey(surface, &colorKey) == 0){
+				state.push_integer(colorKey);
+				return 1;
+			}else{
+				return 0;
+			}
+		}
+		int inline LOBJECT_METHOD(setColorKey, SDL_Surface * surface){
+			if (state.is_number(1)){
+				SDL_SetColorKey(surface, SDL_TRUE, state.to_integer(1));
+			}else{
+				SDL_SetColorKey(surface, SDL_FALSE, 0);
+			}
+			return 0;
+		}
 	};
 }
 

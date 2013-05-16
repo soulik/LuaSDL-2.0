@@ -25,6 +25,7 @@ namespace LuaSDL {
 		}
 
 		void destructor(SDL_Rect* rect){
+			delete rect;
 		}
 
 		int inline LOBJECT_METHOD(equals, SDL_Rect * rect){

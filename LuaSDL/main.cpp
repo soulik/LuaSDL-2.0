@@ -21,6 +21,7 @@ extern "C" LUA_API int luaopen_LuaSDL(void * current_state){
 	LuaSDL::init_displaymode(state, module);
 	LuaSDL::init_window(state, module);
 	LuaSDL::init_surface(state, module);
+	LuaSDL::init_rect(state, module);
 
     lutok::registerLib(state, "SDL", module);
 	LuaSDL::init_constants(state);

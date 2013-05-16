@@ -93,6 +93,9 @@
     <ClCompile Include="objects\surface.cpp">
       <Filter>Source Files\objects</Filter>
     </ClCompile>
+    <ClCompile Include="objects\pixelformat.cpp">
+      <Filter>Source Files\lutok</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.hpp">
@@ -138,6 +141,9 @@
       <Filter>Header Files\objects</Filter>
     </ClInclude>
     <ClInclude Include="objects\surface.hpp">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\pixelformat.hpp">
       <Filter>Header Files\objects</Filter>
     </ClInclude>
   </ItemGroup>

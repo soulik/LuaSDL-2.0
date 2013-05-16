@@ -11,7 +11,6 @@ namespace LuaSDL {
 		}
 
 		void destructor(SDL_GLContext gl_context){
-			assert(gl_context);
 			SDL_GL_DeleteContext(gl_context);
 		}
 	};

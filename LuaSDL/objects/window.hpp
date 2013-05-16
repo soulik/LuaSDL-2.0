@@ -46,31 +46,26 @@ namespace LuaSDL {
 		int LOBJECT_METHOD(setDisplayMode, SDL_Window*);
 
 		int inline LOBJECT_METHOD(setFullScreen,SDL_Window * window){
-			assert(window);
 			state.push_boolean(SDL_SetWindowFullscreen(window, state.to_boolean(1)) == 0);
 			return 1;
 		}
 
 		int inline LOBJECT_METHOD(show, SDL_Window * window){
-			assert(window);
 			SDL_ShowWindow(window);
 			return 0;
 		}
 
 		int inline LOBJECT_METHOD(hide, SDL_Window * window){
-			assert(window);
 			SDL_HideWindow(window);
 			return 0;
 		}
 
 		int inline LOBJECT_METHOD(maximize, SDL_Window * window){
-			assert(window);
 			SDL_MaximizeWindow(window);
 			return 0;
 		}
 
 		int inline LOBJECT_METHOD(minimize, SDL_Window * window){
-			assert(window);
 			SDL_MinimizeWindow(window);
 			return 0;
 		}
@@ -98,26 +93,22 @@ namespace LuaSDL {
 		}
 
 		int inline LOBJECT_METHOD(getWindowData, SDL_Window * window){
-			assert(window);
 			state.push_lightuserdata(SDL_GetWindowData(window, state.to_string().c_str()));
 			return 1;
 		}
 
 		int inline LOBJECT_METHOD(setWindowData, SDL_Window * window){
-			assert(window);
 			SDL_SetWindowData(window, state.to_string().c_str(), (void *)(state.to_lightuserdata(1)));
 			return 0;
 		}
 
 		int inline LOBJECT_METHOD(getWindowTitle, SDL_Window * window){
-			assert(window);
 			state.push_string(SDL_GetWindowTitle(window));
 			return 1;
 		}
 
 		int inline LOBJECT_METHOD(setWindowTitle, SDL_Window * window){
 			if (state.is_string(1)){
-				assert(window);
 				SDL_SetWindowTitle(window, state.to_string(1).c_str());
 			}
 			return 0;
@@ -125,7 +116,6 @@ namespace LuaSDL {
 
 		int LOBJECT_METHOD(getWindowPosition, SDL_Window * window){
 			int x,y;
-			assert(window);
 			SDL_GetWindowPosition(window, &x, &y);
 			state.new_table();
 				state.push_integer(x);
@@ -137,7 +127,6 @@ namespace LuaSDL {
 
 		int LOBJECT_METHOD(setWindowPosition, SDL_Window * window){
 			if (state.is_table(1)){
-				assert(window);
 				state.get_field(1, "x");
 				state.get_field(1, "y");
 
@@ -151,7 +140,6 @@ namespace LuaSDL {
 
 		int LOBJECT_METHOD(getWindowSize, SDL_Window * window){
 			int w,h;
-			assert(window);
 			SDL_GetWindowSize(window, &w, &h);
 			state.new_table();
 				state.push_integer(w);
@@ -163,7 +151,6 @@ namespace LuaSDL {
 
 		int LOBJECT_METHOD(setWindowSize, SDL_Window * window){
 			if (state.is_table(1)){
-				assert(window);
 				state.get_field(1, "w");
 				state.get_field(1, "h");
 
@@ -176,43 +163,36 @@ namespace LuaSDL {
 		}
 
 		int inline LOBJECT_METHOD(getWindowGrab, SDL_Window * window){
-			assert(window);
 			state.push_boolean((SDL_GetWindowGrab(window) == SDL_TRUE));
 			return 1;
 		}
 
 		int inline LOBJECT_METHOD(setWindowGrab, SDL_Window * window){
-			assert(window);
 			SDL_SetWindowGrab(window, (state.to_boolean(1)) ? SDL_TRUE : SDL_FALSE);
 			return 0;
 		}
 
 		int inline LOBJECT_METHOD(getWindowFlags, SDL_Window * window){
-			assert(window);
 			state.push_integer(SDL_GetWindowFlags(window));
 			return 1;
 		}
 
 		int inline LOBJECT_METHOD(getWindowBrightness, SDL_Window * window){
-			assert(window);
 			state.push_number( SDL_GetWindowBrightness(window) );
 			return 1;
 		}
 
 		int inline LOBJECT_METHOD(setWindowBrightness, SDL_Window * window){
-			assert(window);
 			SDL_SetWindowBrightness(window, static_cast<float>(state.to_number(1)));
 			return 0;
 		}
 
 		int inline LOBJECT_METHOD(getWindowPixelFormat, SDL_Window * window){
-			assert(window);
 			state.push_number( SDL_GetWindowPixelFormat(window) );
 			return 1;
 		}
 
 		int inline LOBJECT_METHOD(getWindowDisplayIndex, SDL_Window * window){
-			assert(window);
 			state.push_integer(SDL_GetWindowDisplayIndex(window));
 			return 1;
 		}
