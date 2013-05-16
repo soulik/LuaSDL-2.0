@@ -141,7 +141,6 @@ namespace LuaSDL {
 			return 0;
 		}
 	}
-
 	static int lua_SDL_GetDesktopDisplayMode(lutok::state& state){
 		Lua_SDL_DisplayMode * dm = LOBJECT_INSTANCE(Lua_SDL_DisplayMode);
 		SDL_DisplayMode * mode = new SDL_DisplayMode;
@@ -154,7 +153,6 @@ namespace LuaSDL {
 			return 0;
 		}
 	}
-
 	static int lua_SDL_GetClosestDisplayMode(lutok::state& state){
 		Lua_SDL_DisplayMode * dm = LOBJECT_INSTANCE(Lua_SDL_DisplayMode);
 		SDL_DisplayMode * mode = new SDL_DisplayMode;
@@ -170,7 +168,6 @@ namespace LuaSDL {
 			return 0;
 		}
 	}
-
 	static int lua_SDL_GetCurrentVideoDriver(lutok::state& state){
 		const char * driver = SDL_GetCurrentVideoDriver();
 		if (driver){
@@ -181,6 +178,18 @@ namespace LuaSDL {
 		}
 	}
 
+	static int lua_SDL_GetClipboardText(lutok::state& state){
+		state.push_string(SDL_GetClipboardText());
+		return 1;
+	}
+	static int lua_SDL_HasClipboardText(lutok::state& state){
+		state.push_boolean(SDL_HasClipboardText() == SDL_TRUE);
+		return 1;
+	}
+	static int lua_SDL_SetClipboardText(lutok::state& state){
+		state.push_boolean(SDL_SetClipboardText(state.to_string().c_str()) == 0);
+		return 1;
+	}
 
 	void init_video(moduleDef & module){
 		module["createWindow"] = lua_SDL_CreateWindow;
@@ -199,6 +208,9 @@ namespace LuaSDL {
 		module["getCurrentVideoDriver"] = lua_SDL_GetCurrentVideoDriver;
 		module["getClosestDisplayMode"] = lua_SDL_GetClosestDisplayMode;
 
+		module["hasClipboardText"] = lua_SDL_HasClipboardText;
+		module["getClipboardText"] = lua_SDL_GetClipboardText;
+		module["setClipboardText"] = lua_SDL_SetClipboardText;
 	}
 
 }

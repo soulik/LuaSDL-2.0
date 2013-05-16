@@ -28,6 +28,11 @@ namespace LuaSDL {
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "pixels", getPixels, setPixels);	
 
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "colorKey", getColorKey, setColorKey);	
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "alphaMod", getAlphaMod, setAlphaMod);	
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "blendMod", getBlendMod, setBlendMod);	
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "colorMod", getColorMod, setColorMod);	
+
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "RLE", null_method, setRLE);	
 
 		}
 
@@ -112,6 +117,67 @@ namespace LuaSDL {
 			}else{
 				SDL_SetColorKey(surface, SDL_FALSE, 0);
 			}
+			return 0;
+		}
+		int inline LOBJECT_METHOD(getAlphaMod, SDL_Surface * surface){
+			Uint8 alpha;
+			if (SDL_GetSurfaceAlphaMod(surface, &alpha) == 0){
+				state.push_integer(alpha);
+				return 1;
+			}else{
+				return 0;
+			}
+		}
+		int inline LOBJECT_METHOD(setAlphaMod, SDL_Surface * surface){
+			SDL_SetSurfaceAlphaMod(surface, (Uint8) state.to_integer(1));
+			return 0;
+		}
+		int inline LOBJECT_METHOD(getBlendMod, SDL_Surface * surface){
+			SDL_BlendMode blendMode;
+			if (SDL_GetSurfaceBlendMode(surface, &blendMode) == 0){
+				state.push_integer((int)blendMode);
+				return 1;
+			}else{
+				return 0;
+			}
+		}
+		int inline LOBJECT_METHOD(setBlendMod, SDL_Surface * surface){
+			SDL_SetSurfaceBlendMode(surface, (SDL_BlendMode) state.to_integer(1));
+			return 0;
+		}
+		int inline LOBJECT_METHOD(getColorMod, SDL_Surface * surface){
+			Uint8 r,g,b;
+			if (SDL_GetSurfaceColorMod(surface, &r, &g, &b) == 0){
+				state.new_table();
+					state.push_integer(r);
+					state.set_field(-2,"r");
+					state.push_integer(r);
+					state.set_field(-2,"g");
+					state.push_integer(r);
+					state.set_field(-2,"b");
+				return 1;
+			}else{
+				return 0;
+			}
+		}
+		int inline LOBJECT_METHOD(setColorMod, SDL_Surface * surface){
+			if (state.is_table(1)){
+				state.get_field(1,"r");
+				state.get_field(1,"g");
+				state.get_field(1,"b");
+
+				SDL_SetSurfaceColorMod(
+					surface,
+					(Uint8)state.to_integer(-3),
+					(Uint8)state.to_integer(-2),
+					(Uint8)state.to_integer(-1));
+				state.pop(3);
+			}
+			return 0;
+		}
+
+		int inline LOBJECT_METHOD(setRLE, SDL_Surface * surface){
+			SDL_SetSurfaceRLE(surface, state.to_integer(1));
 			return 0;
 		}
 	};
