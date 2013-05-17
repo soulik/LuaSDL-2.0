@@ -25,6 +25,7 @@
 #include "objects/surface.hpp"
 #include "objects/gl_context.hpp"
 #include "objects/window.hpp"
+#include "objects/event.hpp"
 
 namespace LuaSDL{
 	
@@ -41,6 +42,7 @@ namespace LuaSDL{
 	void init_rect(lutok::state &, moduleDef & module);
 	void init_surface(lutok::state &, moduleDef & module);
 	void init_pixelformat(lutok::state &, moduleDef & module);
+	void init_event(lutok::state &, moduleDef & module);
 }
 
 #endif

@@ -26,6 +26,9 @@ namespace LuaSDL {
 
 		void destructor({{type_name}} {{var_name}}){
 		}
+
+		int LOBJECT_METHOD(method, {{type_name}} {{var_name}}){
+		}
 	};
 }
 
