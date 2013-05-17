@@ -23,6 +23,7 @@ namespace LuaSDL {
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Window, "raise", raise);
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Window, "fullscreen", setFullScreen);
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Window, "setDisplayMode", setDisplayMode);
+			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Window, "warpMouseInWindow", warpMouseInWindow);
 
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Window, SDL_Window*, "title", getWindowTitle, setWindowTitle);
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Window, SDL_Window*, "position", getWindowPosition, setWindowPosition);
@@ -91,6 +92,12 @@ namespace LuaSDL {
 			state.push_boolean(SDL_UpdateWindowSurfaceRects(window, rects, num_rects) == 0);
 			return 1;
 		}
+
+		int inline LOBJECT_METHOD(warpMouseInWindow,SDL_Window * window){
+			SDL_WarpMouseInWindow(window, state.to_integer(1), state.to_integer(2));
+			return 0;
+		}
+
 
 		int inline LOBJECT_METHOD(getWindowData, SDL_Window * window){
 			state.push_lightuserdata(SDL_GetWindowData(window, state.to_string().c_str()));

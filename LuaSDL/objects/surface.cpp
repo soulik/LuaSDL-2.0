@@ -158,6 +158,16 @@ static int lua_SDL_ConvertPixels(lutok::state& state){
 	return 1;
 }
 
+int LuaSDL::Lua_SDL_Surface::LOBJECT_METHOD(createColorCursor, SDL_Surface * surface){
+	LuaSDL::Lua_SDL_Cursor * c = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Cursor);
+	c->push(
+		SDL_CreateColorCursor(
+			surface,
+			state.to_integer(1),
+			state.to_integer(2)));
+	return 1;
+}
+
 void LuaSDL::init_surface(lutok::state & state, moduleDef & module){
 	LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
 	module["createRGBSurface"] = lua_SDL_CreateRGBSurface;

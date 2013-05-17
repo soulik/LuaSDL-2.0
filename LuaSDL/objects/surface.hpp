@@ -18,6 +18,7 @@ namespace LuaSDL {
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "fillRect", fillRect);
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "lock", lock);
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "unlock", unlock);
+			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "createColorCursor", createColorCursor);
 
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "format", getFormat, null_method);	
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "w", getW, null_method);	
@@ -68,11 +69,12 @@ namespace LuaSDL {
 			state.push_boolean(SDL_LockSurface(surface) == 0);
 			return 1;
 		}
-
 		int inline LOBJECT_METHOD(unlock, SDL_Surface * surface){
 			SDL_UnlockSurface(surface);
 			return 0;
 		}
+
+		int LOBJECT_METHOD(createColorCursor, SDL_Surface * surface);
 
 		int inline LOBJECT_METHOD(getW, SDL_Surface * surface){
 			state.push_integer(surface->w);

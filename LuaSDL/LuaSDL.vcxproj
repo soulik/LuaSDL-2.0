@@ -101,8 +101,10 @@
     <ClCompile Include="gl_context.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="objects\cursor.cpp" />
     <ClCompile Include="objects\displaymode.cpp" />
     <ClCompile Include="objects\event.cpp" />
+    <ClCompile Include="objects\joystick.cpp" />
     <ClCompile Include="objects\pixelformat.cpp" />
     <ClCompile Include="objects\rect.cpp" />
     <ClCompile Include="objects\surface.cpp" />
@@ -124,9 +126,11 @@
     <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\stack_cleaner.hpp" />
     <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\state.hpp" />
     <ClInclude Include="common.hpp" />
+    <ClInclude Include="objects\cursor.hpp" />
     <ClInclude Include="objects\displaymode.hpp" />
     <ClInclude Include="objects\event.hpp" />
     <ClInclude Include="objects\gl_context.hpp" />
+    <ClInclude Include="objects\joystick.hpp" />
     <ClInclude Include="objects\pixelformat.hpp" />
     <ClInclude Include="objects\rect.hpp" />
     <ClInclude Include="objects\surface.hpp" />

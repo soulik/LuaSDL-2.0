@@ -26,6 +26,8 @@
 #include "objects/gl_context.hpp"
 #include "objects/window.hpp"
 #include "objects/event.hpp"
+#include "objects/cursor.hpp"
+#include "objects/joystick.hpp"
 
 namespace LuaSDL{
 	
@@ -33,6 +35,7 @@ namespace LuaSDL{
 
 	void init_basic(moduleDef & module);
 	void init_video(moduleDef & module);
+	void init_input(moduleDef & module);
 	void init_constants(lutok::state &);
 
 	//objects
@@ -43,6 +46,9 @@ namespace LuaSDL{
 	void init_surface(lutok::state &, moduleDef & module);
 	void init_pixelformat(lutok::state &, moduleDef & module);
 	void init_event(lutok::state &, moduleDef & module);
+	void init_input(lutok::state &, moduleDef & module);
+	void init_cursor(lutok::state & state, moduleDef & module);
+	void init_joystick(lutok::state & state, moduleDef & module);
 }
 
 #endif

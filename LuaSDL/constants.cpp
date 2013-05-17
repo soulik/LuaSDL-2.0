@@ -154,5 +154,25 @@ namespace LuaSDL{
 		state.set_field("CLIPBOARDUPDATE", SDL_CLIPBOARDUPDATE);
 		state.set_field("DROPFILE", SDL_DROPFILE);
 		state.set_field("USEREVENT", SDL_USEREVENT);
+
+		//SDL_Keymod
+		state.set_field("KMOD_NONE", KMOD_NONE);
+		state.set_field("KMOD_LSHIFT", KMOD_LSHIFT);
+		state.set_field("KMOD_RSHIFT", KMOD_RSHIFT);
+		state.set_field("KMOD_LCTRL", KMOD_LCTRL);
+		state.set_field("KMOD_RCTRL", KMOD_RCTRL);
+		state.set_field("KMOD_LALT", KMOD_LALT);
+		state.set_field("KMOD_RALT", KMOD_RALT);
+		state.set_field("KMOD_LGUI", KMOD_LGUI);
+		state.set_field("KMOD_RGUI", KMOD_RGUI);
+		state.set_field("KMOD_NUM", KMOD_NUM);
+		state.set_field("KMOD_CAPS", KMOD_CAPS);
+		state.set_field("KMOD_MODE", KMOD_MODE);
+		state.set_field("KMOD_RESERVED", KMOD_RESERVED);
+		state.set_field("KMOD_CTRL", KMOD_LCTRL|KMOD_RCTRL);
+		state.set_field("KMOD_SHIFT", KMOD_LSHIFT|KMOD_RSHIFT);
+		state.set_field("KMOD_ALT", KMOD_LALT|KMOD_RALT);
+		state.set_field("KMOD_GUI", KMOD_LGUI|KMOD_RGUI);
+
 	}
 }
