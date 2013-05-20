@@ -104,6 +104,7 @@
     <ClCompile Include="objects\cursor.cpp" />
     <ClCompile Include="objects\displaymode.cpp" />
     <ClCompile Include="objects\event.cpp" />
+    <ClCompile Include="objects\gamecontroller.cpp" />
     <ClCompile Include="objects\joystick.cpp" />
     <ClCompile Include="objects\pixelformat.cpp" />
     <ClCompile Include="objects\rect.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="objects\cursor.hpp" />
     <ClInclude Include="objects\displaymode.hpp" />
     <ClInclude Include="objects\event.hpp" />
+    <ClInclude Include="objects\gamecontroller.hpp" />
     <ClInclude Include="objects\gl_context.hpp" />
     <ClInclude Include="objects\joystick.hpp" />
     <ClInclude Include="objects\pixelformat.hpp" />

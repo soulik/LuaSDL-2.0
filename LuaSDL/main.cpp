@@ -20,6 +20,7 @@ extern "C" LUA_API int luaopen_LuaSDL(void * current_state){
 	LuaSDL::init_event(state, module);
 	LuaSDL::init_cursor(state, module);
 	LuaSDL::init_joystick(state, module);
+	LuaSDL::init_gamecontroller(state, module);
 
     lutok::registerLib(state, "SDL", module);
 	LuaSDL::init_constants(state);

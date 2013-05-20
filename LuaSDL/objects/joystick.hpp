@@ -68,8 +68,13 @@ namespace LuaSDL {
 			return 0;
 		}
 		int LOBJECT_METHOD(getName, SDL_Joystick * joystick){
-			state.push_string(SDL_JoystickName(joystick));
-			return 1;
+			const char * name = SDL_JoystickName(joystick);
+			if (name){
+				state.push_string(name);
+				return 1;
+			}else{
+				return 0;
+			}
 		}
 
 		int LOBJECT_METHOD(getNumAxes, SDL_Joystick * joystick){

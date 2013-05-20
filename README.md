@@ -30,7 +30,14 @@ What works
 - Rectangle Functions 6/7
 - Surface Creation and Simple Drawing 1/33
 - Platform-specific Window Management 0/1
-- Clipboard Handling 0/3
+- Clipboard Handling 3/3
+
+### INPUT EVENTS
+- Event Handling
+- Keyboard Support
+- Mouse Support
+- Joystick Support
+- Game Controller Support
 
 Notes
 -------------

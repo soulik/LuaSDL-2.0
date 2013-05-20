@@ -49,6 +49,7 @@ namespace LuaSDL{
 	void init_input(lutok::state &, moduleDef & module);
 	void init_cursor(lutok::state & state, moduleDef & module);
 	void init_joystick(lutok::state & state, moduleDef & module);
+	void init_gamecontroller(lutok::state & state, moduleDef & module);
 }
 
 #endif
