@@ -13,7 +13,7 @@ namespace LuaSDL {
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_GameController, SDL_GameController *, "attached", isAttached, null_method);	
 		}
 
-		void destructor(SDL_GameController * gamecontroller){
+		void destructor(lutok::state & s, SDL_GameController * gamecontroller){
 			SDL_GameControllerClose(gamecontroller);
 		}
 

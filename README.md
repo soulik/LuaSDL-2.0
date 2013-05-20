@@ -39,6 +39,9 @@ What works
 - Joystick Support
 - Game Controller Support
 
+### TIMERS EVENTS
+- Timer Support 6/6
+
 Notes
 -------------
 

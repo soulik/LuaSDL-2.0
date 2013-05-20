@@ -39,7 +39,7 @@ namespace LuaSDL {
 			
 		}
 
-		void destructor(SDL_Window* window);
+		void destructor(lutok::state & s, SDL_Window* window);
 
 		int LOBJECT_METHOD(GLcreateContext, SDL_Window*);
 		int LOBJECT_METHOD(GLswapWindow, SDL_Window*);

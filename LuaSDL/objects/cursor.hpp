@@ -12,7 +12,7 @@ namespace LuaSDL {
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Cursor, SDL_Cursor *, "", null_method, null_method);	
 		}
 
-		void destructor(SDL_Cursor * cursor){
+		void destructor(lutok::state & s, SDL_Cursor * cursor){
 			SDL_FreeCursor(cursor);
 		}
 

@@ -22,7 +22,7 @@ namespace LuaSDL {
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Joystick, SDL_Joystick *, "numHats", getNumHats, null_method);	
 		}
 
-		void destructor(SDL_Joystick * joystick){
+		void destructor(lutok::state & s, SDL_Joystick * joystick){
 			SDL_JoystickClose(joystick);
 		}
 

@@ -10,7 +10,7 @@ namespace LuaSDL {
 		LOBJECT_DEFINE_CLASS(Lua_SDL_GL_Context, SDL_GLContext, "GL_Context") {
 		}
 
-		void destructor(SDL_GLContext gl_context){
+		void destructor(lutok::state & s, SDL_GLContext gl_context){
 			SDL_GL_DeleteContext(gl_context);
 		}
 	};

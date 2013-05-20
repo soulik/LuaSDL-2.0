@@ -17,7 +17,7 @@ namespace LuaSDL {
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_DisplayMode, SDL_DisplayMode*, "driverdata", getDriverData, setDriverData);
 		}
 
-		void destructor(SDL_DisplayMode * displayMode){
+		void destructor(lutok::state & s, SDL_DisplayMode * displayMode){
 			delete displayMode;
 		}
 

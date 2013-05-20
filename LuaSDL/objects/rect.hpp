@@ -24,7 +24,7 @@ namespace LuaSDL {
 
 		}
 
-		void destructor(SDL_Rect* rect){
+		void destructor(lutok::state & s, SDL_Rect* rect){
 			delete rect;
 		}
 

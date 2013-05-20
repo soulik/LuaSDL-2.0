@@ -2,8 +2,7 @@
 #include "objects/window.hpp"
 #include <lua.hpp>
 
-void LuaSDL::Lua_SDL_Window::destructor(SDL_Window* window){
-	assert(window);
+void LuaSDL::Lua_SDL_Window::destructor(lutok::state & s, SDL_Window* window){
 	SDL_DestroyWindow(window);
 }
 

@@ -24,7 +24,7 @@ namespace LuaSDL {
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Amask", getAmask, setAmask);	
 		}
 
-		void destructor(SDL_PixelFormat * pixelformat){
+		void destructor(lutok::state & s, SDL_PixelFormat * pixelformat){
 			SDL_FreeFormat(pixelformat);
 		}
 

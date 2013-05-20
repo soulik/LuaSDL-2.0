@@ -2,6 +2,7 @@
 #define LUA_SDL_OBJECTS_EVENT_H
 
 #include "common.hpp"
+#define LUA_SDL_TIMER_CODE	1000
 
 namespace LuaSDL {
 
@@ -25,6 +26,7 @@ namespace LuaSDL {
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "keyboard_state", getKeyboard_state, setKeyboard_state);
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "keyboard_repeat", getKeyboard_repeat, setKeyboard_repeat);
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "keyboard_keysym_scancode", getKeyboard_keysym_scancode, setKeyboard_keysym_scancode);
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "keyboard_keysym_keycode", getKeyboard_keysym_keycode, setKeyboard_keysym_keycode);
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "keyboard_keysym_sym", getKeyboard_keysym_sym, setKeyboard_keysym_sym);
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "keyboard_keysym_mod", getKeyboard_keysym_mod, setKeyboard_keysym_mod);
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "keyboard_keysym_unicode", getKeyboard_keysym_unicode, setKeyboard_keysym_unicode);
@@ -129,17 +131,17 @@ namespace LuaSDL {
 			//SDL_QuitEvent
 
 			//SDL_UserEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "uservent_windowID", getUser_windowID, setUser_windowID);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "uservent_code", getUser_code, setUser_code);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "uservent_data1", getUser_data1, setUser_data1);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "uservent_data2", getUser_data2, setUser_data2);
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "userevent_windowID", getUser_windowID, setUser_windowID);
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "userevent_code", getUser_code, setUser_code);
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "userevent_data1", getUser_data1, setUser_data1);
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "userevent_data2", getUser_data2, setUser_data2);
 
 			//SDL_SysWMEvent
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "syswm_msg", getSyswm_msg, setSyswm_msg);
 
 		}
 
-		void destructor(SDL_Event * event){
+		void destructor(lutok::state & s, SDL_Event * event){
 			if (event->type == SDL_DROPFILE){
 				if (event->drop.file){
 					SDL_free(event->drop.file);
@@ -243,6 +245,14 @@ namespace LuaSDL {
 		}
 		int inline LOBJECT_METHOD(setKeyboard_keysym_scancode, SDL_Event * event){
 			event->key.keysym.scancode = (SDL_Scancode)state.to_integer(1);
+			return 0;
+		}
+		int inline LOBJECT_METHOD(getKeyboard_keysym_keycode, SDL_Event * event){
+			state.push_integer(SDL_SCANCODE_TO_KEYCODE(event->key.keysym.scancode));
+			return 1;
+		}
+		int inline LOBJECT_METHOD(setKeyboard_keysym_keycode, SDL_Event * event){
+			event->key.keysym.scancode = (SDL_Scancode)(state.to_integer(1) & ~SDLK_SCANCODE_MASK);
 			return 0;
 		}
 
@@ -872,7 +882,12 @@ namespace LuaSDL {
 		}
 
 		int inline LOBJECT_METHOD(getUser_data1, SDL_Event * event){
-			state.push_lightuserdata(event->user.data1);
+			if (event->user.code == LUA_SDL_TIMER_CODE){
+				int ref = reinterpret_cast<int>(event->user.data1);
+				state.raw_geti(LUA_REGISTRYINDEX, ref);
+			}else{
+				state.push_lightuserdata(event->user.data1);
+			}
 			return 1;
 		}
 		int inline LOBJECT_METHOD(setUser_data1, SDL_Event * event){

@@ -37,7 +37,7 @@ namespace LuaSDL {
 
 		}
 
-		void destructor(SDL_Surface* surface){
+		void destructor(lutok::state & s, SDL_Surface* surface){
 			SDL_FreeSurface(surface);
 		}
 
