@@ -37,6 +37,7 @@ namespace LuaSDL{
 	void init_video(moduleDef & module);
 	void init_input(moduleDef & module);
 	void init_timers(moduleDef & module);
+	void init_audio(moduleDef & module);
 	void init_constants(lutok::state &);
 
 	//objects
@@ -52,6 +53,8 @@ namespace LuaSDL{
 	void init_joystick(lutok::state & state, moduleDef & module);
 	void init_gamecontroller(lutok::state & state, moduleDef & module);
 	void init_timer(lutok::state & state, moduleDef & module);
+	void init_audiodevice(lutok::state & state, moduleDef & module);
+	void init_audiospec(lutok::state & state, moduleDef & module);
 }
 
 #endif

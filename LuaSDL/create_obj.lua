@@ -24,7 +24,7 @@ namespace LuaSDL {
 			LOBJECT_ADD_PROPERTY(LuaSDL::{{class_name}}, {{type_name}}, "", null_method, null_method);	
 		}
 
-		void destructor({{type_name}} {{var_name}}){
+		void destructor(lutok::state & state, {{type_name}} {{var_name}}){
 		}
 
 		int LOBJECT_METHOD(method, {{type_name}} {{var_name}}){

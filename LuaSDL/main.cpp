@@ -11,6 +11,7 @@ extern "C" LUA_API int luaopen_LuaSDL(void * current_state){
 	LuaSDL::init_video(module);
 	LuaSDL::init_input(module);
 	LuaSDL::init_timers(module);
+	LuaSDL::init_audio(module);
 	
 	//objects
 	LuaSDL::init_gl_context(state, module);
@@ -23,6 +24,8 @@ extern "C" LUA_API int luaopen_LuaSDL(void * current_state){
 	LuaSDL::init_joystick(state, module);
 	LuaSDL::init_gamecontroller(state, module);
 	LuaSDL::init_timer(state, module);
+	LuaSDL::init_audiodevice(state, module);
+	LuaSDL::init_audiospec(state, module);
 
     lutok::registerLib(state, "SDL", module);
 	LuaSDL::init_constants(state);

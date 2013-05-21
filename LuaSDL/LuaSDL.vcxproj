@@ -101,6 +101,8 @@
     <ClCompile Include="gl_context.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="objects\audiodevice.cpp" />
+    <ClCompile Include="objects\audiospec.cpp" />
     <ClCompile Include="objects\cursor.cpp" />
     <ClCompile Include="objects\displaymode.cpp" />
     <ClCompile Include="objects\event.cpp" />
@@ -128,6 +130,8 @@
     <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\stack_cleaner.hpp" />
     <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\state.hpp" />
     <ClInclude Include="common.hpp" />
+    <ClInclude Include="objects\audiodevice.hpp" />
+    <ClInclude Include="objects\audiospec.hpp" />
     <ClInclude Include="objects\cursor.hpp" />
     <ClInclude Include="objects\displaymode.hpp" />
     <ClInclude Include="objects\event.hpp" />

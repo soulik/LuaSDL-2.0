@@ -406,6 +406,266 @@ namespace LuaSDL{
 		state.set_field("K_EJECT", SDLK_EJECT);
 		state.set_field("K_SLEEP", SDLK_SLEEP);
 
+		//SDL_Scancode
+		state.set_field("SC_A", SDL_SCANCODE_A);
+		state.set_field("SC_B", SDL_SCANCODE_B);
+		state.set_field("SC_C", SDL_SCANCODE_C);
+		state.set_field("SC_D", SDL_SCANCODE_D);
+		state.set_field("SC_E", SDL_SCANCODE_E);
+		state.set_field("SC_F", SDL_SCANCODE_F);
+		state.set_field("SC_G", SDL_SCANCODE_G);
+		state.set_field("SC_H", SDL_SCANCODE_H);
+		state.set_field("SC_I", SDL_SCANCODE_I);
+		state.set_field("SC_J", SDL_SCANCODE_J);
+		state.set_field("SC_K", SDL_SCANCODE_K);
+		state.set_field("SC_L", SDL_SCANCODE_L);
+		state.set_field("SC_M", SDL_SCANCODE_M);
+		state.set_field("SC_N", SDL_SCANCODE_N);
+		state.set_field("SC_O", SDL_SCANCODE_O);
+		state.set_field("SC_P", SDL_SCANCODE_P);
+		state.set_field("SC_Q", SDL_SCANCODE_Q);
+		state.set_field("SC_R", SDL_SCANCODE_R);
+		state.set_field("SC_S", SDL_SCANCODE_S);
+		state.set_field("SC_T", SDL_SCANCODE_T);
+		state.set_field("SC_U", SDL_SCANCODE_U);
+		state.set_field("SC_V", SDL_SCANCODE_V);
+		state.set_field("SC_W", SDL_SCANCODE_W);
+		state.set_field("SC_X", SDL_SCANCODE_X);
+		state.set_field("SC_Y", SDL_SCANCODE_Y);
+		state.set_field("SC_Z", SDL_SCANCODE_Z);
+
+		state.set_field("SC_1", SDL_SCANCODE_1);
+		state.set_field("SC_2", SDL_SCANCODE_2);
+		state.set_field("SC_3", SDL_SCANCODE_3);
+		state.set_field("SC_4", SDL_SCANCODE_4);
+		state.set_field("SC_5", SDL_SCANCODE_5);
+		state.set_field("SC_6", SDL_SCANCODE_6);
+		state.set_field("SC_7", SDL_SCANCODE_7);
+		state.set_field("SC_8", SDL_SCANCODE_8);
+		state.set_field("SC_9", SDL_SCANCODE_9);
+		state.set_field("SC_0", SDL_SCANCODE_0);
+
+		state.set_field("SC_RETURN", SDL_SCANCODE_RETURN);
+		state.set_field("SC_ESCAPE", SDL_SCANCODE_ESCAPE);
+		state.set_field("SC_BACKSPACE", SDL_SCANCODE_BACKSPACE);
+		state.set_field("SC_TAB", SDL_SCANCODE_TAB);
+		state.set_field("SC_SPACE", SDL_SCANCODE_SPACE);
+
+		state.set_field("SC_MINUS", SDL_SCANCODE_MINUS);
+		state.set_field("SC_EQUALS", SDL_SCANCODE_EQUALS);
+		state.set_field("SC_LEFTBRACKET", SDL_SCANCODE_LEFTBRACKET);
+		state.set_field("SC_RIGHTBRACKET", SDL_SCANCODE_RIGHTBRACKET);
+		state.set_field("SC_BACKSLASH", SDL_SCANCODE_BACKSLASH);
+		state.set_field("SC_NONUSHASH", SDL_SCANCODE_NONUSHASH);
+		state.set_field("SC_SEMICOLON", SDL_SCANCODE_SEMICOLON);
+		state.set_field("SC_APOSTROPHE", SDL_SCANCODE_APOSTROPHE);
+		state.set_field("SC_GRAVE", SDL_SCANCODE_GRAVE);
+		state.set_field("SC_COMMA", SDL_SCANCODE_COMMA);
+		state.set_field("SC_PERIOD", SDL_SCANCODE_PERIOD);
+		state.set_field("SC_SLASH", SDL_SCANCODE_SLASH);
+
+		state.set_field("SC_CAPSLOCK", SDL_SCANCODE_CAPSLOCK);
+
+		state.set_field("SC_F1", SDL_SCANCODE_F1);
+		state.set_field("SC_F2", SDL_SCANCODE_F2);
+		state.set_field("SC_F3", SDL_SCANCODE_F3);
+		state.set_field("SC_F4", SDL_SCANCODE_F4);
+		state.set_field("SC_F5", SDL_SCANCODE_F5);
+		state.set_field("SC_F6", SDL_SCANCODE_F6);
+		state.set_field("SC_F7", SDL_SCANCODE_F7);
+		state.set_field("SC_F8", SDL_SCANCODE_F8);
+		state.set_field("SC_F9", SDL_SCANCODE_F9);
+		state.set_field("SC_F10", SDL_SCANCODE_F10);
+		state.set_field("SC_F11", SDL_SCANCODE_F11);
+		state.set_field("SC_F12", SDL_SCANCODE_F12);
+
+		state.set_field("SC_PRINTSCREEN", SDL_SCANCODE_PRINTSCREEN);
+		state.set_field("SC_SCROLLLOCK", SDL_SCANCODE_SCROLLLOCK);
+		state.set_field("SC_PAUSE", SDL_SCANCODE_PAUSE);
+		state.set_field("SC_INSERT", SDL_SCANCODE_INSERT);
+		state.set_field("SC_HOME", SDL_SCANCODE_HOME);
+		state.set_field("SC_PAGEUP", SDL_SCANCODE_PAGEUP);
+		state.set_field("SC_DELETE", SDL_SCANCODE_DELETE);
+		state.set_field("SC_END", SDL_SCANCODE_END);
+		state.set_field("SC_PAGEDOWN", SDL_SCANCODE_PAGEDOWN);
+		state.set_field("SC_RIGHT", SDL_SCANCODE_RIGHT);
+		state.set_field("SC_LEFT", SDL_SCANCODE_LEFT);
+		state.set_field("SC_DOWN", SDL_SCANCODE_DOWN);
+		state.set_field("SC_UP", SDL_SCANCODE_UP);
+
+		state.set_field("SC_NUMLOCKCLEAR", SDL_SCANCODE_NUMLOCKCLEAR);
+		state.set_field("SC_KP_DIVIDE", SDL_SCANCODE_KP_DIVIDE);
+		state.set_field("SC_KP_MULTIPLY", SDL_SCANCODE_KP_MULTIPLY);
+		state.set_field("SC_KP_MINUS", SDL_SCANCODE_KP_MINUS);
+		state.set_field("SC_KP_PLUS", SDL_SCANCODE_KP_PLUS);
+		state.set_field("SC_KP_ENTER", SDL_SCANCODE_KP_ENTER);
+		state.set_field("SC_KP_1", SDL_SCANCODE_KP_1);
+		state.set_field("SC_KP_2", SDL_SCANCODE_KP_2);
+		state.set_field("SC_KP_3", SDL_SCANCODE_KP_3);
+		state.set_field("SC_KP_4", SDL_SCANCODE_KP_4);
+		state.set_field("SC_KP_5", SDL_SCANCODE_KP_5);
+		state.set_field("SC_KP_6", SDL_SCANCODE_KP_6);
+		state.set_field("SC_KP_7", SDL_SCANCODE_KP_7);
+		state.set_field("SC_KP_8", SDL_SCANCODE_KP_8);
+		state.set_field("SC_KP_9", SDL_SCANCODE_KP_9);
+		state.set_field("SC_KP_0", SDL_SCANCODE_KP_0);
+		state.set_field("SC_KP_PERIOD", SDL_SCANCODE_KP_PERIOD);
+
+		state.set_field("SC_NONUSBACKSLASH", SDL_SCANCODE_NONUSBACKSLASH);
+		state.set_field("SC_APPLICATION", SDL_SCANCODE_APPLICATION);
+		state.set_field("SC_POWER", SDL_SCANCODE_POWER);
+		state.set_field("SC_KP_EQUALS", SDL_SCANCODE_KP_EQUALS);
+		state.set_field("SC_F13", SDL_SCANCODE_F13);
+		state.set_field("SC_F14", SDL_SCANCODE_F14);
+		state.set_field("SC_F15", SDL_SCANCODE_F15);
+		state.set_field("SC_F16", SDL_SCANCODE_F16);
+		state.set_field("SC_F17", SDL_SCANCODE_F17);
+		state.set_field("SC_F18", SDL_SCANCODE_F18);
+		state.set_field("SC_F19", SDL_SCANCODE_F19);
+		state.set_field("SC_F20", SDL_SCANCODE_F20);
+		state.set_field("SC_F21", SDL_SCANCODE_F21);
+		state.set_field("SC_F22", SDL_SCANCODE_F22);
+		state.set_field("SC_F23", SDL_SCANCODE_F23);
+		state.set_field("SC_F24", SDL_SCANCODE_F24);
+		state.set_field("SC_EXECUTE", SDL_SCANCODE_EXECUTE);
+		state.set_field("SC_HELP", SDL_SCANCODE_HELP);
+		state.set_field("SC_MENU", SDL_SCANCODE_MENU);
+		state.set_field("SC_SELECT", SDL_SCANCODE_SELECT);
+		state.set_field("SC_STOP", SDL_SCANCODE_STOP);
+		state.set_field("SC_AGAIN", SDL_SCANCODE_AGAIN);
+		state.set_field("SC_UNDO", SDL_SCANCODE_UNDO);
+		state.set_field("SC_CUT", SDL_SCANCODE_CUT);
+		state.set_field("SC_COPY", SDL_SCANCODE_COPY);
+		state.set_field("SC_PASTE", SDL_SCANCODE_PASTE);
+		state.set_field("SC_FIND", SDL_SCANCODE_FIND);
+		state.set_field("SC_MUTE", SDL_SCANCODE_MUTE);
+		state.set_field("SC_VOLUMEUP", SDL_SCANCODE_VOLUMEUP);
+		state.set_field("SC_VOLUMEDOWN", SDL_SCANCODE_VOLUMEDOWN);
+
+		state.set_field("SC_KP_COMMA", SDL_SCANCODE_KP_COMMA);
+		state.set_field("SC_KP_EQUALSAS400", SDL_SCANCODE_KP_EQUALSAS400);
+
+		state.set_field("SC_INTERNATIONAL1", SDL_SCANCODE_INTERNATIONAL1);
+                                           
+		state.set_field("SC_INTERNATIONAL2", SDL_SCANCODE_INTERNATIONAL2);
+		state.set_field("SC_INTERNATIONAL3", SDL_SCANCODE_INTERNATIONAL3);
+		state.set_field("SC_INTERNATIONAL4", SDL_SCANCODE_INTERNATIONAL4);
+		state.set_field("SC_INTERNATIONAL5", SDL_SCANCODE_INTERNATIONAL5);
+		state.set_field("SC_INTERNATIONAL6", SDL_SCANCODE_INTERNATIONAL6);
+		state.set_field("SC_INTERNATIONAL7", SDL_SCANCODE_INTERNATIONAL7);
+		state.set_field("SC_INTERNATIONAL8", SDL_SCANCODE_INTERNATIONAL8);
+		state.set_field("SC_INTERNATIONAL9", SDL_SCANCODE_INTERNATIONAL9);
+		state.set_field("SC_LANG1", SDL_SCANCODE_LANG1);
+		state.set_field("SC_LANG2", SDL_SCANCODE_LANG2);
+		state.set_field("SC_LANG3", SDL_SCANCODE_LANG3);
+		state.set_field("SC_LANG4", SDL_SCANCODE_LANG4);
+		state.set_field("SC_LANG5", SDL_SCANCODE_LANG5);
+		state.set_field("SC_LANG6", SDL_SCANCODE_LANG6);
+		state.set_field("SC_LANG7", SDL_SCANCODE_LANG7);
+		state.set_field("SC_LANG8", SDL_SCANCODE_LANG8);
+		state.set_field("SC_LANG9", SDL_SCANCODE_LANG9);
+
+		state.set_field("SC_ALTERASE", SDL_SCANCODE_ALTERASE);
+		state.set_field("SC_SYSREQ", SDL_SCANCODE_SYSREQ);
+		state.set_field("SC_CANCEL", SDL_SCANCODE_CANCEL);
+		state.set_field("SC_CLEAR", SDL_SCANCODE_CLEAR);
+		state.set_field("SC_PRIOR", SDL_SCANCODE_PRIOR);
+		state.set_field("SC_RETURN2", SDL_SCANCODE_RETURN2);
+		state.set_field("SC_SEPARATOR", SDL_SCANCODE_SEPARATOR);
+		state.set_field("SC_OUT", SDL_SCANCODE_OUT);
+		state.set_field("SC_OPER", SDL_SCANCODE_OPER);
+		state.set_field("SC_CLEARAGAIN", SDL_SCANCODE_CLEARAGAIN);
+		state.set_field("SC_CRSEL", SDL_SCANCODE_CRSEL);
+		state.set_field("SC_EXSEL", SDL_SCANCODE_EXSEL);
+
+		state.set_field("SC_KP_00", SDL_SCANCODE_KP_00);
+		state.set_field("SC_KP_000", SDL_SCANCODE_KP_000);
+		state.set_field("SC_THOUSANDSSEPARATOR", SDL_SCANCODE_THOUSANDSSEPARATOR);
+		state.set_field("SC_DECIMALSEPARATOR", SDL_SCANCODE_DECIMALSEPARATOR);
+		state.set_field("SC_CURRENCYUNIT", SDL_SCANCODE_CURRENCYUNIT);
+		state.set_field("SC_CURRENCYSUBUNIT", SDL_SCANCODE_CURRENCYSUBUNIT);
+		state.set_field("SC_KP_LEFTPAREN", SDL_SCANCODE_KP_LEFTPAREN);
+		state.set_field("SC_KP_RIGHTPAREN", SDL_SCANCODE_KP_RIGHTPAREN);
+		state.set_field("SC_KP_LEFTBRACE", SDL_SCANCODE_KP_LEFTBRACE);
+		state.set_field("SC_KP_RIGHTBRACE", SDL_SCANCODE_KP_RIGHTBRACE);
+		state.set_field("SC_KP_TAB", SDL_SCANCODE_KP_TAB);
+		state.set_field("SC_KP_BACKSPACE", SDL_SCANCODE_KP_BACKSPACE);
+		state.set_field("SC_KP_A", SDL_SCANCODE_KP_A);
+		state.set_field("SC_KP_B", SDL_SCANCODE_KP_B);
+		state.set_field("SC_KP_C", SDL_SCANCODE_KP_C);
+		state.set_field("SC_KP_D", SDL_SCANCODE_KP_D);
+		state.set_field("SC_KP_E", SDL_SCANCODE_KP_E);
+		state.set_field("SC_KP_F", SDL_SCANCODE_KP_F);
+		state.set_field("SC_KP_XOR", SDL_SCANCODE_KP_XOR);
+		state.set_field("SC_KP_POWER", SDL_SCANCODE_KP_POWER);
+		state.set_field("SC_KP_PERCENT", SDL_SCANCODE_KP_PERCENT);
+		state.set_field("SC_KP_LESS", SDL_SCANCODE_KP_LESS);
+		state.set_field("SC_KP_GREATER", SDL_SCANCODE_KP_GREATER);
+		state.set_field("SC_KP_AMPERSAND", SDL_SCANCODE_KP_AMPERSAND);
+		state.set_field("SC_KP_DBLAMPERSAND", SDL_SCANCODE_KP_DBLAMPERSAND);
+		state.set_field("SC_KP_VERTICALBAR", SDL_SCANCODE_KP_VERTICALBAR);
+		state.set_field("SC_KP_DBLVERTICALBAR", SDL_SCANCODE_KP_DBLVERTICALBAR);
+		state.set_field("SC_KP_COLON", SDL_SCANCODE_KP_COLON);
+		state.set_field("SC_KP_HASH", SDL_SCANCODE_KP_HASH);
+		state.set_field("SC_KP_SPACE", SDL_SCANCODE_KP_SPACE);
+		state.set_field("SC_KP_AT", SDL_SCANCODE_KP_AT);
+		state.set_field("SC_KP_EXCLAM", SDL_SCANCODE_KP_EXCLAM);
+		state.set_field("SC_KP_MEMSTORE", SDL_SCANCODE_KP_MEMSTORE);
+		state.set_field("SC_KP_MEMRECALL", SDL_SCANCODE_KP_MEMRECALL);
+		state.set_field("SC_KP_MEMCLEAR", SDL_SCANCODE_KP_MEMCLEAR);
+		state.set_field("SC_KP_MEMADD", SDL_SCANCODE_KP_MEMADD);
+		state.set_field("SC_KP_MEMSUBTRACT", SDL_SCANCODE_KP_MEMSUBTRACT);
+		state.set_field("SC_KP_MEMMULTIPLY", SDL_SCANCODE_KP_MEMMULTIPLY);
+		state.set_field("SC_KP_MEMDIVIDE", SDL_SCANCODE_KP_MEMDIVIDE);
+		state.set_field("SC_KP_PLUSMINUS", SDL_SCANCODE_KP_PLUSMINUS);
+		state.set_field("SC_KP_CLEAR", SDL_SCANCODE_KP_CLEAR);
+		state.set_field("SC_KP_CLEARENTRY", SDL_SCANCODE_KP_CLEARENTRY);
+		state.set_field("SC_KP_BINARY", SDL_SCANCODE_KP_BINARY);
+		state.set_field("SC_KP_OCTAL", SDL_SCANCODE_KP_OCTAL);
+		state.set_field("SC_KP_DECIMAL", SDL_SCANCODE_KP_DECIMAL);
+		state.set_field("SC_KP_HEXADECIMAL", SDL_SCANCODE_KP_HEXADECIMAL);
+
+		state.set_field("SC_LCTRL", SDL_SCANCODE_LCTRL);
+		state.set_field("SC_LSHIFT", SDL_SCANCODE_LSHIFT);
+		state.set_field("SC_LALT", SDL_SCANCODE_LALT);
+		state.set_field("SC_LGUI", SDL_SCANCODE_LGUI);
+		state.set_field("SC_RCTRL", SDL_SCANCODE_RCTRL);
+		state.set_field("SC_RSHIFT", SDL_SCANCODE_RSHIFT);
+		state.set_field("SC_RALT", SDL_SCANCODE_RALT);
+		state.set_field("SC_RGUI", SDL_SCANCODE_RGUI);
+
+		state.set_field("SC_MODE", SDL_SCANCODE_MODE);
+
+		state.set_field("SC_AUDIONEXT", SDL_SCANCODE_AUDIONEXT);
+		state.set_field("SC_AUDIOPREV", SDL_SCANCODE_AUDIOPREV);
+		state.set_field("SC_AUDIOSTOP", SDL_SCANCODE_AUDIOSTOP);
+		state.set_field("SC_AUDIOPLAY", SDL_SCANCODE_AUDIOPLAY);
+		state.set_field("SC_AUDIOMUTE", SDL_SCANCODE_AUDIOMUTE);
+		state.set_field("SC_MEDIASELECT", SDL_SCANCODE_MEDIASELECT);
+		state.set_field("SC_WWW", SDL_SCANCODE_WWW);
+		state.set_field("SC_MAIL", SDL_SCANCODE_MAIL);
+		state.set_field("SC_CALCULATOR", SDL_SCANCODE_CALCULATOR);
+		state.set_field("SC_COMPUTER", SDL_SCANCODE_COMPUTER);
+		state.set_field("SC_AC_SEARCH", SDL_SCANCODE_AC_SEARCH);
+		state.set_field("SC_AC_HOME", SDL_SCANCODE_AC_HOME);
+		state.set_field("SC_AC_BACK", SDL_SCANCODE_AC_BACK);
+		state.set_field("SC_AC_FORWARD", SDL_SCANCODE_AC_FORWARD);
+		state.set_field("SC_AC_STOP", SDL_SCANCODE_AC_STOP);
+		state.set_field("SC_AC_REFRESH", SDL_SCANCODE_AC_REFRESH);
+		state.set_field("SC_AC_BOOKMARKS", SDL_SCANCODE_AC_BOOKMARKS);
+    
+		state.set_field("SC_BRIGHTNESSDOWN", SDL_SCANCODE_BRIGHTNESSDOWN);
+		state.set_field("SC_BRIGHTNESSUP", SDL_SCANCODE_BRIGHTNESSUP);
+		state.set_field("SC_DISPLAYSWITCH", SDL_SCANCODE_DISPLAYSWITCH);
+                                          
+		state.set_field("SC_KBDILLUMTOGGLE", SDL_SCANCODE_KBDILLUMTOGGLE);
+		state.set_field("SC_KBDILLUMDOWN", SDL_SCANCODE_KBDILLUMDOWN);
+		state.set_field("SC_KBDILLUMUP", SDL_SCANCODE_KBDILLUMUP);
+		state.set_field("SC_EJECT", SDL_SCANCODE_EJECT);
+		state.set_field("SC_SLEEP", SDL_SCANCODE_SLEEP);
+    
+		state.set_field("SC_APP1", SDL_SCANCODE_APP1);
+		state.set_field("SC_APP2", SDL_SCANCODE_APP2);
 
 		//SDL_Keymod
 		state.set_field("KMOD_NONE", KMOD_NONE);
@@ -425,6 +685,37 @@ namespace LuaSDL{
 		state.set_field("KMOD_SHIFT", KMOD_LSHIFT|KMOD_RSHIFT);
 		state.set_field("KMOD_ALT", KMOD_LALT|KMOD_RALT);
 		state.set_field("KMOD_GUI", KMOD_LGUI|KMOD_RGUI);
+
+		//SDL_AudioSpec allowed changes
+		state.set_field("AUDIO_ALLOW_FREQUENCY_CHANGE", SDL_AUDIO_ALLOW_FREQUENCY_CHANGE);
+		state.set_field("AUDIO_ALLOW_FORMAT_CHANGE", SDL_AUDIO_ALLOW_FORMAT_CHANGE);
+		state.set_field("AUDIO_ALLOW_CHANNELS_CHANGE", SDL_AUDIO_ALLOW_CHANNELS_CHANGE);
+		state.set_field("AUDIO_ALLOW_ANY_CHANGE", SDL_AUDIO_ALLOW_ANY_CHANGE);
+
+		//SDL_AudioFormat
+		state.set_field("AUDIO_U8", AUDIO_U8);
+		state.set_field("AUDIO_S8", AUDIO_S8);
+		state.set_field("AUDIO_U16LSB", AUDIO_U16LSB);
+		state.set_field("AUDIO_S16LSB", AUDIO_S16LSB);
+		state.set_field("AUDIO_U16MSB", AUDIO_U16MSB);
+		state.set_field("AUDIO_S16MSB", AUDIO_S16MSB);
+		state.set_field("AUDIO_U16", AUDIO_U16);
+		state.set_field("AUDIO_S16", AUDIO_S16);
+		state.set_field("AUDIO_S32LSB", AUDIO_S32LSB);
+		state.set_field("AUDIO_S32MSB", AUDIO_S32MSB);
+		state.set_field("AUDIO_S32", AUDIO_S32);
+		state.set_field("AUDIO_F32LSB", AUDIO_F32LSB);
+		state.set_field("AUDIO_F32MSB", AUDIO_F32MSB);
+		state.set_field("AUDIO_F32", AUDIO_F32);
+		state.set_field("AUDIO_U16SYS", AUDIO_U16SYS);
+		state.set_field("AUDIO_S16SYS", AUDIO_S16SYS);
+		state.set_field("AUDIO_S32SYS", AUDIO_S32SYS);
+		state.set_field("AUDIO_F32SYS", AUDIO_F32SYS);
+
+		//SDL_AudioStatus
+		state.set_field("AUDIO_STOPPED", SDL_AUDIO_STOPPED);
+		state.set_field("AUDIO_PLAYING", SDL_AUDIO_PLAYING);
+		state.set_field("AUDIO_PAUSED", SDL_AUDIO_PAUSED);
 
 	}
 }
