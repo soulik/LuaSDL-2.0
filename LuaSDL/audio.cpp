@@ -3,10 +3,22 @@
 namespace LuaSDL {
 
 	static int lua_SDL_AudioInit(lutok::state& state){
-		state.push_boolean( SDL_AudioInit(state.to_string().c_str()) == 0 );
-		return 1;
+		if (state.is_string(1)){
+			//std::string & str = state.to_string(1);
+			//const char * driver = ;
+			int retval = SDL_AudioInit(state.to_string(1).c_str());
+			state.push_boolean( retval == 0 );
+			return 1;
+		}else{
+			const char * driver = SDL_GetCurrentAudioDriver();
+			if (driver){
+				int retval = SDL_AudioInit(driver);
+				state.push_boolean( retval == 0 );
+				return 1;
+			}
+			return 0;
+		}
 	}
-
 	static int lua_SDL_AudioQuit(lutok::state& state){
 		SDL_AudioQuit();
 		return 0;
@@ -20,7 +32,11 @@ namespace LuaSDL {
 		return 1;
 	}
 	static int lua_SDL_GetNumAudioDevices(lutok::state& state){
-		state.push_integer(SDL_GetNumAudioDevices( (state.to_boolean(1)) ? 1 : 0));
+		bool capture = false;
+		if (state.is_boolean(1)){
+			capture = state.to_boolean(1);
+		}
+		state.push_integer(SDL_GetNumAudioDevices( (capture) ? 1 : 0));
 		return 1;
 	}
 	static int lua_SDL_GetAudioDeviceName(lutok::state& state){
@@ -90,9 +106,31 @@ namespace LuaSDL {
 		state.push_integer(SDL_GetAudioStatus());
 		return 1;
 	}
+	static int lua_SDL_GetCurrentAudioDriver(lutok::state& state){
+		const char * name = SDL_GetCurrentAudioDriver();
+		if (name){
+			state.push_string(name);
+			return 1;
+		}else{
+			return 0;
+		}
+	}
+	static int lua_SDL_MixAudioFormat(lutok::state& state){
 
+		//SDL_MixAudioFormat();
+		return 0;
+	}
 	void init_audio(moduleDef & module){
 		module["audioInit"] = lua_SDL_AudioInit;
 		module["audioQuit"] = lua_SDL_AudioQuit;
+		module["audioDeviceConnected"] = lua_SDL_AudioDeviceConnected;
+		module["getNumAudioDrivers"] = lua_SDL_GetNumAudioDrivers;
+		module["getNumAudioDevices"] = lua_SDL_GetNumAudioDevices;
+		module["getAudioDeviceName"] = lua_SDL_GetAudioDeviceName;
+		module["getAudioDriver"] = lua_SDL_GetAudioDriver;
+		module["getAudioDrivers"] = lua_getAudioDrivers;
+		module["getAudioDevices"] = lua_getAudioDevices;
+		module["getAudioStatus"] = lua_SDL_GetAudioStatus;
+		module["getCurrentAudioDriver"] = lua_SDL_GetCurrentAudioDriver;
 	}
 }

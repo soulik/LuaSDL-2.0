@@ -1,5 +1,6 @@
 #include "objects/displaymode.hpp"
 #include "objects/window.hpp"
+#include "objects/gl_context.hpp"
 #include <lua.hpp>
 
 void LuaSDL::Lua_SDL_Window::destructor(lutok::state & s, SDL_Window* window){

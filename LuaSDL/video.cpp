@@ -1,4 +1,7 @@
 #include "common.hpp"
+#include "objects/window.hpp"
+#include "objects/displaymode.hpp"
+#include "objects/rect.hpp"
 
 namespace LuaSDL {
 

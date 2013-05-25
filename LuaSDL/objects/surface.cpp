@@ -1,4 +1,7 @@
 #include "objects/surface.hpp"
+#include "objects/rect.hpp"
+#include "objects/cursor.hpp"
+#include "objects/pixelformat.hpp"
 #include <lua.hpp>
 
 static int lua_SDL_CreateRGBSurface(lutok::state& state){

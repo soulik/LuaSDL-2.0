@@ -29,22 +29,7 @@ namespace LuaSDL {
 			}
 			return 0;
 		}
-		
-
-		static Uint32 callback(Uint32 interval, void *param){
-			SDL_Event event;
-			SDL_UserEvent userevent;
-			userevent.type = SDL_USEREVENT;
-			userevent.code = LUA_SDL_TIMER_CODE;
-			userevent.data1 = param;
-			userevent.data2 = NULL;
-
-			event.type = SDL_USEREVENT;
-			event.user = userevent;
-
-		    SDL_PushEvent(&event);
-			return(interval);
-		}
+		static Uint32 callback(Uint32 interval, void *param);
 
 	};
 }

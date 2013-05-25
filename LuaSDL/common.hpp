@@ -19,15 +19,6 @@
 #include <lua.hpp>
 
 #include <SDL.h>
-#include "objects/rect.hpp"
-#include "objects/pixelformat.hpp"
-#include "objects/displaymode.hpp"
-#include "objects/surface.hpp"
-#include "objects/gl_context.hpp"
-#include "objects/window.hpp"
-#include "objects/event.hpp"
-#include "objects/cursor.hpp"
-#include "objects/joystick.hpp"
 
 namespace LuaSDL{
 	
@@ -55,6 +46,7 @@ namespace LuaSDL{
 	void init_timer(lutok::state & state, moduleDef & module);
 	void init_audiodevice(lutok::state & state, moduleDef & module);
 	void init_audiospec(lutok::state & state, moduleDef & module);
+	void init_audiobuffer(lutok::state & state, moduleDef & module);
 }
 
 #endif

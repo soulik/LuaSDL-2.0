@@ -1,4 +1,4 @@
-#include "objects/window.hpp"
+#include "objects/gl_context.hpp"
 #include <lua.hpp>
 
 void LuaSDL::init_gl_context(lutok::state & state, moduleDef & module){

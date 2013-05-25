@@ -1,7 +1,5 @@
 #include "common.hpp"
 
-
-
 extern "C" LUA_API int luaopen_LuaSDL(void * current_state){
 
 	lutok::state state(current_state);
@@ -26,6 +24,7 @@ extern "C" LUA_API int luaopen_LuaSDL(void * current_state){
 	LuaSDL::init_timer(state, module);
 	LuaSDL::init_audiodevice(state, module);
 	LuaSDL::init_audiospec(state, module);
+	LuaSDL::init_audiobuffer(state, module);
 
     lutok::registerLib(state, "SDL", module);
 	LuaSDL::init_constants(state);

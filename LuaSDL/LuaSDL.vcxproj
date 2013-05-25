@@ -34,17 +34,17 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\libSDL.props" />
     <Import Project="..\..\lua5.1.props" />
     <Import Project="..\..\Lua_library.props" />
     <Import Project="..\..\local.props" />
+    <Import Project="..\..\libSDL - Debug.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\libSDL.props" />
     <Import Project="..\..\lua5.1.props" />
     <Import Project="..\..\Lua_library.props" />
     <Import Project="..\..\local.props" />
+    <Import Project="..\..\libSDL - Release.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -101,6 +101,7 @@
     <ClCompile Include="gl_context.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="objects\audiobuffer.cpp" />
     <ClCompile Include="objects\audiodevice.cpp" />
     <ClCompile Include="objects\audiospec.cpp" />
     <ClCompile Include="objects\cursor.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\stack_cleaner.hpp" />
     <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\state.hpp" />
     <ClInclude Include="common.hpp" />
+    <ClInclude Include="objects\audiobuffer.hpp" />
     <ClInclude Include="objects\audiodevice.hpp" />
     <ClInclude Include="objects\audiospec.hpp" />
     <ClInclude Include="objects\cursor.hpp" />

@@ -1,4 +1,5 @@
 #include "objects/cursor.hpp"
+#include "objects/surface.hpp"
 #include <lua.hpp>
 
 static int lua_SDL_CreateColorCursor(lutok::state& state){

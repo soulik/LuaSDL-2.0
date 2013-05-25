@@ -117,6 +117,9 @@
     <ClCompile Include="objects\audiospec.cpp">
       <Filter>Source Files\objects</Filter>
     </ClCompile>
+    <ClCompile Include="objects\audiobuffer.cpp">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.hpp">
@@ -186,6 +189,9 @@
       <Filter>Header Files\objects</Filter>
     </ClInclude>
     <ClInclude Include="objects\audiospec.hpp">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\audiobuffer.hpp">
       <Filter>Header Files\objects</Filter>
     </ClInclude>
   </ItemGroup>
