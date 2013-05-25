@@ -7,17 +7,18 @@ void LuaSDL::Lua_SDL_AudioDevice::audioCallback(void * data, Uint8 * stream, int
 	LuaSDL::AudioDevice_Data * adata = reinterpret_cast<LuaSDL::AudioDevice_Data *>(data);
 	Uint8 * buffer = adata->buffer->buffer;
 	size_t bytes_to_copy = len;
+	if (adata->buffer->size>0){
+		if ((adata->buffer->pos + bytes_to_copy) > adata->buffer->physicalSize){
+			bytes_to_copy = (adata->buffer->physicalSize - adata->buffer->pos);
+		}
+		if ((adata->pos + bytes_to_copy) > (Uint32)len){
+			bytes_to_copy = (len - adata->pos);
+		}
 
-	if ((adata->buffer->pos + bytes_to_copy) > adata->buffer->physicalSize){
-		bytes_to_copy = (adata->buffer->physicalSize - adata->buffer->pos);
+		SDL_memcpy(stream + adata->pos, buffer + adata->buffer->pos, bytes_to_copy);
+		adata->buffer->pos = (adata->buffer->pos + bytes_to_copy) % adata->buffer->physicalSize;
+		adata->pos = (adata->pos + bytes_to_copy) % len;
 	}
-	if ((adata->pos + bytes_to_copy) > len){
-		bytes_to_copy = (len - adata->pos);
-	}
-
-	SDL_memcpy(stream + adata->pos, buffer + adata->buffer->pos, bytes_to_copy);
-	adata->buffer->pos = (adata->buffer->pos + bytes_to_copy) % adata->buffer->physicalSize;
-	adata->pos = (adata->pos + bytes_to_copy) % len;
 }
 
 static int lua_SDL_OpenAudioDevice(lutok::state& state){
