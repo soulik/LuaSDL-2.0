@@ -93,10 +93,9 @@ bool LuaSDL::Lua_SDL_AudioBuffer::setAudioBufferFormat(LuaSDL::AudioBuffer * aud
 		audiobuffer->getValue = Lua_AudioBuffer_get_F32; audiobuffer->setValue = Lua_AudioBuffer_set_F32; result = true; break;
 	}
 	if (result){
-		if (getFormatElementSize(audiobuffer->format) != getFormatElementSize(format)){
-			int newsize = getFormatElementSize(format)*audiobuffer->size;
-			audiobuffer->buffer = reinterpret_cast<Uint8 *>(realloc(audiobuffer->buffer, newsize));
-			audiobuffer->physicalSize = newsize;
+		size_t elmSize = getFormatElementSize(format);
+		if (getFormatElementSize(audiobuffer->format) != elmSize){
+			audiobuffer->setSize(audiobuffer->size, elmSize);
 		}
 		audiobuffer->format = format;
 		audiobuffer->pos = 0;

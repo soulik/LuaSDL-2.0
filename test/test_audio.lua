@@ -43,11 +43,11 @@ local function initAudio()
 	local audio_spec = SDL.AudioSpec()
 	audio_spec.freq = 44100
 	audio_spec.format = SDL.AUDIO_S16LSB
-	audio_spec.channels = 1
+	audio_spec.channels = 2
 	audio_spec.samples = 4096
 	audio_spec.padding = 0
 
-	return SDL.AudioDevice(default_device, false, audio_spec)
+	return SDL.AudioDevice(default_device or "test.raw", false, audio_spec)
 end
 
 local function main()
@@ -71,45 +71,83 @@ local function main()
 	}
 
 	local audio_device = initAudio()
-	local function generateTone(n, amplitude)
+
+	local function generateTone(pos, length, n, phase, amplitude)
+		local fmod = function(n, d)
+			return n-math.floor(n/d)*d
+		end
+
 		local buffer = audio_device.buffer
 		local audiospec = audio_device.audioSpec
+		local channels = audiospec.channels
 		local tone = (440/12)
 		local freq = 440 + (tone*n)
-		local factor = (buffer.size/audiospec.freq)*freq
+		local pi2 = 2*math.pi
+		local factor = freq*(pi2/(audiospec.freq))
 		local amplitude = amplitude or 12000
-		local factor2 = (2*math.pi)/buffer.size
+		local phase = phase or 0
+		local lphase
+		local total_len = length*(audiospec.freq/1000)*channels
+		if pos + total_len >= buffer.size - pos - channels then
+			pos = buffer.size - pos - channels
+		end
 
-		for i=0,buffer.size-1 do
+		local last_pos = 0
+
+		for i=0, total_len-1 do
+			lphase = fmod(phase+i*(factor), pi2)
 			local value = math.floor(
 				math.sin(
-					i*factor*factor2
+					lphase
 				)*amplitude
 			)
-			buffer.setData(i, value)
+			if channels>1 then
+				for j=0, channels-1 do
+					last_pos = pos + i*channels + j
+					buffer.setData(last_pos, value)
+					--print(string.format("N: %d, Ch: %d, Pos: %d", n, j, last_pos))
+				end
+			else
+				last_pos = pos + i
+				buffer.setData(last_pos, value)
+			end
 		end
+		return last_pos+1, fmod(lphase, pi2)--math.fmod(lphase, pi2)
+	end
+
+	local function prepareAudioBuffer()
+		local buffer = audio_device.buffer
+
+		audio_device.lock()
+		io.write("generating...")
+		local prev_pos, prev_phase = 0, 0
+		local T2 = {0, 2, 4, 5, 7, 9, 11, 12}
+		for T=1,8 do
+			prev_pos, prev_phase = generateTone(prev_pos, 250, T2[T] or 0, prev_phase)
+		end
+		io.write(string.format("done (%d/%d elements)\n", prev_pos, buffer.size))
+		audio_device.unlock()
 	end
 
 	if audio_device then
 		local buffer = audio_device.buffer
+
 		local audiospec = audio_device.audioSpec
-		buffer.size = 8192
+		buffer.size = 1024*1024--81920
 		buffer.format = SDL.AUDIO_S16LSB
 		buffer.clear()
 
-		local T = 1
-		local timer = SDL.Timer(1000, function()
-			print(string.format("Timer: %d", T))
+		prepareAudioBuffer()
+
+		local T = 0
+		local timer = SDL.Timer(500, function()
 			T = T + 1
-			if (T >= 12) then
+			if (T > 8) then
 				running = false
 			else
-				audio_device.lock()
-				generateTone(T)
-				audio_device.unlock()
+				print(T)
 			end
 		end)
-		generateTone(0)
 
 		audio_device.play()
 		while (running) do
@@ -130,4 +168,7 @@ end
 
 SDL.init()
 main()
-SDL.quit()
+local quit_error = SDL.quit()
+if quit_error then
+	print(quit_error)
+end

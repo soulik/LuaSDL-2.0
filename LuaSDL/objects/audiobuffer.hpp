@@ -9,6 +9,13 @@ namespace LuaSDL {
 	typedef void(*lua_AudioBufferSet)(lutok::state & state, Uint8 * buffer, size_t a_index, int l_index);
 
 	class AudioBuffer {
+	private:
+		void freeBuffer(){
+			if (buffer){
+				SDL_free(buffer);
+			}
+			buffer = nullptr;
+		}
 	public:
 		AudioBuffer(){
 			buffer = nullptr;
@@ -19,11 +26,26 @@ namespace LuaSDL {
 			pos = 0;
 		}
 		~AudioBuffer(){
-			delete buffer;
+			freeBuffer();
+		}
+		void setSize(size_t _size, size_t element_size){
+			if (_size>0){
+				size = _size;
+				physicalSize = _size * element_size;
+				if (!buffer){
+					buffer = reinterpret_cast<Uint8*>(SDL_malloc(physicalSize));
+				}else{
+					buffer = reinterpret_cast<Uint8*>(SDL_realloc(buffer, physicalSize));
+				}
+			}else{
+				size = 0;
+				physicalSize = 0;
+				freeBuffer();
+			}
 		}
 		void clear(){
 			if (size>0){
-				memset(buffer, 0, physicalSize);
+				SDL_memset(buffer, 0, physicalSize);
 			}
 		}
 		Uint8 * buffer;
@@ -84,10 +106,7 @@ namespace LuaSDL {
 			Uint32 newlen = state.to_integer(1);
 
 			if ((newlen != audiobuffer->size) && (newlen>=0)){
-				int newsize = getFormatElementSize(audiobuffer->format)*newlen;
-				audiobuffer->buffer = reinterpret_cast<Uint8 *>(realloc(audiobuffer->buffer, newsize));
-				audiobuffer->size = newlen;
-				audiobuffer->physicalSize = newsize;
+				audiobuffer->setSize(newlen, getFormatElementSize(audiobuffer->format));
 				audiobuffer->pos = 0;
 			}
 			return 0;

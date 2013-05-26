@@ -1,4 +1,5 @@
 ﻿#include "common.hpp"
+#include <exception>
 
 namespace LuaSDL {
 
@@ -17,7 +18,12 @@ namespace LuaSDL {
 		return 1;
 	}
 	static int lua_SDL_Quit(lutok::state& state){
-		SDL_Quit();
+		try{
+			SDL_Quit();
+		}catch(std::exception *  e){
+			state.push_string(e->what());
+			return 1;
+		}
 		return 0;
 	}
 	static int lua_SDL_QuitSubSystem(lutok::state& state){
