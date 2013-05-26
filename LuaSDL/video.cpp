@@ -17,49 +17,6 @@ namespace LuaSDL {
 		SDL_VideoQuit();
 		return 0;
 	}
-
-	static int lua_SDL_CreateWindow(lutok::state& state){
-		SDL_Window * window = SDL_CreateWindow(
-			state.to_string(1).c_str(),
-			state.to_integer(2),
-			state.to_integer(3),
-			state.to_integer(4),
-			state.to_integer(5),
-			(Uint32)state.to_integer(6));
-		if (window){
-			Lua_SDL_Window * w = LOBJECT_INSTANCE(Lua_SDL_Window);
-			w->push(window);
-			return 1;
-		}
-		return 0;
-	}
-	static int lua_SDL_CreateWindowAndRenderer(lutok::state& state){
-		SDL_Window * window = NULL;
-		SDL_Renderer * renderer = NULL;
-
-		int retval = SDL_CreateWindowAndRenderer(
-			state.to_integer(1),
-			state.to_integer(2),
-			(Uint32)state.to_integer(3),
-			&window,
-			&renderer
-			);
-
-		state.push_integer(retval);
-		Lua_SDL_Window * w = LOBJECT_INSTANCE(Lua_SDL_Window);
-		w->push(window);
-		state.push_lightuserdata(reinterpret_cast<void*>(renderer));
-		return 3;
-	}
-	static int lua_SDL_CreateWindowFrom(lutok::state& state){
-		SDL_Window * window = SDL_CreateWindowFrom(state.to_userdata<void>(1));
-		if (window){
-			Lua_SDL_Window * w = LOBJECT_INSTANCE(Lua_SDL_Window);
-			w->push(window);
-			return 1;
-		}
-		return 0;
-	}		
 	static int lua_SDL_GetVideoDrivers(lutok::state& state){
 		state.new_table();
 		for (int i=0; i<SDL_GetNumVideoDrivers(); i++){
@@ -97,21 +54,6 @@ namespace LuaSDL {
 			
 			state.push_literal("bounds");
 			r->push(rect);
-			/*
-			state.new_table();
-				state.push_literal("x");
-				state.push_integer(rect.x);
-				state.set_table();
-				state.push_literal("y");
-				state.push_integer(rect.y);
-				state.set_table();
-				state.push_literal("w");
-				state.push_integer(rect.w);
-				state.set_table();
-				state.push_literal("h");
-				state.push_integer(rect.h);
-				state.set_table();
-				*/
 			state.set_table();
 
 			state.set_table();
@@ -171,6 +113,16 @@ namespace LuaSDL {
 			return 0;
 		}
 	}
+	static int lua_SDL_GetDisplayBounds(lutok::state& state){
+		Lua_SDL_Rect * r = LOBJECT_INSTANCE(Lua_SDL_Rect);
+		SDL_Rect * rect = new SDL_Rect;
+		if (SDL_GetDisplayBounds(state.to_integer(1), rect) == 0){
+			r->push(rect);
+			return 1;
+		}else{
+			return 0;
+		}
+	}
 	static int lua_SDL_GetCurrentVideoDriver(lutok::state& state){
 		const char * driver = SDL_GetCurrentVideoDriver();
 		if (driver){
@@ -193,11 +145,21 @@ namespace LuaSDL {
 		state.push_boolean(SDL_SetClipboardText(state.to_string().c_str()) == 0);
 		return 1;
 	}
+	static int lua_SDL_GL_GetSwapInterval(lutok::state& state){
+		int retval = SDL_GL_GetSwapInterval();
+		if (retval>=0){
+			state.push_boolean(retval == 1);
+			return 1;
+		}else{
+			return 0;
+		}
+	}
+	static int lua_SDL_GL_SetSwapInterval(lutok::state& state){
+		state.push_boolean(SDL_GL_SetSwapInterval((state.to_boolean(1)) ? 1 : 0) == 0);
+		return 1;
+	}
 
 	void init_video(moduleDef & module){
-		module["createWindow"] = lua_SDL_CreateWindow;
-		module["createWindowAndRenderer"] = lua_SDL_CreateWindowAndRenderer;
-		module["createWindowFrom"] = lua_SDL_CreateWindowFrom;
 		module["videoInit"] = lua_SDL_VideoInit;
 		module["videoQuit"] = lua_SDL_VideoQuit;
 		module["getVideoDrivers"] = lua_SDL_GetVideoDrivers;
@@ -210,10 +172,14 @@ namespace LuaSDL {
 		module["getDesktopDisplayMode"] = lua_SDL_GetDesktopDisplayMode;
 		module["getCurrentVideoDriver"] = lua_SDL_GetCurrentVideoDriver;
 		module["getClosestDisplayMode"] = lua_SDL_GetClosestDisplayMode;
+		module["getDisplayBounds"] = lua_SDL_GetDisplayBounds;
 
 		module["hasClipboardText"] = lua_SDL_HasClipboardText;
 		module["getClipboardText"] = lua_SDL_GetClipboardText;
 		module["setClipboardText"] = lua_SDL_SetClipboardText;
+
+		module["GLgetSwapInterval"] = lua_SDL_GL_GetSwapInterval;
+		module["GLsetSwapInterval"] = lua_SDL_GL_SetSwapInterval;
 	}
 
 }

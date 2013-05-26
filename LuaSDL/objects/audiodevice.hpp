@@ -70,7 +70,7 @@ namespace LuaSDL {
 			return 0;
 		}
 		int LOBJECT_METHOD(isAudioConnected, AudioDevice_Data * audiodevice){
-			/*
+#ifdef AUDIODEVICECONNECTED_DEFINED
 			int status = SDL_AudioDeviceConnected(audiodevice->id);
 			if (status>=0){
 				state.push_boolean(status == 1);
@@ -78,8 +78,9 @@ namespace LuaSDL {
 			}else{
 				return 0;
 			}
-			*/
+#else
 			return 0;
+#endif
 		}
 		int LOBJECT_METHOD(getBuffer, AudioDevice_Data * audiodevice);
 

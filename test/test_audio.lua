@@ -168,6 +168,8 @@ end
 
 SDL.init()
 main()
+
+-- This is because of a bug in SDL_malloc/SDL_free on fake_buffer with Disk audio driver! There's something fishy going on SDL_CloseAudio.
 local quit_error = SDL.quit()
 if quit_error then
 	print(quit_error)

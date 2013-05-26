@@ -1,6 +1,7 @@
 #include "objects/displaymode.hpp"
 #include "objects/window.hpp"
 #include "objects/gl_context.hpp"
+#include "objects/surface.hpp"
 #include <lua.hpp>
 
 void LuaSDL::Lua_SDL_Window::destructor(lutok::state & s, SDL_Window* window){
@@ -44,8 +45,74 @@ int LuaSDL::Lua_SDL_Window::LOBJECT_METHOD(setDisplayMode, SDL_Window * window){
 	return 1;
 }
 
+static int lua_SDL_CreateWindow(lutok::state& state){
+	SDL_Window * window = SDL_CreateWindow(
+		state.to_string(1).c_str(),
+		state.to_integer(2),
+		state.to_integer(3),
+		state.to_integer(4),
+		state.to_integer(5),
+		(Uint32)state.to_integer(6));
+	if (window){
+		LuaSDL::Lua_SDL_Window * w = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
+		w->push(window);
+		return 1;
+	}
+	return 0;
+}
+static int lua_SDL_CreateWindowAndRenderer(lutok::state& state){
+	SDL_Window * window = NULL;
+	SDL_Renderer * renderer = NULL;
+
+	int retval = SDL_CreateWindowAndRenderer(
+		state.to_integer(1),
+		state.to_integer(2),
+		(Uint32)state.to_integer(3),
+		&window,
+		&renderer
+		);
+
+	state.push_integer(retval);
+	LuaSDL::Lua_SDL_Window * w = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
+	w->push(window);
+	state.push_lightuserdata(reinterpret_cast<void*>(renderer));
+	return 3;
+}
+static int lua_SDL_CreateWindowFrom(lutok::state& state){
+	SDL_Window * window = SDL_CreateWindowFrom(state.to_userdata<void>(1));
+	if (window){
+		LuaSDL::Lua_SDL_Window * w = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
+		w->push(window);
+		return 1;
+	}
+	return 0;
+}		
+static int lua_SDL_GetWindowFromID(lutok::state& state){
+	SDL_Window * window = SDL_GetWindowFromID(state.to_integer(1));
+	if (window){
+		LuaSDL::Lua_SDL_Window * w = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
+		w->push(window);
+		return 1;
+	}
+	return 0;
+}		
+int LuaSDL::Lua_SDL_Window::LOBJECT_METHOD(getWindowSurface, SDL_Window * window){
+	LuaSDL::Lua_SDL_Surface * s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
+	SDL_Surface * surface = SDL_GetWindowSurface(window);
+	if (surface){
+		s->push(surface);
+		return 1;
+	}else{
+		return 0;
+	}
+}
+
 
 
 void LuaSDL::init_window(lutok::state & state, moduleDef & module){
 	LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
+	module["createWindow"] = lua_SDL_CreateWindow;
+	module["createWindowAndRenderer"] = lua_SDL_CreateWindowAndRenderer;
+	module["createWindowFrom"] = lua_SDL_CreateWindowFrom;
+	module["getWindowFromID"] = lua_SDL_GetWindowFromID;
 }

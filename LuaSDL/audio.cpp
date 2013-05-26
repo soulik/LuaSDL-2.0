@@ -24,8 +24,17 @@ namespace LuaSDL {
 		return 0;
 	}
 	static int lua_SDL_AudioDeviceConnected(lutok::state& state){
-		//SDL_AudioDeviceConnected
+#ifdef AUDIODEVICECONNECTED_DEFINED
+		int retval = SDL_AudioDeviceConnected(state.to_integer(1));
+		if (retval>=0){
+			state.push_boolean(retval == 1);
+			return 1;
+		}else{
+			return 0;
+		}
+#else
 		return 0;
+#endif
 	}
 	static int lua_SDL_GetNumAudioDrivers(lutok::state& state){
 		state.push_integer(SDL_GetNumAudioDrivers());

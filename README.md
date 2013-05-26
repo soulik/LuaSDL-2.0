@@ -21,26 +21,29 @@ What works
 - Error Handling 3/3
 - Log Handling 5/15
 - Assertions 0/7
-- Querying SDL Version 1/8
+- Querying SDL Version 1/8 - everything is bundled in one table
 
 ### VIDEO
-- Display and Window Management 54/66
+- Display and Window Management 53/66
 - 2D Accelerated Rendering 0/42
-- Pixel Formats and Conversion Routines 0/14
+- Pixel Formats and Conversion Routines 7/14
 - Rectangle Functions 6/7
-- Surface Creation and Simple Drawing 1/33
+- Surface Creation and Simple Drawing 22/33
 - Platform-specific Window Management 0/1
 - Clipboard Handling 3/3
 
 ### INPUT EVENTS
-- Event Handling
-- Keyboard Support
-- Mouse Support
-- Joystick Support
-- Game Controller Support
+- Event Handling 8/18
+- Keyboard Support 14/14
+- Mouse Support 12/12
+- Joystick Support 15/17
+- Game Controller Support 6/6
 
 ### TIMERS EVENTS
 - Timer Support 6/6
+
+### AUDIO
+- Audio Device Management, Playing and Recording 14/27
 
 Notes
 -------------
