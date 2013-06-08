@@ -45,7 +45,7 @@ What works
 ### AUDIO
 - Audio Device Management, Playing and Recording 14/27
 
-Notes
+Credits
 -------------
 
 This project makes a use of modified version of "Lutok - Lightweight C++ API for Lua" - available at: https://code.google.com/p/lutok/

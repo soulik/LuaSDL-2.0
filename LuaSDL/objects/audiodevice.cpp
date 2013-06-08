@@ -53,6 +53,7 @@ static int lua_SDL_OpenAudioDevice(lutok::state& state){
 		LuaSDL::Lua_SDL_AudioBuffer::setAudioBufferFormat(adata->buffer, AUDIO_U8);
 		adata->buffer->clear();
 		adata->pos = 0;
+		adata->ownBuffer = true;
 
 		ad->push(adata);
 		return 1;
@@ -72,8 +73,20 @@ int LuaSDL::Lua_SDL_AudioDevice::LOBJECT_METHOD(getAudioSpec, AudioDevice_Data *
 
 int LuaSDL::Lua_SDL_AudioDevice::LOBJECT_METHOD(getBuffer, LuaSDL::AudioDevice_Data * audiodevice){
 	LuaSDL::Lua_SDL_AudioBuffer * ab = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_AudioBuffer);
-	ab->push(audiodevice->buffer, false);
+	ab->push(audiodevice->buffer, !audiodevice->ownBuffer);
 	return 1;
+}
+
+int LuaSDL::Lua_SDL_AudioDevice::LOBJECT_METHOD(setBuffer, LuaSDL::AudioDevice_Data * audiodevice){
+	LuaSDL::Lua_SDL_AudioBuffer * ab = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_AudioBuffer);
+	SDL_LockAudioDevice(audiodevice->id);
+	if (audiodevice->ownBuffer){
+		delete audiodevice->buffer;
+		audiodevice->ownBuffer = false;
+	}
+	audiodevice->buffer = ab->check(1);
+	SDL_UnlockAudioDevice(audiodevice->id);
+	return 0;
 }
 
 void LuaSDL::init_audiodevice(lutok::state & state, moduleDef & module){

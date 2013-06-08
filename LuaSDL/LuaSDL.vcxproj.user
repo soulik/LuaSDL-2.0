@@ -10,6 +10,6 @@
     <LocalDebuggerWorkingDirectory>..\Debug</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerCommand>C:\Users\Soulik\Documents\Visual Studio 2012\Projects\LuaSDL\Debug\luajit.exe</LocalDebuggerCommand>
-    <LocalDebuggerCommandArguments>test_audio.lua</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>test_threads.lua</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

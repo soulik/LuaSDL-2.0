@@ -144,24 +144,63 @@ namespace LuaSDL {
 		}
 		*/
 		int LOBJECT_METHOD(getData, AudioBuffer * audiobuffer){
-			size_t index = state.to_integer(1);
-			if ((index >= 0) && (index < audiobuffer->size)){
-				if (audiobuffer->getValue){
-					audiobuffer->getValue(state, audiobuffer->buffer, index);
-					return 1;
+			if (state.is_number(1)){
+				size_t index = state.to_integer(1);
+				if ((index >= 0) && (index < audiobuffer->size)){
+					if (audiobuffer->getValue){
+						audiobuffer->getValue(state, audiobuffer->buffer, index);
+						return 1;
+					}else{
+						return 0;
+					}
 				}else{
 					return 0;
 				}
 			}else{
-				return 0;
+				state.new_table();
+				for (size_t index=0; index < audiobuffer->size; index++){
+					state.push_integer(index+1);
+					audiobuffer->getValue(state, audiobuffer->buffer, index);
+					state.set_table();
+				}
+				return 1;
 			}
 		}
 		int LOBJECT_METHOD(setData, AudioBuffer * audiobuffer){
-			size_t index = state.to_integer(1);
-			if ((index >= 0) && (index < audiobuffer->size)){
-				if (audiobuffer->setValue){
-					audiobuffer->setValue(state, audiobuffer->buffer, index, 2);
+			if (state.is_number(1)){
+				size_t index = state.to_integer(1);
+				if ((index >= 0) && (index < audiobuffer->size)){
+					if (audiobuffer->setValue){
+						audiobuffer->setValue(state, audiobuffer->buffer, index, 2);
+					}
 				}
+			}else if (state.is_table(1)){
+				size_t items = state.obj_len(1);
+				size_t offset = 0;
+				size_t max_items = items;
+				if (state.is_number(2)){
+					offset = state.to_integer(2);
+					if (offset<0){
+						offset = 0;
+					}
+				}
+				if (state.is_number(3)){
+					max_items = state.to_integer(3);
+					if (max_items<0){
+						max_items = 0;
+					}
+				}
+				if (offset+max_items > audiobuffer->size){
+					audiobuffer->setSize(offset+max_items, getFormatElementSize(audiobuffer->format));
+				}
+				for (size_t index=0; index < max_items; index++){
+					state.push_integer(index+1);
+					state.get_table(1);
+					audiobuffer->setValue(state, audiobuffer->buffer, index+offset, -1);
+					state.pop(1);
+				}
+				state.push_integer(max_items);
+				return 1;
 			}
 			return 0;
 		}

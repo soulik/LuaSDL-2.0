@@ -47,6 +47,7 @@ namespace LuaSDL{
 	void init_audiodevice(lutok::state & state, moduleDef & module);
 	void init_audiospec(lutok::state & state, moduleDef & module);
 	void init_audiobuffer(lutok::state & state, moduleDef & module);
+	void init_thread(lutok::state & state, moduleDef & module);
 }
 
 #endif

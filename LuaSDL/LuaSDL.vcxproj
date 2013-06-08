@@ -112,6 +112,7 @@
     <ClCompile Include="objects\pixelformat.cpp" />
     <ClCompile Include="objects\rect.cpp" />
     <ClCompile Include="objects\surface.cpp" />
+    <ClCompile Include="objects\thread.cpp" />
     <ClCompile Include="objects\timer.cpp" />
     <ClCompile Include="objects\window.cpp" />
     <ClCompile Include="platform.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="objects\pixelformat.hpp" />
     <ClInclude Include="objects\rect.hpp" />
     <ClInclude Include="objects\surface.hpp" />
+    <ClInclude Include="objects\thread.hpp" />
     <ClInclude Include="objects\timer.hpp" />
     <ClInclude Include="objects\window.hpp" />
   </ItemGroup>

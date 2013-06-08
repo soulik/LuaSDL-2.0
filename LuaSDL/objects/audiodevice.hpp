@@ -10,6 +10,7 @@ namespace LuaSDL {
 		SDL_AudioSpec * audioSpec;
 		AudioBuffer * buffer;
 		volatile size_t pos;
+		bool ownBuffer;
 	};
 
 	class Lua_SDL_AudioDevice : public LObject<Lua_SDL_AudioDevice, AudioDevice_Data *> {
@@ -23,14 +24,16 @@ namespace LuaSDL {
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_AudioDevice, AudioDevice_Data *, "audioSpec", getAudioSpec, null_method);	
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_AudioDevice, AudioDevice_Data *, "status", getAudioStatus, null_method);	
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_AudioDevice, AudioDevice_Data *, "connected", isAudioConnected, null_method);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_AudioDevice, AudioDevice_Data *, "buffer", getBuffer, null_method);	
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_AudioDevice, AudioDevice_Data *, "buffer", getBuffer, setBuffer);	
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_AudioDevice, AudioDevice_Data *, "pos", getBufferPos, setBufferPos);	
 		}
 
 		void destructor(lutok::state & state, AudioDevice_Data * audiodevice){
 			SDL_PauseAudioDevice(audiodevice->id, 1);
 			SDL_CloseAudioDevice(audiodevice->id);
-			delete audiodevice->buffer;
+			if (audiodevice->ownBuffer){
+				delete audiodevice->buffer;
+			}
 			delete audiodevice->audioSpec;
 			delete audiodevice;
 		}
@@ -83,6 +86,7 @@ namespace LuaSDL {
 #endif
 		}
 		int LOBJECT_METHOD(getBuffer, AudioDevice_Data * audiodevice);
+		int LOBJECT_METHOD(setBuffer, AudioDevice_Data * audiodevice);
 
 		static void audioCallback(void *, Uint8 *, int);
 	};

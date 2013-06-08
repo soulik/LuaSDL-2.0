@@ -72,24 +72,35 @@ local function main()
 
 	local audio_device = initAudio()
 
-	local function generateTone(pos, length, n, phase, amplitude)
+	local function generateTone(t, pos, length, n, phase, amplitude, maxsize)
 		local fmod = function(n, d)
 			return n-math.floor(n/d)*d
 		end
 
-		local buffer = audio_device.buffer
+		local intFreq = function(i)
+			local base_freq = 263.63
+			local intervals = {
+				[0]=1, 25/24, 9/8, 6/5, 5/4, 4/3, 45/32, 3/2, 8/5, 5/3, 9/5, 15/8
+			}
+			local ni = math.floor(i/12)+1
+			local mi = i%12
+			local int = intervals[mi]
+			return base_freq*int*ni
+		end
+
 		local audiospec = audio_device.audioSpec
 		local channels = audiospec.channels
-		local tone = (440/12)
-		local freq = 440 + (tone*n)
 		local pi2 = 2*math.pi
-		local factor = freq*(pi2/(audiospec.freq))
+		local factor = intFreq(n)*(pi2/(audiospec.freq))
 		local amplitude = amplitude or 12000
 		local phase = phase or 0
 		local lphase
 		local total_len = length*(audiospec.freq/1000)*channels
-		if pos + total_len >= buffer.size - pos - channels then
-			pos = buffer.size - pos - channels
+
+		if type(maxsize)=="number" then
+			if pos + total_len >= maxsize - pos - channels then
+				pos = maxsize - pos - channels
+			end
 		end
 
 		local last_pos = 0
@@ -104,15 +115,14 @@ local function main()
 			if channels>1 then
 				for j=0, channels-1 do
 					last_pos = pos + i*channels + j
-					buffer.setData(last_pos, value)
-					--print(string.format("N: %d, Ch: %d, Pos: %d", n, j, last_pos))
+					t[(last_pos+1)] = value
 				end
 			else
 				last_pos = pos + i
-				buffer.setData(last_pos, value)
+				t[(last_pos+1)] = value
 			end
 		end
-		return last_pos+1, fmod(lphase, pi2)--math.fmod(lphase, pi2)
+		return last_pos+1, fmod(lphase, pi2)
 	end
 
 	local function prepareAudioBuffer()
@@ -121,10 +131,14 @@ local function main()
 		audio_device.lock()
 		io.write("generating...")
 		local prev_pos, prev_phase = 0, 0
-		local T2 = {0, 2, 4, 5, 7, 9, 11, 12}
-		for T=1,8 do
-			prev_pos, prev_phase = generateTone(prev_pos, 250, T2[T] or 0, prev_phase)
+		local scales = {
+			full = {0, 2, 4, 5, 7, 9, 11, 12},
+		}
+		local t = {}
+		for i, n in ipairs(scales.full) do
+			prev_pos, prev_phase = generateTone(t, prev_pos, 250, n, prev_phase)
 		end
+		buffer.setData(t)
 		io.write(string.format("done (%d/%d elements)\n", prev_pos, buffer.size))
 		audio_device.unlock()
 	end

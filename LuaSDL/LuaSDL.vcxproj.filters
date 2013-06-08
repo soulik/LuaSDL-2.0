@@ -120,6 +120,9 @@
     <ClCompile Include="objects\pixelformat.cpp">
       <Filter>Source Files\objects</Filter>
     </ClCompile>
+    <ClCompile Include="objects\thread.cpp">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.hpp">
@@ -192,6 +195,9 @@
       <Filter>Header Files\objects</Filter>
     </ClInclude>
     <ClInclude Include="objects\audiobuffer.hpp">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\thread.hpp">
       <Filter>Header Files\objects</Filter>
     </ClInclude>
   </ItemGroup>
