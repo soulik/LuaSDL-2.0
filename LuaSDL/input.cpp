@@ -14,7 +14,7 @@ namespace LuaSDL {
 		int numkeys = 0;
 		if (state.is_number(2)){
 			int key = state.to_integer(2);
-			Uint8 * keys = SDL_GetKeyboardState(&numkeys);
+			const Uint8 * keys = SDL_GetKeyboardState(&numkeys);
 			if ((key >= 0) && (key < numkeys)){
 				state.push_boolean(keys[key] == 1);
 				return 1;

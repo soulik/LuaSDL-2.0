@@ -717,5 +717,12 @@ namespace LuaSDL{
 		state.set_field("AUDIO_PLAYING", SDL_AUDIO_PLAYING);
 		state.set_field("AUDIO_PAUSED", SDL_AUDIO_PAUSED);
 
+		//SDL_mixer INIT
+		state.set_field("MIX_INIT_FLAC", MIX_INIT_FLAC);
+		state.set_field("MIX_INIT_MOD", MIX_INIT_MOD);
+		state.set_field("MIX_INIT_MP3", MIX_INIT_MP3);
+		state.set_field("MIX_INIT_OGG", MIX_INIT_OGG);
+		state.set_field("MIX_INIT_FLUIDSYNTH", MIX_INIT_FLUIDSYNTH);
+		state.set_field("MIX_INIT_MODPLUG", MIX_INIT_MODPLUG);
 	}
 }

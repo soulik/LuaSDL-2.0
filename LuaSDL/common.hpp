@@ -18,7 +18,16 @@
 
 #include <lua.hpp>
 
+/* libSDL 2.0 */
 #include <SDL.h>
+#include <SDL_main.h>
+
+/* SDL Mixer 2.0 */
+#include <SDL_mixer.h>
+/* SDL Image 2.0 */
+#include <SDL_image.h>
+/* SDL TTF 2.0 */
+#include <SDL_ttf.h>
 
 namespace LuaSDL{
 	
@@ -48,6 +57,11 @@ namespace LuaSDL{
 	void init_audiospec(lutok::state & state, moduleDef & module);
 	void init_audiobuffer(lutok::state & state, moduleDef & module);
 	void init_thread(lutok::state & state, moduleDef & module);
+
+	//SDL_mixer
+	void init_sdl_mixer(moduleDef & module);
+	void init_mix_chunk(lutok::state & state, moduleDef & module);
+	void init_mix_music(lutok::state & state, moduleDef & module);
 }
 
 #endif

@@ -17,7 +17,7 @@ local function dprint(a, f)
 end
 
 local function initAudio()
-	--SDL.audioInit("disk");
+	SDL.audioInit("xaudio2");
 	print("drivers")
 	local t1 = SDL.getAudioDrivers()
 	dprint(t1, function(a,v)
@@ -180,7 +180,10 @@ local function main()
 	end
 end
 
-SDL.init()
+local ret = SDL.init()
+if not ret then
+    print(SDL.getError())
+end
 main()
 
 -- This is because of a bug in SDL_malloc/SDL_free on fake_buffer with Disk audio driver! There's something fishy going on SDL_CloseAudio.

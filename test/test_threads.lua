@@ -10,7 +10,7 @@ code1 = [[
 ]]  
 code2 = [[
 	while(1) do
-		--SDL.thread_send("a1","+")
+		SDL.thread_send("a1","+")
 	end
 ]]
 

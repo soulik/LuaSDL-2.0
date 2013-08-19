@@ -27,7 +27,13 @@ extern "C" LUA_API int luaopen_LuaSDL(void * current_state){
 	LuaSDL::init_audiobuffer(state, module);
 	LuaSDL::init_thread(state, module);
 
+	//SDL Mixer
+	LuaSDL::init_sdl_mixer(module);
+	LuaSDL::init_mix_chunk(state, module);
+	LuaSDL::init_mix_music(state, module);
+
     lutok::registerLib(state, "SDL", module);
 	LuaSDL::init_constants(state);
+	SDL_SetMainReady();
 	return 1;
  }

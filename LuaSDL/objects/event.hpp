@@ -275,11 +275,11 @@ namespace LuaSDL {
 		}
 
 		int inline LOBJECT_METHOD(getKeyboard_keysym_unicode, SDL_Event * event){
-			state.push_integer(event->key.keysym.unicode);
+			state.push_integer(event->key.keysym.unused);
 			return 1;
 		}
 		int inline LOBJECT_METHOD(setKeyboard_keysym_unicode, SDL_Event * event){
-			event->key.keysym.unicode = state.to_integer(1);
+			event->key.keysym.unused = state.to_integer(1);
 			return 0;
 		}
 

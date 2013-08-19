@@ -25,6 +25,9 @@
     <Filter Include="Header Files\lutok">
       <UniqueIdentifier>{4079434e-e5ac-43b8-89b0-0b000f34a1f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\additional">
+      <UniqueIdentifier>{7a7d7f54-1b4c-4d66-93a9-24770f2d2cb6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -123,6 +126,15 @@
     <ClCompile Include="objects\thread.cpp">
       <Filter>Source Files\objects</Filter>
     </ClCompile>
+    <ClCompile Include="sdl_mixer.cpp">
+      <Filter>Source Files\additional</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\mix_chunk.cpp">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\mix_music.cpp">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.hpp">
@@ -198,6 +210,12 @@
       <Filter>Header Files\objects</Filter>
     </ClInclude>
     <ClInclude Include="objects\thread.hpp">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\mix_chunk.hpp">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\mix_music.hpp">
       <Filter>Header Files\objects</Filter>
     </ClInclude>
   </ItemGroup>
