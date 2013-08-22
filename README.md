@@ -7,7 +7,10 @@ Dependencies
 ------------
 
 - lua 5.1.x or luajit 2.x.x (prefered)
-- libSDL 2.x.x
+- libSDL2 2.x.x
+- libSDL2_mixer 2.x.x
+- libSDL2_image 2.x.x
+- libSDL2_ttf 2.x.x
 - compiler with C++11 support
 
 Only MS Visual C++ 2012 project files are present at the moment.
@@ -25,12 +28,13 @@ What works
 
 ### VIDEO
 - Display and Window Management 53/66
-- 2D Accelerated Rendering 0/42
+- 2D Accelerated Rendering 42/42
 - Pixel Formats and Conversion Routines 7/14
 - Rectangle Functions 6/7
 - Surface Creation and Simple Drawing 22/33
-- Platform-specific Window Management 0/1
+- Platform-specific Window Management 1/1
 - Clipboard Handling 3/3
+- Events, timers
 
 ### INPUT EVENTS
 - Event Handling 8/18
@@ -45,11 +49,24 @@ What works
 ### AUDIO
 - Audio Device Management, Playing and Recording 14/27
 
+### SDL2_mixer
+- Everthing except loading functions with SDL_RWops
+
+### SDL2_image
+- Everthing except loading functions with SDL_RWops
+
+### SDL2_ttf
+- Everthing except loading functions with SDL_RWops
+
 Credits
 -------------
 
 This project makes a use of modified version of "Lutok - Lightweight C++ API for Lua" - available at: https://code.google.com/p/lutok/
 C++ Class wrapper "LObject" was inspired by "Luna Five" wrapper - available at: http://lua-users.org/wiki/LunaFive
+
+Stephane Peter and Ryan Gordon - SDL2_mixer
+Mattias Engdegård - SDL2_image
+Sam Lantinga - SDL2_mixer, SDL2_image, SDL2_ttf
 
 License
 -------------
