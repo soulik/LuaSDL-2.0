@@ -64,9 +64,9 @@ Credits
 This project makes a use of modified version of "Lutok - Lightweight C++ API for Lua" - available at: https://code.google.com/p/lutok/
 C++ Class wrapper "LObject" was inspired by "Luna Five" wrapper - available at: http://lua-users.org/wiki/LunaFive
 
-Stephane Peter and Ryan Gordon - SDL2_mixer
-Mattias Engdegård - SDL2_image
-Sam Lantinga - SDL2_mixer, SDL2_image, SDL2_ttf
+- Stephane Peter and Ryan Gordon - SDL2_mixer
+- Mattias Engdegård - SDL2_image
+- Sam Lantinga - SDL2_mixer, SDL2_image, SDL2_ttf
 
 License
 -------------
