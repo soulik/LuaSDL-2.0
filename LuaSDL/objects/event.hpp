@@ -146,6 +146,9 @@ namespace LuaSDL {
 				if (event->drop.file){
 					SDL_free(event->drop.file);
 				}
+				if (event->syswm.msg){
+					SDL_free(event->syswm.msg);
+				}
 			}
 			delete event;
 		}
@@ -904,14 +907,8 @@ namespace LuaSDL {
 			return 0;
 		}
 
-		int inline LOBJECT_METHOD(getSyswm_msg, SDL_Event * event){
-			//state.push_lightuserdata(event->syswm.msg);
-			return 0;
-		}
-		int inline LOBJECT_METHOD(setSyswm_msg, SDL_Event * event){
-			//event->syswm.msg = (void*)state.to_lightuserdata(1);
-			return 0;
-		}
+		int LOBJECT_METHOD(getSyswm_msg, SDL_Event * event);
+		int LOBJECT_METHOD(setSyswm_msg, SDL_Event * event);
 
 
 

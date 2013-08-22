@@ -7,7 +7,8 @@
 #include <map>
 
 #include <lua.hpp>
-#include <string> // For strlen
+#include <string>
+#include <tuple>
 #include <type_traits>
 
 #define LOBJECT_ADD_PROPERTY(CLASSNAME, TYPENAME, LUANAME, GETTER, SETTER) this->properties[(LUANAME)] = LObject<CLASSNAME, TYPENAME>::PropertyPair(&CLASSNAME::GETTER, &CLASSNAME::SETTER)
@@ -28,7 +29,7 @@ public:
 	typedef std::shared_ptr<T> typeSharedPtr;
 
 	typedef int (C::*Method) (lutok::state &, T);
-	typedef struct std::pair< C *, T> LObjectPair;
+	typedef std::tuple< C *, T, bool> LObjectTuple;
 	typedef struct std::pair< Method, Method > PropertyPair;
 
     typedef std::map< std::string, PropertyPair > PropertyType;
@@ -55,8 +56,8 @@ private:
 	PropertyCacheType PropertyCache;
 	MethodCacheType MethodCache;
 
-	LObjectPair * getObjPair(T obj){
-		return new LObjectPair(reinterpret_cast<C*>(this), obj);
+	LObjectTuple * getObjPair(T obj, bool managed){
+		return new LObjectTuple(reinterpret_cast<C*>(this), obj, managed);
 	}
 public:
 	static classWeakPtr getInstance(lutok::state & state){
@@ -79,11 +80,12 @@ public:
 */
     T check(int narg)
 	{
-		LObjectPair ** obj = state.check_userdata<LObjectPair *>(narg, className);
+		LObjectTuple ** obj = state.check_userdata<LObjectTuple *>(narg, className);
 		if ( obj 
+			//&& (std::is_class<std::get<1>(**obj)>::value == true)
 			//&& (std::is_class<(*obj)->second>::value == true)
 		){
-			return (*obj)->second;		// pointer to T object
+			return std::get<1>(**obj);		// pointer to T object
 		}else
 			return nullptr; // lightcheck returns nullptr if not found.
 	}
@@ -175,7 +177,7 @@ public:
 		return 0;
     }
 
-	void destructor(T obj){
+	void destructor(lutok::state & s, T obj){
     }
 
 /*
@@ -187,18 +189,28 @@ public:
   Description:
     Loads an instance of the class into the Lua stack, and provides you a pointer so you can modify it.
 */
-    void push(T obj){
+    void push(T obj, bool managed = true){
+		int top = state.get_top();
 		if (obj){
-			LObjectPair ** a = state.new_userdata<LObjectPair *>(); // Create userdata
-			*a = getObjPair(obj);
+			top = state.get_top(); //0
+			LObjectTuple ** a = state.new_userdata<LObjectTuple *>(); // Create userdata
+			top = state.get_top(); //1
+			*a = getObjPair(obj, managed);
 		
+			top = state.get_top(); //1
 			state.get_metatable(className);
+			top = state.get_top(); //2
+
+			const char * tt = state.type(-1);
 			if (state.is_nil()){
 				state.pop(1);
+				top = state.get_top(); //1
 				Register();
+				top = state.get_top(); //2
 			}
 		
 			state.set_metatable();
+			top = state.get_top(); //1
 		}
     }
 
@@ -216,8 +228,8 @@ public:
 			
 			int _index = s.to_integer();
 
-			LObjectPair ** obj = s.to_userdata<LObjectPair *>(1);
-			C * thisobj = (*obj)->first;
+			LObjectTuple ** obj = s.to_userdata<LObjectTuple *>(1);
+			C * thisobj = std::get<0>(**obj);
 			s.push_value(3);
 			
 			if( _index & ( 1 << 8 ) ){ // A func
@@ -232,8 +244,8 @@ public:
 			s.remove(1);		// Remove [key]
 			
 			const PropertyPair * fpairs = thisobj->PropertyCache[_index];
-			assert((*obj)->second);
-			return (thisobj->*(fpairs->first)) (s, (*obj)->second);
+			assert(std::get<1>(**obj));
+			return (thisobj->*(fpairs->first)) (s, std::get<1>(**obj));
 		}
 		
 		return 1;
@@ -254,8 +266,8 @@ public:
 			
 			int _index = s.to_integer();
 			
-			LObjectPair ** obj = s.to_userdata<LObjectPair *>(1);
-			C * thisobj = (*obj)->first;
+			LObjectTuple ** obj = s.to_userdata<LObjectTuple *>(1);
+			C * thisobj = std::get<0>(**obj);
 
 			if( !obj || !*obj ){
 				s.error("Internal error, no object given!");
@@ -274,8 +286,8 @@ public:
 			s.remove(1);		// Remove [key]
 
 			const PropertyPair * fpairs = thisobj->PropertyCache[_index];
-			assert((*obj)->second);
-			return (thisobj->*(fpairs->second)) (s, (*obj)->second);
+			assert(std::get<1>(**obj));
+			return (thisobj->*(fpairs->second)) (s, std::get<1>(**obj));
 		}
 		
 		return 0;
@@ -288,10 +300,10 @@ public:
 */
     static int function_dispatch(lutok::state & s) {
 		int i = s.to_integer(s.upvalue_index(1));
-		LObjectPair ** obj = s.to_userdata<LObjectPair *>(s.upvalue_index(2));
-		C * thisobj = (*obj)->first;
-		assert((*obj)->second);
-		return (thisobj->*(thisobj->MethodCache[i])) (s, (*obj)->second);
+		LObjectTuple ** obj = s.to_userdata<LObjectTuple *>(s.upvalue_index(2));
+		C * thisobj = std::get<0>(**obj);
+		assert(std::get<1>(**obj));
+		return (thisobj->*(thisobj->MethodCache[i])) (s, std::get<1>(**obj));
     }
 
 /*
@@ -300,24 +312,27 @@ public:
     * L - Lua State
 */
     static int gc_obj(lutok::state & s)	{
-		LObjectPair ** obj = s.to_userdata<LObjectPair *>();
+		LObjectTuple ** obj = s.to_userdata<LObjectTuple *>();
 		
-		if( obj && *obj ){
-			C * thisobj = (*obj)->first;
-			assert((*obj)->second);
-			thisobj->destructor((*obj)->second);
+		if( obj && *obj){
+			C * thisobj = std::get<0>(**obj);
+			//managed
+			if ( std::get<2>(**obj) ){
+				assert(std::get<1>(**obj));
+				thisobj->destructor(s, std::get<1>(**obj));
+			}
 			delete(*obj);
 		}
 		return 0;
     }
 	
 	static int to_string(lutok::state & s) {
-		LObjectPair ** obj = s.to_userdata<LObjectPair *>();
-		C * thisobj = (*obj)->first;
+		LObjectTuple ** obj = s.to_userdata<LObjectTuple *>();
+		C * thisobj = std::get<0>(**obj);
 		
 		if ( obj ) {
 			char c[128];
-			sprintf(c,"%s (%p)", thisobj->className.c_str(), (void*)(*obj)->second);
+			sprintf(c,"%s (%p)", thisobj->className.c_str(), (void*)std::get<2>(**obj));
 			s.push_string(c);
 		} else {
 			s.push_string("Empty object");

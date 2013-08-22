@@ -22,6 +22,16 @@ namespace LuaSDL {
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Gmask", getGmask, setGmask);	
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Bmask", getBmask, setBmask);	
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Amask", getAmask, setAmask);	
+
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Rloss", getRloss, setRloss);	
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Gloss", getGloss, setGloss);	
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Bloss", getBloss, setBloss);	
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Aloss", getAloss, setAloss);	
+
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Rshift", getRshift, setRshift);
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Gshift", getGshift, setGshift);
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Bshift", getBshift, setBshift);
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Ashift", getAshift, setAshift);
 		}
 
 		void destructor(lutok::state & s, SDL_PixelFormat * pixelformat){
@@ -120,7 +130,7 @@ namespace LuaSDL {
 		}
 
 		int inline LOBJECT_METHOD(setRmask, SDL_PixelFormat * format){
-			format->Rmask = state.to_integer(1);
+			format->Rmask = (Uint8)state.to_integer(1);
 			return 0;
 		}
 		int inline LOBJECT_METHOD(getGmask, SDL_PixelFormat * format){
@@ -129,7 +139,7 @@ namespace LuaSDL {
 		}
 
 		int inline LOBJECT_METHOD(setGmask, SDL_PixelFormat * format){
-			format->Gmask = state.to_integer(1);
+			format->Gmask = (Uint8)state.to_integer(1);
 			return 0;
 		}
 		int inline LOBJECT_METHOD(getBmask, SDL_PixelFormat * format){
@@ -138,7 +148,7 @@ namespace LuaSDL {
 		}
 
 		int inline LOBJECT_METHOD(setBmask, SDL_PixelFormat * format){
-			format->Bmask = state.to_integer(1);
+			format->Bmask = (Uint8)state.to_integer(1);
 			return 0;
 		}
 
@@ -147,7 +157,73 @@ namespace LuaSDL {
 			return 1;
 		}
 		int inline LOBJECT_METHOD(setAmask, SDL_PixelFormat * format){
-			format->Amask = state.to_integer(1);
+			format->Amask = (Uint8)state.to_integer(1);
+			return 0;
+		}
+
+		int inline LOBJECT_METHOD(getRloss, SDL_PixelFormat * format){
+			state.push_integer(format->Rloss);
+			return 1;
+		}
+		int inline LOBJECT_METHOD(setRloss, SDL_PixelFormat * format){
+			format->Rloss = (Uint8)state.to_integer(1);
+			return 0;
+		}
+		int inline LOBJECT_METHOD(getGloss, SDL_PixelFormat * format){
+			state.push_integer(format->Gloss);
+			return 1;
+		}
+		int inline LOBJECT_METHOD(setGloss, SDL_PixelFormat * format){
+			format->Gloss = (Uint8)state.to_integer(1);
+			return 0;
+		}
+		int inline LOBJECT_METHOD(getBloss, SDL_PixelFormat * format){
+			state.push_integer(format->Bloss);
+			return 1;
+		}
+		int inline LOBJECT_METHOD(setBloss, SDL_PixelFormat * format){
+			format->Bloss = (Uint8)state.to_integer(1);
+			return 0;
+		}
+		int inline LOBJECT_METHOD(getAloss, SDL_PixelFormat * format){
+			state.push_integer(format->Aloss);
+			return 1;
+		}
+		int inline LOBJECT_METHOD(setAloss, SDL_PixelFormat * format){
+			format->Aloss = (Uint8)state.to_integer(1);
+			return 0;
+		}
+
+		int inline LOBJECT_METHOD(getRshift, SDL_PixelFormat * format){
+			state.push_integer(format->Rshift);
+			return 1;
+		}
+		int inline LOBJECT_METHOD(setRshift, SDL_PixelFormat * format){
+			format->Rshift = (Uint8)state.to_integer(1);
+			return 0;
+		}
+		int inline LOBJECT_METHOD(getGshift, SDL_PixelFormat * format){
+			state.push_integer(format->Gshift);
+			return 1;
+		}
+		int inline LOBJECT_METHOD(setGshift, SDL_PixelFormat * format){
+			format->Gshift = (Uint8)state.to_integer(1);
+			return 0;
+		}
+		int inline LOBJECT_METHOD(getBshift, SDL_PixelFormat * format){
+			state.push_integer(format->Bshift);
+			return 1;
+		}
+		int inline LOBJECT_METHOD(setBshift, SDL_PixelFormat * format){
+			format->Bshift = (Uint8)state.to_integer(1);
+			return 0;
+		}
+		int inline LOBJECT_METHOD(getAshift, SDL_PixelFormat * format){
+			state.push_integer(format->Ashift);
+			return 1;
+		}
+		int inline LOBJECT_METHOD(setAshift, SDL_PixelFormat * format){
+			format->Ashift = (Uint8)state.to_integer(1);
 			return 0;
 		}
 	};

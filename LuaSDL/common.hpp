@@ -39,6 +39,8 @@ namespace LuaSDL{
 	void init_timers(moduleDef & module);
 	void init_audio(moduleDef & module);
 	void init_constants(lutok::state &);
+	void init_power(moduleDef & module);
+	void init_platform(moduleDef & module);
 
 	//objects
 	void init_window(lutok::state &, moduleDef & module);
@@ -57,11 +59,24 @@ namespace LuaSDL{
 	void init_audiospec(lutok::state & state, moduleDef & module);
 	void init_audiobuffer(lutok::state & state, moduleDef & module);
 	void init_thread(lutok::state & state, moduleDef & module);
+	void init_renderer(lutok::state & state, moduleDef & module);
+	void init_texture(lutok::state & state, moduleDef & module);
 
 	//SDL_mixer
 	void init_sdl_mixer(moduleDef & module);
 	void init_mix_chunk(lutok::state & state, moduleDef & module);
 	void init_mix_music(lutok::state & state, moduleDef & module);
+
+	//SDL_image
+	void init_sdl_image(moduleDef & module);
+
+	//SDL_ttf
+	void init_sdl_ttf(moduleDef & module);
+	void init_ttf_font(lutok::state & state, moduleDef & module);
+
+	//SDL iconv
+	void init_iconv(lutok::state & state, moduleDef & module);
+
 }
 
 #endif

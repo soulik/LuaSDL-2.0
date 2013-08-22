@@ -27,7 +27,7 @@ namespace LuaSDL {
 			frequency = state.to_integer(1);
 		}
 		if (state.is_number(2)){
-			format = state.to_integer(2);
+			format = static_cast<Uint16>(state.to_integer(2));
 		}
 		if (state.is_number(3)){
 			channels  = state.to_integer(3);
@@ -301,10 +301,10 @@ namespace LuaSDL {
 			channel = state.to_integer(1);
 		}
 		if (state.is_number(2)){
-			left = state.to_integer(2);
+			left = static_cast<Uint8>(state.to_integer(2));
 		}
 		if (state.is_number(3)){
-			right = state.to_integer(3);
+			right = static_cast<Uint8>(state.to_integer(3));
 		}
 		int result = Mix_SetPanning(channel, left, right);
 		state.push_boolean(result != 0);
@@ -318,7 +318,7 @@ namespace LuaSDL {
 			channel = state.to_integer(1);
 		}
 		if (state.is_number(2)){
-			distance = state.to_integer(2);
+			distance = static_cast<Uint8>(state.to_integer(2));
 		}
 		int result = Mix_SetDistance(channel, distance);
 		state.push_boolean(result != 0);
@@ -333,10 +333,10 @@ namespace LuaSDL {
 			channel = state.to_integer(1);
 		}
 		if (state.is_number(2)){
-			angle = state.to_integer(2);
+			angle = static_cast<Uint16>(state.to_integer(2));
 		}
 		if (state.is_number(3)){
-			distance = state.to_integer(3);
+			distance = static_cast<Uint8>(state.to_integer(3));
 		}
 		int result = Mix_SetPosition(channel, angle, distance);
 		state.push_boolean(result != 0);

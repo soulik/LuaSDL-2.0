@@ -162,6 +162,29 @@ call_cxx_function_from_c(lutok::cxx_function function,
     return luaL_error(raw_state, "%s", error_buf);
 }
 
+static int
+	call_cxx_function_from_c_ex(lutok::cxx_function_ex function,
+	lua_State* raw_state, void * arg) throw()
+{
+	char error_buf[1024];
+
+	try {
+		lutok::state state = lutok::state_c_gate::connect(raw_state);
+		return function(arg);
+	} catch (const std::exception& e) {
+		std::strncpy(error_buf, e.what(), sizeof(error_buf));
+	} catch (...) {
+		std::strncpy(error_buf, "Unhandled exception in Lua C++ hook",
+			sizeof(error_buf));
+	}
+	error_buf[sizeof(error_buf) - 1] = '\0';
+	// We raise the Lua error from outside the try/catch context and we use
+	// a stack-based buffer to hold the message to ensure that we do not leak
+	// any C++ objects (and, as a likely result, memory) when Lua performs its
+	// longjmp.
+	return luaL_error(raw_state, "%s", error_buf);
+}
+
 
 /// Lua glue to call a C++ closure.
 ///
@@ -204,16 +227,27 @@ cxx_closure_trampoline(lua_State* raw_state)
 ///
 /// \return The number of return values of the called function.
 static int
-cxx_function_trampoline(lua_State* raw_state)
+	cxx_function_trampoline(lua_State* raw_state)
 {
-    lutok::state state = lutok::state_c_gate::connect(raw_state);
-    lutok::cxx_function* function = state.to_userdata< lutok::cxx_function >(
-        state.upvalue_index(1));
-    return call_cxx_function_from_c(*function, raw_state);
+	lutok::state state = lutok::state_c_gate::connect(raw_state);
+	lutok::cxx_function* function = state.to_userdata< lutok::cxx_function >(
+		state.upvalue_index(1));
+	return call_cxx_function_from_c(*function, raw_state);
 }
 
 
 }  // anonymous namespace
+
+static int
+	cxx_function_trampoline_ex(lua_State* raw_state)
+{
+	lutok::state state = lutok::state_c_gate::connect(raw_state);
+	lutok::cxx_function_ex_holder * holder = state.to_userdata< lutok::cxx_function_ex_holder >(
+		state.upvalue_index(1));
+	lutok::cxx_function_ex function = holder->function;
+	void * arg = holder->arg;
+	return call_cxx_function_from_c_ex(function, raw_state, arg);
+}
 
 
 const int lutok::globals_index = LUA_GLOBALSINDEX;
@@ -245,10 +279,19 @@ struct lutok::state::impl {
 /// session.  As soon as the object is destroyed, the session is terminated.
 lutok::state::state(void)
 {
-    lua_State* lua = lua_open();
-    if (lua == NULL)
-        throw lutok::error("lua open failed");
-    _pimpl.reset(new impl(lua, true));
+    _pimpl.reset(new impl(NULL, true));
+}
+
+/// Initializes the Lua state.
+///
+/// You must share the same state object alongside the lifetime of your Lua
+/// session.  As soon as the object is destroyed, the session is terminated.
+void lutok::state::new_state(void)
+{
+	lua_State* lua = lua_open();
+	if (lua == NULL)
+		throw lutok::error("lua open failed");
+	_pimpl.reset(new impl(lua, true));
 }
 
 
@@ -275,6 +318,12 @@ lutok::state::~state(void)
         close();
 }
 
+
+lutok::state & lutok::state::operator= (lutok::state & arg) {
+	//_pimpl = new impl(reinterpret_cast< lua_State* >(arg._pimpl.), false);
+	_pimpl = arg._pimpl;
+	return *this;
+}
 
 /// Terminates this Lua session.
 ///
@@ -971,6 +1020,15 @@ void lutok::state::error(const std::string& text){
 	luaL_error(_pimpl->lua_state, "%s", text.c_str());
 }
 
+void lutok::state::error(const char * fmt, ...){
+	char buffer[1024];
+	va_list args;
+	va_start (args, fmt);
+	vsprintf (buffer,fmt, args);
+	luaL_error(_pimpl->lua_state, "%s", buffer);
+	va_end (args);
+}
+
 void* lutok::state::check_userdata_voidp(const int narg, const std::string& name){
 	return luaL_checkudata(_pimpl->lua_state, narg, name.c_str());
 }
@@ -988,3 +1046,51 @@ const void* lutok::state::to_lightuserdata(const int index){
 	return lua_touserdata(_pimpl->lua_state, index);
 }
 
+int lutok::state::ref(){
+	return luaL_ref(_pimpl->lua_state, LUA_REGISTRYINDEX);
+}
+
+int lutok::state::ref(const int index){
+	return luaL_ref(_pimpl->lua_state, index);
+}
+
+void lutok::state::unref(const int t, const int index){
+	luaL_unref(_pimpl->lua_state, t, index);
+}
+
+void lutok::state::unref(const int index){
+	luaL_unref(_pimpl->lua_state, LUA_REGISTRYINDEX, index);
+}
+
+void lutok::state::raw_geti(const int tindex, const int index)
+{
+    lua_rawgeti(_pimpl->lua_state, tindex, index);
+}
+
+const size_t lutok::state::obj_len(const int index)
+{
+	return lua_objlen(_pimpl->lua_state, index);
+}
+
+lutok::state * lutok::state::newState(){
+	return new lutok::state(luaL_newstate());
+}
+void lutok::state::openLibs(){
+	luaL_openlibs(_pimpl->lua_state);
+}
+void lutok::state::cpcall(cxx_function_ex function, void * arg){
+	cxx_function_ex_holder *data = static_cast< cxx_function_ex_holder* >(
+		lua_newuserdata(_pimpl->lua_state, sizeof(cxx_function_ex_holder)));
+	
+	data->function = function;
+	data->arg = arg;
+	lua_cpcall(_pimpl->lua_state, cxx_function_trampoline_ex, data);
+}
+
+void lutok::state::set_top(int i){
+	lua_settop(_pimpl->lua_state, i);
+}
+
+const char * lutok::state::type(int i){
+	return lua_typename(_pimpl->lua_state, lua_type(_pimpl->lua_state, i));
+}

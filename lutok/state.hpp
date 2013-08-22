@@ -52,6 +52,12 @@ class state;
 /// propagate into the Lua C API.  However, any such exceptions will be reported
 /// as a Lua error and their type will be lost.
 typedef int (*cxx_function)(state&);
+typedef int (*cxx_function_ex)(void *);
+
+struct  cxx_function_ex_holder {
+	cxx_function_ex function;
+	void * arg;
+};
 
 
 /// Stack index constant pointing to the globals table (_G).
@@ -92,6 +98,9 @@ public:
     explicit state(void*);
     ~state(void);
 
+	state & operator= (state & arg);
+
+	void new_state();
     void close(void);
     void get_global(const std::string&);
     bool get_metafield(const int, const std::string&);
@@ -156,8 +165,21 @@ public:
 	template< typename Type > Type* check_userdata(const int, const std::string&);
 	void * getLuaState();
 	void error(const std::string&);
+	void error(const char * fmt, ...);
 	void push_fstring(const char * fmt, ...);
     const void* to_lightuserdata(const int);
+	int ref();
+	int ref(const int);
+	void unref(const int, const int);
+	void unref(const int);
+	void raw_geti(const int, const int);
+	const size_t obj_len(const int);
+
+	lutok::state * newState();
+	void openLibs();
+	void cpcall(cxx_function_ex, void *);
+	void set_top(int);
+	const char * type(int);
 };
 
 

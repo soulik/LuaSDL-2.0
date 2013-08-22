@@ -2,6 +2,8 @@
 #include "objects/rect.hpp"
 #include "objects/cursor.hpp"
 #include "objects/pixelformat.hpp"
+#include "objects/renderer.hpp"
+
 #include <lua.hpp>
 
 static int lua_SDL_CreateRGBSurface(lutok::state& state){
@@ -91,8 +93,11 @@ int LuaSDL::Lua_SDL_Surface::LOBJECT_METHOD(convert, SDL_Surface * surface){
 
 int LuaSDL::Lua_SDL_Surface::LOBJECT_METHOD(fillRect, SDL_Surface * surface){
 	LuaSDL::Lua_SDL_Rect * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
-
-	state.push_boolean(SDL_FillRect(surface, r->check(1), state.to_integer(2)) == 0);
+	if (state.is_nil(1)){
+		state.push_boolean(SDL_FillRect(surface, NULL, state.to_integer(2)) == 0);
+	}else{
+		state.push_boolean(SDL_FillRect(surface, r->check(1), state.to_integer(2)) == 0);
+	}
 	return 1;
 }
 
@@ -169,6 +174,18 @@ int LuaSDL::Lua_SDL_Surface::LOBJECT_METHOD(createColorCursor, SDL_Surface * sur
 			state.to_integer(1),
 			state.to_integer(2)));
 	return 1;
+}
+
+int LuaSDL::Lua_SDL_Surface::LOBJECT_METHOD(createSoftwareRenderer, SDL_Surface * surface){
+	LuaSDL::Lua_SDL_Renderer * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Renderer);
+
+	SDL_Renderer * renderer = SDL_CreateSoftwareRenderer(surface);
+	if (renderer){
+		r->push(renderer);
+		return 1;
+	}else{
+		return 0;
+	}
 }
 
 void LuaSDL::init_surface(lutok::state & state, moduleDef & module){

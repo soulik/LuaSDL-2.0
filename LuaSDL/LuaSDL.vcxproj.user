@@ -7,9 +7,9 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LocalDebuggerWorkingDirectory>..\Debug</LocalDebuggerWorkingDirectory>
+    <LocalDebuggerWorkingDirectory>C:\projects\gclient2</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommand>C:\Users\Soulik\Documents\Visual Studio 2012\Projects\LuaSDL\Debug\luajit.exe</LocalDebuggerCommand>
-    <LocalDebuggerCommandArguments>test_mixer.lua</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommand>C:\projects\gclient2\lib\external\platform-specific\Windows\x86\luajit.exe</LocalDebuggerCommand>
+    <LocalDebuggerCommandArguments>.\lib\init.lua</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

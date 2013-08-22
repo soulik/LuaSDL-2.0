@@ -135,6 +135,24 @@
     <ClCompile Include="objects\mix_music.cpp">
       <Filter>Source Files\objects</Filter>
     </ClCompile>
+    <ClCompile Include="sdl_image.cpp">
+      <Filter>Source Files\additional</Filter>
+    </ClCompile>
+    <ClCompile Include="sdl_ttf.cpp">
+      <Filter>Source Files\additional</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\ttf_font.cpp">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\iconv.cpp">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\renderer.cpp">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\texture.cpp">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.hpp">
@@ -216,6 +234,18 @@
       <Filter>Header Files\objects</Filter>
     </ClInclude>
     <ClInclude Include="objects\mix_music.hpp">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\ttf_font.hpp">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\iconv.hpp">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\renderer.hpp">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\texture.hpp">
       <Filter>Header Files\objects</Filter>
     </ClInclude>
   </ItemGroup>

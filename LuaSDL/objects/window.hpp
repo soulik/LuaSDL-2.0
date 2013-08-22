@@ -8,6 +8,7 @@ namespace LuaSDL {
 	class Lua_SDL_Window : public LObject<Lua_SDL_Window, SDL_Window*> {
 	public:
 		LOBJECT_DEFINE_CLASS(Lua_SDL_Window, SDL_Window*, "Window") {
+			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Window, "createRenderer", createRenderer);
 			
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Window, "GL_createContext", GLcreateContext);
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Window, "GL_swap", GLswapWindow);
@@ -38,15 +39,21 @@ namespace LuaSDL {
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Window, SDL_Window*, "data", getWindowData, setWindowData);
 			
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Window, SDL_Window*, "gammaRamp", null_method, null_method);
-			
+
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Window, SDL_Window*, "renderer", getRenderer, null_method);
+
 		}
 
 		void destructor(lutok::state & s, SDL_Window* window);
+
+		int LOBJECT_METHOD(createRenderer, SDL_Window*);
 
 		int LOBJECT_METHOD(GLcreateContext, SDL_Window*);
 		int LOBJECT_METHOD(GLswapWindow, SDL_Window*);
 		int LOBJECT_METHOD(GLmakeCurrent, SDL_Window*);
 		int LOBJECT_METHOD(setDisplayMode, SDL_Window*);
+
+		int LOBJECT_METHOD(getRenderer, SDL_Window*);
 
 		int inline LOBJECT_METHOD(setFullScreen,SDL_Window * window){
 			state.push_boolean(SDL_SetWindowFullscreen(window, state.to_boolean(1)) == 0);

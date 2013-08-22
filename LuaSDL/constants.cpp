@@ -11,6 +11,14 @@ namespace LuaSDL{
 		state.set_field("INIT_NOPARACHUTE",				SDL_INIT_NOPARACHUTE);
 		state.set_field("INIT_EVERYTHING",				SDL_INIT_EVERYTHING);
 
+		//SDL_PowerState
+		state.set_field("POWERSTATE_UNKNOWN",		SDL_POWERSTATE_UNKNOWN);
+		state.set_field("POWERSTATE_ON_BATTERY",	SDL_POWERSTATE_ON_BATTERY);
+		state.set_field("POWERSTATE_NO_BATTERY",	SDL_POWERSTATE_NO_BATTERY);
+		state.set_field("POWERSTATE_CHARGING",		SDL_POWERSTATE_CHARGING);
+		state.set_field("POWERSTATE_CHARGED",		SDL_POWERSTATE_CHARGED);
+	
+
 		//SDL_WindowFlags
 		state.set_field("WINDOW_FULLSCREEN",			SDL_WINDOW_FULLSCREEN);
 		state.set_field("WINDOW_OPENGL",				SDL_WINDOW_OPENGL);
@@ -83,6 +91,32 @@ namespace LuaSDL{
 		state.set_field("PIXELFORMAT_YUY2",				SDL_PIXELFORMAT_YUY2);
 		state.set_field("PIXELFORMAT_UYVY",				SDL_PIXELFORMAT_UYVY);
 		state.set_field("PIXELFORMAT_YVYU",				SDL_PIXELFORMAT_YVYU);
+
+		//SDL_RendererFlags
+		state.set_field("RENDERER_SOFTWARE",			SDL_RENDERER_SOFTWARE);
+		state.set_field("RENDERER_ACCELERATED",			SDL_RENDERER_ACCELERATED);
+		state.set_field("RENDERER_PRESENTVSYNC",		SDL_RENDERER_PRESENTVSYNC);
+		state.set_field("RENDERER_TARGETTEXTURE",		SDL_RENDERER_TARGETTEXTURE);
+
+		//SDL_TextureAccess
+		state.set_field("TEXTUREACCESS_STATIC",			SDL_TEXTUREACCESS_STATIC);
+		state.set_field("TEXTUREACCESS_STREAMING",		SDL_TEXTUREACCESS_STREAMING);
+
+		//SDL_TextureModulate
+		state.set_field("TEXTUREMODULATE_NONE",			SDL_TEXTUREMODULATE_NONE);
+		state.set_field("TEXTUREMODULATE_COLOR",		SDL_TEXTUREMODULATE_COLOR);
+		state.set_field("TEXTUREMODULATE_ALPHA",		SDL_TEXTUREMODULATE_ALPHA);
+
+		//SDL_BlendMode
+		state.set_field("BLENDMODE_NONE",				SDL_BLENDMODE_NONE);
+		state.set_field("BLENDMODE_BLEND",				SDL_BLENDMODE_BLEND);
+		state.set_field("BLENDMODE_ADD",				SDL_BLENDMODE_ADD);
+		state.set_field("BLENDMODE_MOD",				SDL_BLENDMODE_MOD);
+
+		//SDL_RendererFlip
+		state.set_field("FLIP_NONE",					SDL_FLIP_NONE);
+		state.set_field("FLIP_HORIZONTAL",				SDL_FLIP_HORIZONTAL);
+		state.set_field("FLIP_VERTICAL",				SDL_FLIP_VERTICAL);
 
 		//SDL_GLattr
 		state.set_field("GL_RED_SIZE",					SDL_GL_RED_SIZE);
@@ -724,5 +758,25 @@ namespace LuaSDL{
 		state.set_field("MIX_INIT_OGG", MIX_INIT_OGG);
 		state.set_field("MIX_INIT_FLUIDSYNTH", MIX_INIT_FLUIDSYNTH);
 		state.set_field("MIX_INIT_MODPLUG", MIX_INIT_MODPLUG);
+
+		//SDL_image INIT
+		state.set_field("IMG_INIT_JPG", IMG_INIT_JPG);
+		state.set_field("IMG_INIT_PNG", IMG_INIT_PNG);
+		state.set_field("IMG_INIT_TIF", IMG_INIT_TIF);
+		state.set_field("IMG_INIT_WEBP", IMG_INIT_WEBP);
+
+		//SDL_ttf
+		state.set_field("TTF_STYLE_BOLD", TTF_STYLE_BOLD);
+		state.set_field("TTF_STYLE_ITALIC", TTF_STYLE_ITALIC);
+		state.set_field("TTF_STYLE_UNDERLINE", TTF_STYLE_UNDERLINE);
+		state.set_field("TTF_STYLE_STRIKETHROUGH", TTF_STYLE_STRIKETHROUGH);
+		state.set_field("TTF_STYLE_NORMAL", TTF_STYLE_NORMAL);
+
+		state.set_field("TTF_HINTING_NORMAL", TTF_HINTING_NORMAL);
+		state.set_field("TTF_HINTING_LIGHT", TTF_HINTING_LIGHT);
+		state.set_field("TTF_HINTING_MONO", TTF_HINTING_MONO);
+		state.set_field("TTF_HINTING_NONE", TTF_HINTING_NONE);
+
+		
 	}
 }

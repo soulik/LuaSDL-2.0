@@ -8,6 +8,7 @@ namespace LuaSDL {
 	class Lua_SDL_Surface : public LObject<Lua_SDL_Surface, SDL_Surface*> {
 	public:
 		LOBJECT_DEFINE_CLASS(Lua_SDL_Surface, SDL_Surface*, "Surface") {
+			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "createSoftwareRenderer", createSoftwareRenderer);
 			
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "blit", blit);
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "lowerBlit", lowerBlit);
@@ -40,6 +41,8 @@ namespace LuaSDL {
 		void destructor(lutok::state & s, SDL_Surface* surface){
 			SDL_FreeSurface(surface);
 		}
+
+		int LOBJECT_METHOD(createSoftwareRenderer, SDL_Surface * surface);
 
 		int LOBJECT_METHOD(blit, SDL_Surface * surface);
 		int LOBJECT_METHOD(lowerBlit, SDL_Surface * surface);
