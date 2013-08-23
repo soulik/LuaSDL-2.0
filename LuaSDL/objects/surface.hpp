@@ -31,7 +31,7 @@ namespace LuaSDL {
 
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "colorKey", getColorKey, setColorKey);	
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "alphaMod", getAlphaMod, setAlphaMod);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "blendMod", getBlendMod, setBlendMod);	
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "blendMode", getBlendMode, setBlendMode);	
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "colorMod", getColorMod, setColorMod);	
 
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "RLE", null_method, setRLE);	
@@ -137,7 +137,7 @@ namespace LuaSDL {
 			SDL_SetSurfaceAlphaMod(surface, (Uint8) state.to_integer(1));
 			return 0;
 		}
-		int inline LOBJECT_METHOD(getBlendMod, SDL_Surface * surface){
+		int inline LOBJECT_METHOD(getBlendMode, SDL_Surface * surface){
 			SDL_BlendMode blendMode;
 			if (SDL_GetSurfaceBlendMode(surface, &blendMode) == 0){
 				state.push_integer((int)blendMode);
@@ -146,7 +146,7 @@ namespace LuaSDL {
 				return 0;
 			}
 		}
-		int inline LOBJECT_METHOD(setBlendMod, SDL_Surface * surface){
+		int inline LOBJECT_METHOD(setBlendMode, SDL_Surface * surface){
 			SDL_SetSurfaceBlendMode(surface, (SDL_BlendMode) state.to_integer(1));
 			return 0;
 		}

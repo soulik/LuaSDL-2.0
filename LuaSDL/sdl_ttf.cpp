@@ -5,8 +5,7 @@
 namespace LuaSDL {
 
 	static int lua_TTF_Init(lutok::state& state){
-		int result = TTF_Init();
-		state.push_integer(result);
+		state.push_boolean(TTF_Init() == 0);
 		return 1;
 	}
 	static int lua_TTF_Quit(lutok::state& state){

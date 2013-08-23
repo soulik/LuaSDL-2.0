@@ -1,4 +1,5 @@
 ﻿#include "common.hpp"
+#include "objects/window.hpp"
 #include <exception>
 
 namespace LuaSDL {
@@ -120,6 +121,99 @@ namespace LuaSDL {
 		return 1;
 	}
 
+	static int lua_SDL_ShowSimpleMessageBox(lutok::state& state){
+		if (state.is_number(1) && state.is_string(2) && state.is_string(3)){
+			SDL_Window * window = NULL;
+			if (!state.is_nil(4)){
+				LuaSDL::Lua_SDL_Window * w = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
+				window = w->check(4);
+			}
+			state.push_boolean(SDL_ShowSimpleMessageBox(state.to_integer(1), state.to_string(2).c_str(), state.to_string(3).c_str(), window) == 0);
+			return 1;
+		}else{
+			return 0;
+		}
+	}
+	static int lua_SDL_ShowMessageBox(lutok::state& state){
+		if (state.is_number(1) && state.is_string(2) && state.is_string(3)){
+			SDL_MessageBoxData data;
+			SDL_MessageBoxColorScheme colorScheme;
+			SDL_MessageBoxButtonData * buttons=NULL;
+			int button_id=0;
+			
+			if (!state.is_nil(4)){
+				LuaSDL::Lua_SDL_Window * w = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
+				data.window = w->check(4);
+			}else{
+				data.window = NULL;
+			}
+			data.flags = state.to_integer(1);
+			data.title = state.to_string(2).c_str();
+			data.message = state.to_string(3).c_str();
+			
+			if (state.is_table(5)){
+				int count = state.obj_len(5);
+				int realCount = 0;
+				buttons = new SDL_MessageBoxButtonData[count];
+
+				for (int i=0; i<count; i++){
+					state.push_integer(i+1);
+					state.get_table(5);
+					if (state.is_table()){
+						state.get_field(-1, "flags");
+						buttons[i].flags = state.to_integer(-1);
+						state.get_field(-2, "id");
+						buttons[i].buttonid = state.to_integer(-1);
+						state.get_field(-3, "id");
+						buttons[i].text = state.to_string(-1).c_str();
+						state.pop(4);
+						realCount++;
+					}else{
+						state.pop(1);
+					}
+				}
+				data.buttons = buttons;
+				data.numbuttons = realCount;
+			}else{
+				data.buttons = NULL;
+				data.numbuttons = 0;
+			}
+
+			if (state.is_table(6)){
+				int count = state.obj_len(6);
+				if (count > SDL_MESSAGEBOX_COLOR_MAX) count = SDL_MESSAGEBOX_COLOR_MAX;
+				int realCount = 0;
+				for (int i=0; i<count; i++){
+					state.push_integer(i+1);
+					state.get_table(6);
+					if (state.is_table()){
+						state.get_field(-1, "r");
+						colorScheme.colors[realCount].r = (Uint8)state.to_integer(-1);
+						state.get_field(-2, "g");
+						colorScheme.colors[realCount].g = (Uint8)state.to_integer(-1);
+						state.get_field(-3, "g");
+						colorScheme.colors[realCount].b = (Uint8)state.to_integer(-1);
+						state.pop(4);
+						realCount++;
+					}else{
+						state.pop(1);
+					}
+				}
+				data.colorScheme = &colorScheme;
+			}else{
+				data.colorScheme = NULL;
+			}
+
+			state.push_boolean(SDL_ShowMessageBox(&data, &button_id) == 0);
+
+			delete[] data.buttons;
+			state.push_integer(button_id);
+			return 1;
+		}else{
+			return 0;
+		}
+	}
+
 	void init_basic(moduleDef & module){
 		module["init"] = lua_SDL_Init;
 		module["initSubsystem"] = lua_SDL_InitSubSystem;
@@ -139,6 +233,9 @@ namespace LuaSDL {
 		module["logSetAllPriority"] = lua_SDL_LogSetAllPriority;
 		module["LogSetPriority"] = lua_SDL_LogSetPriority;
 		module["getVersion"] = lua_SDL_GetVersion;
+		module["showSimpleMessageBox"] = lua_SDL_ShowSimpleMessageBox;
+		module["showMessageBox"] = lua_SDL_ShowMessageBox;
+		
 	}
 
 }
