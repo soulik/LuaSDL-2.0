@@ -2,10 +2,10 @@
 #include <lua.hpp>
 
 static int lua_SDL_GameControllerOpen(lutok::state& state){
-	LuaSDL::Lua_SDL_GameController * c = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_GameController);
+	LuaSDL::Lua_SDL_GameController & c = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_GameController);
 	SDL_GameController * gamecontroller = SDL_GameControllerOpen(state.to_integer(1));
 	if (gamecontroller){
-		c->push(gamecontroller);
+		c.push(gamecontroller);
 		return 1;
 	}else{
 		return 0;

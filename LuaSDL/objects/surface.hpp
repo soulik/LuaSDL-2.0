@@ -20,6 +20,9 @@ namespace LuaSDL {
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "lock", lock);
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "unlock", unlock);
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "createColorCursor", createColorCursor);
+			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "rawPixels", getRawPixels);
+			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "setRawPixels8", setRawPixels8);
+			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Surface, "setRawPixels32", setRawPixels32);
 
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "format", getFormat, null_method);	
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Surface, SDL_Surface*, "w", getW, null_method);	
@@ -51,17 +54,26 @@ namespace LuaSDL {
 		int LOBJECT_METHOD(convert, SDL_Surface * surface);
 
 		int LOBJECT_METHOD(convertFormat, SDL_Surface * surface){
-			Lua_SDL_Surface * s = LOBJECT_INSTANCE(Lua_SDL_Surface);
+			Lua_SDL_Surface & s = LOBJECT_INSTANCE(Lua_SDL_Surface);
+			Uint32 flags;
+			if (state.is_number(2)){
+				flags = state.to_integer(2);
+			}else{
+				flags = 0;
+			}
 
-			SDL_Surface * new_surface = SDL_ConvertSurfaceFormat(surface, state.to_integer(1), state.to_integer(2));
+			SDL_Surface * new_surface = SDL_ConvertSurfaceFormat(surface, state.to_integer(1), flags);
 			if (new_surface){
-				s->push(new_surface);
+				s.push(new_surface);
 				return 1;
 			}else{
 				return 0;
 			}
 		}
 
+		int LOBJECT_METHOD(getRawPixels, SDL_Surface * surface);
+		int LOBJECT_METHOD(setRawPixels8, SDL_Surface * surface);
+		int LOBJECT_METHOD(setRawPixels32, SDL_Surface * surface);
 		int LOBJECT_METHOD(fillRect, SDL_Surface * surface);
 		int LOBJECT_METHOD(getClipRect, SDL_Surface * surface);
 		int LOBJECT_METHOD(setClipRect, SDL_Surface * surface);

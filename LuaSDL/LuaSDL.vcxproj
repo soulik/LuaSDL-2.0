@@ -41,6 +41,7 @@
     <Import Project="..\..\libSDL_image - Debug.props" />
     <Import Project="..\..\libSDL_ttf - Debug.props" />
     <Import Project="..\..\local.props" />
+    <Import Project="..\..\lutok - Debug.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -51,6 +52,7 @@
     <Import Project="..\..\libSDL_image - Release.props" />
     <Import Project="..\..\libSDL_ttf - Release.props" />
     <Import Project="..\..\local.props" />
+    <Import Project="..\..\lutok - Release.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -94,12 +96,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\c_gate.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\debug.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\exceptions.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\operations.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\stack_cleaner.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\state.cpp" />
     <ClCompile Include="audio.cpp" />
     <ClCompile Include="basics.cpp" />
     <ClCompile Include="constants.cpp" />
@@ -134,18 +130,10 @@
     <ClCompile Include="sdl_ttf.cpp" />
     <ClCompile Include="threads.cpp" />
     <ClCompile Include="timers.cpp" />
+    <ClCompile Include="utils.cpp" />
     <ClCompile Include="video.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\c_gate.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\debug.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\exceptions.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\export.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\lobject.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\luna.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\operations.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\stack_cleaner.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\state.hpp" />
     <ClInclude Include="common.hpp" />
     <ClInclude Include="objects\audiobuffer.hpp" />
     <ClInclude Include="objects\audiodevice.hpp" />
@@ -168,6 +156,7 @@
     <ClInclude Include="objects\timer.hpp" />
     <ClInclude Include="objects\ttf_font.hpp" />
     <ClInclude Include="objects\window.hpp" />
+    <ClInclude Include="utils.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -13,7 +13,7 @@ namespace LuaSDL {
 		return 0;
 	}
 	static int lua_TTF_OpenFont(lutok::state& state){
-		LuaSDL::Lua_SDL_TTF_Font * f = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_TTF_Font);
+		LuaSDL::Lua_SDL_TTF_Font & f = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_TTF_Font);
 		if (state.is_string(1) && state.is_number(2)){
 			TTF_Font * font = NULL;
 			
@@ -23,7 +23,7 @@ namespace LuaSDL {
 				font = TTF_OpenFont(state.to_string(1).c_str(), state.to_integer(2));
 			}
 			if (font){
-				f->push(font);
+				f.push(font);
 			}else{
 				state.push_boolean(false);
 			}

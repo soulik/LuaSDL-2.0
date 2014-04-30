@@ -1,4 +1,4 @@
-#include "common.hpp"
+	#include "common.hpp"
 
 extern "C" LUA_API int luaopen_LuaSDL(void * current_state){
 
@@ -19,6 +19,7 @@ extern "C" LUA_API int luaopen_LuaSDL(void * current_state){
 	LuaSDL::init_displaymode(state, module);
 	LuaSDL::init_surface(state, module);
 	LuaSDL::init_window(state, module);
+	LuaSDL::init_pixelformat(state, module);
 	LuaSDL::init_event(state, module);
 	LuaSDL::init_cursor(state, module);
 	LuaSDL::init_joystick(state, module);

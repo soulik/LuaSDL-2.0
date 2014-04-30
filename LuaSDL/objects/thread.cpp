@@ -121,7 +121,7 @@ static int ll_thread (void *arg) {
 		state->pcall(0,0,0);
 	}catch(lutok::api_error & error){
 		t_top = state->get_top();
-		const char * str = state->type(1);
+		const char * str = state->typeName(1);
 		fprintf(stderr, "thread error: %s", error.what());
 	}
 	SDL_DestroyCond(getself(state)->cond);

@@ -29,23 +29,23 @@ namespace LuaSDL {
 		}
 
 		int inline LOBJECT_METHOD(equals, SDL_Rect * rect){
-			LuaSDL::Lua_SDL_Rect * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
-			state.push_boolean(SDL_RectEquals(rect, r->check(1)) == SDL_TRUE);
+			LuaSDL::Lua_SDL_Rect & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
+			state.push_boolean(SDL_RectEquals(rect, r.check(1)) == SDL_TRUE);
 			return 1;
 		}
 
 		int inline LOBJECT_METHOD(hasIntersection, SDL_Rect * rect){
-			LuaSDL::Lua_SDL_Rect * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
-			state.push_boolean(SDL_HasIntersection(rect, r->check(1)) == SDL_TRUE);
+			LuaSDL::Lua_SDL_Rect & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
+			state.push_boolean(SDL_HasIntersection(rect, r.check(1)) == SDL_TRUE);
 			return 1;
 		}
 
 		int inline LOBJECT_METHOD(intersectWithRect, SDL_Rect * rect){
-			LuaSDL::Lua_SDL_Rect * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
+			LuaSDL::Lua_SDL_Rect & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
 			SDL_Rect * new_rect = new SDL_Rect;
 
-			if (SDL_IntersectRect(rect, r->check(1), new_rect) == SDL_TRUE){
-				r->push(new_rect);
+			if (SDL_IntersectRect(rect, r.check(1), new_rect) == SDL_TRUE){
+				r.push(new_rect);
 				return 1;
 			}else{
 				delete new_rect;
@@ -71,11 +71,11 @@ namespace LuaSDL {
 		}
 
 		int inline LOBJECT_METHOD(unionRect, SDL_Rect * rect){
-			LuaSDL::Lua_SDL_Rect * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
+			LuaSDL::Lua_SDL_Rect & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
 			SDL_Rect * new_rect = new SDL_Rect;
 
-			SDL_UnionRect(rect, r->check(1), new_rect);
-			r->push(new_rect);
+			SDL_UnionRect(rect, r.check(1), new_rect);
+			r.push(new_rect);
 			return 1;
 		}
 

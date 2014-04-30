@@ -30,13 +30,13 @@ namespace LuaSDL {
 }
 
 int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderSolid, TTF_Font * font){
-	LuaSDL::Lua_SDL_Surface * s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
+	LuaSDL::Lua_SDL_Surface & s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
 	if (state.is_string(1) && state.is_table(2)){
 		SDL_Color color;
 		LuaSDL::fillColor(state, 2, color);
 		SDL_Surface * surface = TTF_RenderText_Solid(font, state.to_string(1).c_str(), color);
 		if (surface){
-			s->push(surface);
+			s.push(surface);
 		}else{
 			state.push_boolean(false);
 		}
@@ -45,13 +45,13 @@ int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderSolid, TTF_Font * font){
 	return 0;
 }
 int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderSolidUTF8, TTF_Font * font){
-	LuaSDL::Lua_SDL_Surface * s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
+	LuaSDL::Lua_SDL_Surface & s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
 	if (state.is_string(1) && state.is_table(2)){
 		SDL_Color color;
 		LuaSDL::fillColor(state, 2, color);
 		SDL_Surface * surface = TTF_RenderUTF8_Solid(font, state.to_string(1).c_str(), color);
 		if (surface){
-			s->push(surface);
+			s.push(surface);
 		}else{
 			state.push_boolean(false);
 		}
@@ -60,13 +60,13 @@ int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderSolidUTF8, TTF_Font * font){
 	return 0;
 }
 int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderSolidUNICODE, TTF_Font * font){
-	LuaSDL::Lua_SDL_Surface * s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
+	LuaSDL::Lua_SDL_Surface & s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
 	if (state.is_string(1) && state.is_table(2)){
 		SDL_Color color;
 		LuaSDL::fillColor(state, 2, color);
 		SDL_Surface * surface = TTF_RenderUNICODE_Solid(font, reinterpret_cast<const Uint16*>(state.to_string(1).c_str()), color);
 		if (surface){
-			s->push(surface);
+			s.push(surface);
 		}else{
 			state.push_boolean(false);
 		}
@@ -75,13 +75,13 @@ int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderSolidUNICODE, TTF_Font * font
 	return 0;
 }
 int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderSolidGlyph, TTF_Font * font){
-	LuaSDL::Lua_SDL_Surface * s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
+	LuaSDL::Lua_SDL_Surface & s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
 	if (state.is_number(1) && state.is_table(2)){
 		SDL_Color color;
 		LuaSDL::fillColor(state, 2, color);
 		SDL_Surface * surface = TTF_RenderGlyph_Solid(font, static_cast<Uint16>(state.to_integer(1)), color);
 		if (surface){
-			s->push(surface);
+			s.push(surface);
 		}else{
 			state.push_boolean(false);
 		}
@@ -91,7 +91,7 @@ int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderSolidGlyph, TTF_Font * font){
 }
 
 int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderShaded, TTF_Font * font){
-	LuaSDL::Lua_SDL_Surface * s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
+	LuaSDL::Lua_SDL_Surface & s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
 	if (state.is_string(1) && state.is_table(2) && state.is_table(3)){
 		SDL_Color fg;
 		SDL_Color bg;
@@ -100,7 +100,7 @@ int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderShaded, TTF_Font * font){
 		LuaSDL::fillColor(state, 3, bg);
 		SDL_Surface * surface = TTF_RenderText_Shaded(font, state.to_string(1).c_str(), fg, bg);
 		if (surface){
-			s->push(surface);
+			s.push(surface);
 		}else{
 			state.push_boolean(false);
 		}
@@ -109,7 +109,7 @@ int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderShaded, TTF_Font * font){
 	return 0;
 }
 int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderShadedUTF8, TTF_Font * font){
-	LuaSDL::Lua_SDL_Surface * s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
+	LuaSDL::Lua_SDL_Surface & s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
 	if (state.is_string(1) && state.is_table(2) && state.is_table(3)){
 		SDL_Color fg;
 		SDL_Color bg;
@@ -119,7 +119,7 @@ int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderShadedUTF8, TTF_Font * font){
 
 		SDL_Surface * surface = TTF_RenderUTF8_Shaded(font, state.to_string(1).c_str(), fg, bg);
 		if (surface){
-			s->push(surface);
+			s.push(surface);
 		}else{
 			state.push_boolean(false);
 		}
@@ -128,7 +128,7 @@ int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderShadedUTF8, TTF_Font * font){
 	return 0;
 }
 int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderShadedUNICODE, TTF_Font * font){
-	LuaSDL::Lua_SDL_Surface * s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
+	LuaSDL::Lua_SDL_Surface & s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
 	if (state.is_string(1) && state.is_table(2) && state.is_table(3)){
 		SDL_Color fg;
 		SDL_Color bg;
@@ -137,7 +137,7 @@ int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderShadedUNICODE, TTF_Font * fon
 		LuaSDL::fillColor(state, 3, bg);
 		SDL_Surface * surface = TTF_RenderUNICODE_Shaded(font, reinterpret_cast<const Uint16*>(state.to_string(1).c_str()),  fg, bg);
 		if (surface){
-			s->push(surface);
+			s.push(surface);
 		}else{
 			state.push_boolean(false);
 		}
@@ -146,7 +146,7 @@ int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderShadedUNICODE, TTF_Font * fon
 	return 0;
 }
 int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderShadedGlyph, TTF_Font * font){
-	LuaSDL::Lua_SDL_Surface * s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
+	LuaSDL::Lua_SDL_Surface & s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
 	if (state.is_number(1) && state.is_table(2) && state.is_table(3)){
 		SDL_Color fg;
 		SDL_Color bg;
@@ -156,7 +156,7 @@ int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderShadedGlyph, TTF_Font * font)
 
 		SDL_Surface * surface = TTF_RenderGlyph_Shaded(font, static_cast<Uint16>(state.to_integer(1)),  fg, bg);
 		if (surface){
-			s->push(surface);
+			s.push(surface);
 		}else{
 			state.push_boolean(false);
 		}
@@ -166,13 +166,13 @@ int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderShadedGlyph, TTF_Font * font)
 }
 
 int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderBlended, TTF_Font * font){
-	LuaSDL::Lua_SDL_Surface * s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
+	LuaSDL::Lua_SDL_Surface & s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
 	if (state.is_string(1) && state.is_table(2)){
 		SDL_Color color;
 		LuaSDL::fillColor(state, 2, color);
 		SDL_Surface * surface = TTF_RenderText_Blended(font, state.to_string(1).c_str(), color);
 		if (surface){
-			s->push(surface);
+			s.push(surface);
 		}else{
 			state.push_boolean(false);
 		}
@@ -181,13 +181,13 @@ int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderBlended, TTF_Font * font){
 	return 0;
 }
 int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderBlendedUTF8, TTF_Font * font){
-	LuaSDL::Lua_SDL_Surface * s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
+	LuaSDL::Lua_SDL_Surface & s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
 	if (state.is_string(1) && state.is_table(2)){
 		SDL_Color color;
 		LuaSDL::fillColor(state, 2, color);
 		SDL_Surface * surface = TTF_RenderUTF8_Blended(font, state.to_string(1).c_str(), color);
 		if (surface){
-			s->push(surface);
+			s.push(surface);
 		}else{
 			state.push_boolean(false);
 		}
@@ -196,13 +196,13 @@ int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderBlendedUTF8, TTF_Font * font)
 	return 0;
 }
 int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderBlendedUNICODE, TTF_Font * font){
-	LuaSDL::Lua_SDL_Surface * s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
+	LuaSDL::Lua_SDL_Surface & s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
 	if (state.is_string(1) && state.is_table(2)){
 		SDL_Color color;
 		LuaSDL::fillColor(state, 2, color);
 		SDL_Surface * surface = TTF_RenderUNICODE_Blended(font, reinterpret_cast<const Uint16*>(state.to_string(1).c_str()), color);
 		if (surface){
-			s->push(surface);
+			s.push(surface);
 		}else{
 			state.push_boolean(false);
 		}
@@ -211,13 +211,13 @@ int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderBlendedUNICODE, TTF_Font * fo
 	return 0;
 }
 int LuaSDL::Lua_SDL_TTF_Font::LOBJECT_METHOD(renderBlendedGlyph, TTF_Font * font){
-	LuaSDL::Lua_SDL_Surface * s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
+	LuaSDL::Lua_SDL_Surface & s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
 	if (state.is_number(1) && state.is_table(2)){
 		SDL_Color color;
 		LuaSDL::fillColor(state, 2, color);
 		SDL_Surface * surface = TTF_RenderGlyph_Blended(font, static_cast<Uint16>(state.to_integer(1)), color);
 		if (surface){
-			s->push(surface);
+			s.push(surface);
 		}else{
 			state.push_boolean(false);
 		}

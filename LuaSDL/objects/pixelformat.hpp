@@ -14,7 +14,7 @@ namespace LuaSDL {
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_PixelFormat, "mapRGB", mapRGB);
 			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_PixelFormat, "mapRGBA", mapRGBA);
 
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "format", getName, null_method);	
+			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "name", getName, null_method);	
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "format", getFormat, setFormat);	
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "BitsPerPixel", getBitsPerPixel, setBitsPerPixel);	
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "BytesPerPixel", getBytesPerPixel, setBytesPerPixel);	
@@ -130,7 +130,7 @@ namespace LuaSDL {
 		}
 
 		int inline LOBJECT_METHOD(setRmask, SDL_PixelFormat * format){
-			format->Rmask = (Uint8)state.to_integer(1);
+			format->Rmask = (Uint32)state.to_integer(1);
 			return 0;
 		}
 		int inline LOBJECT_METHOD(getGmask, SDL_PixelFormat * format){
@@ -139,7 +139,7 @@ namespace LuaSDL {
 		}
 
 		int inline LOBJECT_METHOD(setGmask, SDL_PixelFormat * format){
-			format->Gmask = (Uint8)state.to_integer(1);
+			format->Gmask = (Uint32)state.to_integer(1);
 			return 0;
 		}
 		int inline LOBJECT_METHOD(getBmask, SDL_PixelFormat * format){
@@ -148,7 +148,7 @@ namespace LuaSDL {
 		}
 
 		int inline LOBJECT_METHOD(setBmask, SDL_PixelFormat * format){
-			format->Bmask = (Uint8)state.to_integer(1);
+			format->Bmask = (Uint32)state.to_integer(1);
 			return 0;
 		}
 
@@ -157,7 +157,7 @@ namespace LuaSDL {
 			return 1;
 		}
 		int inline LOBJECT_METHOD(setAmask, SDL_PixelFormat * format){
-			format->Amask = (Uint8)state.to_integer(1);
+			format->Amask = (Uint32)state.to_integer(1);
 			return 0;
 		}
 

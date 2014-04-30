@@ -6,20 +6,20 @@ static int lua_SDL_PollEvent(lutok::state& state){
 	if (state.is_nil(1)){
 		SDL_Event event;
 		if (SDL_PollEvent(&event)>0){
-			LuaSDL::Lua_SDL_Event * e = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Event);
+			LuaSDL::Lua_SDL_Event & e = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Event);
 			SDL_Event * new_event = new SDL_Event;
 			memcpy(new_event, &event, sizeof(SDL_Event));
-			e->push(new_event);
+			e.push(new_event);
 			return 1;
 		}else{
 			return 0;
 		}
 	}else{
-		LuaSDL::Lua_SDL_Event * e = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Event);
-		SDL_Event * event = e->check(1);
+		LuaSDL::Lua_SDL_Event & e = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Event);
+		SDL_Event * event = e.check(1);
 		if (SDL_PollEvent(event)>0){
 			if (state.is_boolean(2) && (state.to_boolean(1)==true)){
-				e->push(event);
+				e.push(event);
 			}else{
 				state.push_boolean(true);
 			}
@@ -31,11 +31,11 @@ static int lua_SDL_PollEvent(lutok::state& state){
 }
 
 static int lua_SDL_Event(lutok::state& state){
-	LuaSDL::Lua_SDL_Event * e = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Event);
+	LuaSDL::Lua_SDL_Event & e = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Event);
 	SDL_Event * event = new SDL_Event;
 	event->drop.file = nullptr;
 	event->syswm.msg = nullptr;
-	e->push(event);
+	e.push(event);
 	return 1;
 }
 
@@ -73,20 +73,20 @@ static int lua_SDL_WaitEvent(lutok::state& state){
 	if (state.is_nil(1)){
 		SDL_Event event;
 		if (SDL_WaitEvent(&event)>0){
-			LuaSDL::Lua_SDL_Event * e = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Event);
+			LuaSDL::Lua_SDL_Event & e = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Event);
 			SDL_Event * new_event = new SDL_Event;
 			memcpy(new_event, &event, sizeof(SDL_Event));
-			e->push(new_event);
+			e.push(new_event);
 			return 1;
 		}else{
 			return 0;
 		}
 	}else{
-		LuaSDL::Lua_SDL_Event * e = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Event);
-		SDL_Event * event = e->check(1);
+		LuaSDL::Lua_SDL_Event & e = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Event);
+		SDL_Event * event = e.check(1);
 		if (SDL_WaitEvent(event)>0){
 			if (state.is_boolean(2) && (state.to_boolean(1)==true)){
-				e->push(event);
+				e.push(event);
 			}else{
 				state.push_boolean(true);
 			}
@@ -101,21 +101,21 @@ static int lua_SDL_WaitEventTimeout(lutok::state& state){
 	if ((state.get_top() == 1) && state.is_number(1)){
 		SDL_Event event;
 		if (SDL_WaitEventTimeout(&event, state.to_integer(1))>0){
-			LuaSDL::Lua_SDL_Event * e = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Event);
+			LuaSDL::Lua_SDL_Event & e = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Event);
 			SDL_Event * new_event = new SDL_Event;
 			memcpy(new_event, &event, sizeof(SDL_Event));
-			e->push(new_event);
+			e.push(new_event);
 			return 1;
 		}else{
 			return 0;
 		}
 	}else{
 		if ((state.get_top() == 2) && state.is_number(2)){
-			LuaSDL::Lua_SDL_Event * e = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Event);
-			SDL_Event * event = e->check(1);
+			LuaSDL::Lua_SDL_Event & e = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Event);
+			SDL_Event * event = e.check(1);
 			if (SDL_WaitEventTimeout(event, state.to_integer(1))>0){
 				if (state.is_boolean(2) && (state.to_boolean(1)==true)){
-					e->push(event);
+					e.push(event);
 				}else{
 					state.push_boolean(true);
 				}

@@ -7,6 +7,7 @@ namespace LuaSDL{
 		state.set_field("INIT_VIDEO",					SDL_INIT_VIDEO);
 		state.set_field("INIT_JOYSTICK",				SDL_INIT_JOYSTICK);
 		state.set_field("INIT_HAPTIC",					SDL_INIT_HAPTIC);
+		state.set_field("INIT_EVENTS",					SDL_INIT_EVENTS);
 		state.set_field("INIT_GAMECONTROLLER",			SDL_INIT_GAMECONTROLLER);
 		state.set_field("INIT_NOPARACHUTE",				SDL_INIT_NOPARACHUTE);
 		state.set_field("INIT_EVERYTHING",				SDL_INIT_EVERYTHING);

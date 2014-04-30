@@ -125,8 +125,8 @@ namespace LuaSDL {
 		if (state.is_number(1) && state.is_string(2) && state.is_string(3)){
 			SDL_Window * window = NULL;
 			if (!state.is_nil(4)){
-				LuaSDL::Lua_SDL_Window * w = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
-				window = w->check(4);
+				LuaSDL::Lua_SDL_Window & w = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
+				window = w.check(4);
 			}
 			state.push_boolean(SDL_ShowSimpleMessageBox(state.to_integer(1), state.to_string(2).c_str(), state.to_string(3).c_str(), window) == 0);
 			return 1;
@@ -142,8 +142,8 @@ namespace LuaSDL {
 			int button_id=0;
 			
 			if (!state.is_nil(4)){
-				LuaSDL::Lua_SDL_Window * w = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
-				data.window = w->check(4);
+				LuaSDL::Lua_SDL_Window & w = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
+				data.window = w.check(4);
 			}else{
 				data.window = NULL;
 			}

@@ -2,10 +2,16 @@
 #include <lua.hpp>
 
 static int lua_SDL_AllocFormat(lutok::state& state){
-	LuaSDL::Lua_SDL_PixelFormat * pf = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_PixelFormat);
-	SDL_PixelFormat * pixelformat = SDL_AllocFormat(state.to_integer(1));
+	LuaSDL::Lua_SDL_PixelFormat & pf = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_PixelFormat);
+	Uint32 pname;
+	if (state.is_number(1)){
+		pname = (Uint32) state.to_integer(1);
+	}else{
+		pname = SDL_PIXELFORMAT_UNKNOWN;
+	}
+	SDL_PixelFormat * pixelformat = SDL_AllocFormat(pname);
 	if (pixelformat){
-		pf->push(pixelformat);
+		pf.push(pixelformat);
 	}else{
 		state.push_boolean(false);
 	}

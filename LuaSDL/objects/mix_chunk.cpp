@@ -2,12 +2,12 @@
 #include <lua.hpp>
 
 static int lua_Mix_LoadWAV(lutok::state& state){
-	LuaSDL::Lua_SDL_MixChunk * c = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_MixChunk);
+	LuaSDL::Lua_SDL_MixChunk & c = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_MixChunk);
 
 	if (state.is_string(1)){
 		Mix_Chunk * chunk = Mix_LoadWAV(state.to_string(1).c_str());
 		if (chunk){
-			c->push(chunk);
+			c.push(chunk);
 			return 1;
 		}
 	}

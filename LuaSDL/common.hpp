@@ -10,13 +10,14 @@
 #include <stdexcept>
 #include <string>
 
-#include <lutok/exceptions.hpp>
-#include <lutok/operations.hpp>
-#include <lutok/state.ipp>
-#include <lutok/lobject.hpp>
-#include <lutok/luna.hpp>
+#include "lutok/exceptions.hpp"
+#include "lutok/operations.hpp"
+#include "lutok/state.ipp"
+#include "lutok/lobject.hpp"
 
 #include <lua.hpp>
+
+#include "utils.hpp"
 
 /* libSDL 2.0 */
 #include <SDL.h>
@@ -28,6 +29,8 @@
 #include <SDL_image.h>
 /* SDL TTF 2.0 */
 #include <SDL_ttf.h>
+
+using namespace lutok;
 
 namespace LuaSDL{
 	

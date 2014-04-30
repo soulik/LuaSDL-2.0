@@ -2,7 +2,7 @@
 #include <lua.hpp>
 
 static int lua_iconv_open(lutok::state& state){
-	LuaSDL::Lua_SDL_Iconv * ic = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Iconv);
+	LuaSDL::Lua_SDL_Iconv & ic = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Iconv);
 	std::string to_code = "UTF-8";
 	std::string from_code = "UTF-8";
 
@@ -16,7 +16,7 @@ static int lua_iconv_open(lutok::state& state){
 
 	SDL_iconv_t iconv = SDL_iconv_open(to_code.c_str(), from_code.c_str());
 	if (iconv){
-		ic->push(iconv);
+		ic.push(iconv);
 	}else{
 		state.push_boolean(false);
 	}

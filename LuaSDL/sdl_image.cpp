@@ -18,11 +18,11 @@ namespace LuaSDL {
 		return 0;
 	}
 	static int lua_IMG_Load(lutok::state& state){
-		LuaSDL::Lua_SDL_Surface * s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
+		LuaSDL::Lua_SDL_Surface & s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
 		if (state.is_string(1)){
 			SDL_Surface * surface = IMG_Load(state.to_string(1).c_str());
 			if (surface){
-				s->push(surface);
+				s.push(surface);
 			}else{
 				state.push_boolean(false);
 			}

@@ -6,8 +6,8 @@ static int lua_SDL_EnclosePoints(lutok::state& state){
 }
 
 static int lua_SDL_Rect(lutok::state& state){
-	LuaSDL::Lua_SDL_Rect * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
-	r->push(new SDL_Rect);
+	LuaSDL::Lua_SDL_Rect & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
+	r.push(new SDL_Rect);
 	return 1;
 }
 

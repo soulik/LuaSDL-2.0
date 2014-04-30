@@ -6,8 +6,8 @@ namespace LuaSDL {
 
 	//Keyboard specific
 	static int lua_SDL_GetKeyboardFocus(lutok::state& state){
-		Lua_SDL_Window * w = LOBJECT_INSTANCE(Lua_SDL_Window);
-		w->push(SDL_GetKeyboardFocus());
+		Lua_SDL_Window & w = LOBJECT_INSTANCE(Lua_SDL_Window);
+		w.push(SDL_GetKeyboardFocus());
 		return 1;
 	}
 	static int lua_SDL_GetKeyboardState_table(lutok::state& state){
@@ -74,8 +74,8 @@ namespace LuaSDL {
 		return 0;
 	}
 	static int lua_SDL_SetTextInputRect(lutok::state& state){
-		Lua_SDL_Rect * r = LOBJECT_INSTANCE(Lua_SDL_Rect);
-		SDL_SetTextInputRect(r->check(1));
+		Lua_SDL_Rect & r = LOBJECT_INSTANCE(Lua_SDL_Rect);
+		SDL_SetTextInputRect(r.check(1));
 		return 0;
 	}
 	static int lua_SDL_StartTextInput(lutok::state& state){
@@ -89,8 +89,8 @@ namespace LuaSDL {
 
 	//Mouse specific
 	static int lua_SDL_GetMouseFocus(lutok::state& state){
-		Lua_SDL_Window * w = LOBJECT_INSTANCE(Lua_SDL_Window);
-		w->push(SDL_GetMouseFocus());
+		Lua_SDL_Window & w = LOBJECT_INSTANCE(Lua_SDL_Window);
+		w.push(SDL_GetMouseFocus());
 		return 1;
 	}
 	static int lua_SDL_GetMouseState(lutok::state& state){
@@ -118,9 +118,9 @@ namespace LuaSDL {
 		return 3;
 	}
 	static int lua_SDL_WarpMouseInWindow(lutok::state& state){
-		Lua_SDL_Window * w = LOBJECT_INSTANCE(Lua_SDL_Window);
+		Lua_SDL_Window & w = LOBJECT_INSTANCE(Lua_SDL_Window);
 		SDL_WarpMouseInWindow(
-			w->check(1),
+			w.check(1),
 			state.to_integer(2),
 			state.to_integer(3));
 		return 0;

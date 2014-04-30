@@ -5,7 +5,7 @@
 #include <lua.hpp>
 
 int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(createTexture, SDL_Renderer * renderer){
-	LuaSDL::Lua_SDL_Texture * t = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Texture);
+	LuaSDL::Lua_SDL_Texture & t = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Texture);
 	Uint32 format = 0;
 	int access = 0;
 	int w = 0;
@@ -19,7 +19,7 @@ int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(createTexture, SDL_Renderer * rende
 
 		SDL_Texture * texture = SDL_CreateTexture(renderer, format, access, w, h);
 		if (texture){
-			t->push(texture);
+			t.push(texture);
 		}else{
 			state.push_boolean(false);
 		}
@@ -30,15 +30,15 @@ int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(createTexture, SDL_Renderer * rende
 }
 
 int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(createTextureFromSurface, SDL_Renderer * renderer){
-	LuaSDL::Lua_SDL_Texture * t = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Texture);
-	LuaSDL::Lua_SDL_Surface * s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
+	LuaSDL::Lua_SDL_Texture & t = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Texture);
+	LuaSDL::Lua_SDL_Surface & s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
 
 	if (!state.is_nil(1)){
 
-		SDL_Surface * surface = s->check(1);
+		SDL_Surface * surface = s.check(1);
 		SDL_Texture * texture = SDL_CreateTextureFromSurface(renderer, surface);
 		if (texture){
-			t->push(texture);
+			t.push(texture);
 		}else{
 			state.push_boolean(false);
 		}
@@ -49,19 +49,19 @@ int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(createTextureFromSurface, SDL_Rende
 }
 
 int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(renderCopy, SDL_Renderer * renderer){
-	LuaSDL::Lua_SDL_Texture * t = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Texture);
-	LuaSDL::Lua_SDL_Rect * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
+	LuaSDL::Lua_SDL_Texture & t = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Texture);
+	LuaSDL::Lua_SDL_Rect & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
 
 	if (!state.is_nil(1)){
-		SDL_Texture * texture = t->check(1);
+		SDL_Texture * texture = t.check(1);
 		SDL_Rect * src = NULL;
 		SDL_Rect * dest = NULL;
 
 		if (!state.is_nil(2)){
-			src = r->check(2);
+			src = r.check(2);
 		}
 		if (!state.is_nil(3)){
-			dest = r->check(3);
+			dest = r.check(3);
 		}
 
 		int result = SDL_RenderCopy(renderer, texture, src, dest);
@@ -73,11 +73,11 @@ int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(renderCopy, SDL_Renderer * renderer
 }
 
 int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(renderCopyEx, SDL_Renderer * renderer){
-	LuaSDL::Lua_SDL_Texture * t = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Texture);
-	LuaSDL::Lua_SDL_Rect * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
+	LuaSDL::Lua_SDL_Texture & t = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Texture);
+	LuaSDL::Lua_SDL_Rect & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
 
 	if (!state.is_nil(1)){
-		SDL_Texture * texture = t->check(1);
+		SDL_Texture * texture = t.check(1);
 		SDL_Rect * src = NULL;
 		SDL_Rect * dest = NULL;
 		double angle = 0.0f;
@@ -85,10 +85,10 @@ int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(renderCopyEx, SDL_Renderer * render
 		SDL_RendererFlip flip = SDL_FLIP_NONE;
 
 		if (!state.is_nil(2)){
-			src = r->check(2);
+			src = r.check(2);
 		}
 		if (!state.is_nil(3)){
-			dest = r->check(3);
+			dest = r.check(3);
 		}
 		if (state.is_number(4)){
 			angle = state.to_number(4);
@@ -147,16 +147,16 @@ static int lua_SDL_GetRenderDrivers(lutok::state& state){
 }
 
 int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(drawRect, SDL_Renderer * renderer){
-	LuaSDL::Lua_SDL_Rect * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
+	LuaSDL::Lua_SDL_Rect & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
 	SDL_Rect * rect = NULL;
 	if (!state.is_nil(1)){
-		rect = r->check(1);
+		rect = r.check(1);
 	}
 	state.push_boolean(SDL_RenderDrawRect(renderer, rect) == 0);
 	return 1;
 }
 int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(drawRects, SDL_Renderer * renderer){
-	LuaSDL::Lua_SDL_Rect * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
+	LuaSDL::Lua_SDL_Rect & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
 	if (state.is_table(1)){
 		int count = state.obj_len(1);
 		int final_count = 0;
@@ -165,7 +165,7 @@ int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(drawRects, SDL_Renderer * renderer)
 			state.push_integer(i+1); // 1 i
 			state.get_table(1); // 1 R
 
-			SDL_Rect * rect = r->check(-1);
+			SDL_Rect * rect = r.check(-1);
 			rect[final_count].x = rect->x;
 			rect[final_count].y = rect->y;
 			rect[final_count].w = rect->w;
@@ -182,16 +182,16 @@ int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(drawRects, SDL_Renderer * renderer)
 	return 0;
 }
 int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(drawFillRect, SDL_Renderer * renderer){
-	LuaSDL::Lua_SDL_Rect * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
+	LuaSDL::Lua_SDL_Rect & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
 	SDL_Rect * rect = NULL;
 	if (!state.is_nil(1)){
-		rect = r->check(1);
+		rect = r.check(1);
 	}
 	state.push_boolean(SDL_RenderFillRect(renderer, rect) == 0);
 	return 1;
 }
 int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(drawFillRects, SDL_Renderer * renderer){
-	LuaSDL::Lua_SDL_Rect * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
+	LuaSDL::Lua_SDL_Rect & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
 	if (state.is_table(1)){
 		int count = state.obj_len(1);
 		int final_count = 0;
@@ -200,7 +200,7 @@ int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(drawFillRects, SDL_Renderer * rende
 			state.push_integer(i+1); // 1 i
 			state.get_table(1); // 1 R
 
-			SDL_Rect * rect = r->check(-1);
+			SDL_Rect * rect = r.check(-1);
 			rect[final_count].x = rect->x;
 			rect[final_count].y = rect->y;
 			rect[final_count].w = rect->w;
@@ -217,7 +217,7 @@ int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(drawFillRects, SDL_Renderer * rende
 	return 0;
 }
 int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(readPixels, SDL_Renderer * renderer){
-	LuaSDL::Lua_SDL_Rect * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
+	LuaSDL::Lua_SDL_Rect & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
 	SDL_Rect * rect = NULL;
 	Uint32 format=0;
 	void * pixels = NULL;
@@ -225,7 +225,7 @@ int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(readPixels, SDL_Renderer * renderer
 
 	if (state.is_userdata(3) && state.is_number(4)){
 		if (!state.is_nil(1)){
-			rect = r->check(1);
+			rect = r.check(1);
 		}
 		if (state.is_number(2)){
 			format = state.to_integer(2);
@@ -239,9 +239,9 @@ int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(readPixels, SDL_Renderer * renderer
 	return 0;
 }
 int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(setRenderTarget, SDL_Renderer * renderer){
-	LuaSDL::Lua_SDL_Texture * t = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Texture);
+	LuaSDL::Lua_SDL_Texture & t = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Texture);
 	if (!state.is_nil(1)){
-		SDL_Texture * texture = t->check(1);
+		SDL_Texture * texture = t.check(1);
 		if (texture){
 			state.push_boolean( SDL_SetRenderTarget(renderer, texture) == 0);
 			return 1;
@@ -251,16 +251,16 @@ int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(setRenderTarget, SDL_Renderer * ren
 }
 
 int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(getClipRect, SDL_Renderer * renderer){
-	LuaSDL::Lua_SDL_Rect * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
+	LuaSDL::Lua_SDL_Rect & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
 	
 	SDL_Rect * rect = new SDL_Rect;
 	SDL_RenderGetClipRect(renderer, rect);
-	r->push(rect);
+	r.push(rect);
 	return 1;
 }
 int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(setClipRect, SDL_Renderer * renderer){
-	LuaSDL::Lua_SDL_Rect * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
-	SDL_Rect * rect = r->check(1);
+	LuaSDL::Lua_SDL_Rect & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
+	SDL_Rect * rect = r.check(1);
 	if (rect){
 		SDL_RenderSetClipRect(renderer, rect);
 	}
@@ -268,16 +268,16 @@ int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(setClipRect, SDL_Renderer * rendere
 }
 
 int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(getViewport, SDL_Renderer * renderer){
-	LuaSDL::Lua_SDL_Rect * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
+	LuaSDL::Lua_SDL_Rect & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
 
 	SDL_Rect * rect = new SDL_Rect;
 	SDL_RenderGetViewport(renderer, rect);
-	r->push(rect);
+	r.push(rect);
 	return 1;
 }
 int LuaSDL::Lua_SDL_Renderer::LOBJECT_METHOD(setViewport, SDL_Renderer * renderer){
-	LuaSDL::Lua_SDL_Rect * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
-	SDL_Rect * rect = r->check(1);
+	LuaSDL::Lua_SDL_Rect & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Rect);
+	SDL_Rect * rect = r.check(1);
 	if (rect){
 		SDL_RenderSetViewport(renderer, rect);
 	}

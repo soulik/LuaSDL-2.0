@@ -5,7 +5,7 @@
 //std::map<SDL_TimerID, int> LuaSDL::timerCallbacks;
 
 static int lua_SDL_AddTimer(lutok::state& state){
-	LuaSDL::Lua_SDL_Timer * t = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Timer);
+	LuaSDL::Lua_SDL_Timer & t = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Timer);
 
 	Uint32 interval = state.to_integer(1);
 	SDL_TimerCallback callback = LuaSDL::Lua_SDL_Timer::callback;
@@ -21,7 +21,7 @@ static int lua_SDL_AddTimer(lutok::state& state){
 		param);
 	if (timerid){
 		LuaSDL::timerCallbacks[timerid] = ref;
-		t->push(timerid);
+		t.push(timerid);
 		return 1;
 	}else{
 		state.unref(ref);

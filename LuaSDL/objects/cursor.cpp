@@ -3,19 +3,19 @@
 #include <lua.hpp>
 
 static int lua_SDL_CreateColorCursor(lutok::state& state){
-	LuaSDL::Lua_SDL_Surface * s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
-	LuaSDL::Lua_SDL_Cursor * c = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Cursor);
-	c->push(
+	LuaSDL::Lua_SDL_Surface & s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
+	LuaSDL::Lua_SDL_Cursor & c = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Cursor);
+	c.push(
 		SDL_CreateColorCursor(
-			s->check(1),
+			s.check(1),
 			state.to_integer(2),
 			state.to_integer(3)));
 	return 1;
 }
 static int lua_SDL_CreateCursor(lutok::state& state){
-	LuaSDL::Lua_SDL_Cursor * c = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Cursor);
+	LuaSDL::Lua_SDL_Cursor & c = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Cursor);
 
-	c->push(
+	c.push(
 		SDL_CreateCursor(
 			(const Uint8* )state.to_lightuserdata(1),
 			(const Uint8* )state.to_lightuserdata(2),
@@ -27,8 +27,8 @@ static int lua_SDL_CreateCursor(lutok::state& state){
 	return 1;
 }
 static int lua_SDL_GetCursor(lutok::state& state){
-	LuaSDL::Lua_SDL_Cursor * c = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Cursor);
-	c->push(SDL_GetCursor());
+	LuaSDL::Lua_SDL_Cursor & c = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Cursor);
+	c.push(SDL_GetCursor());
 	return 1;
 }
 static int lua_SDL_ShowCursor(lutok::state& state){

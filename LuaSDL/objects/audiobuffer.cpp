@@ -105,7 +105,7 @@ bool LuaSDL::Lua_SDL_AudioBuffer::setAudioBufferFormat(LuaSDL::AudioBuffer * aud
 }
 
 static int lua_AudioBuffer(lutok::state& state){
-	LuaSDL::Lua_SDL_AudioBuffer * ab = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_AudioBuffer);
+	LuaSDL::Lua_SDL_AudioBuffer & ab = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_AudioBuffer);
 	LuaSDL::AudioBuffer * audio_buffer = new LuaSDL::AudioBuffer();
 
 	if (state.is_number(1)){
@@ -117,8 +117,8 @@ static int lua_AudioBuffer(lutok::state& state){
 	}else{
 		LuaSDL::Lua_SDL_AudioBuffer::setAudioBufferFormat(audio_buffer, AUDIO_U8);
 	}
-	ab->clearBuffer(state, audio_buffer);
-	ab->push(audio_buffer);
+	ab.clearBuffer(state, audio_buffer);
+	ab.push(audio_buffer);
 	return 1;
 }
 

@@ -27,8 +27,8 @@ namespace LuaSDL {
 		return 1;
 	}
 	static int lua_SDL_GetDisplayModes(lutok::state& state){
-		Lua_SDL_DisplayMode * dm = LOBJECT_INSTANCE(Lua_SDL_DisplayMode);
-		Lua_SDL_Rect * r = LOBJECT_INSTANCE(Lua_SDL_Rect);
+		Lua_SDL_DisplayMode & dm = LOBJECT_INSTANCE(Lua_SDL_DisplayMode);
+		Lua_SDL_Rect & r = LOBJECT_INSTANCE(Lua_SDL_Rect);
 
 		state.new_table();// displays
 		for (int display=0; display < SDL_GetNumVideoDisplays(); display++){
@@ -41,7 +41,7 @@ namespace LuaSDL {
 				SDL_DisplayMode * mode = new SDL_DisplayMode;
 				if (SDL_GetDisplayMode(display, i, mode) == 0){	
 					state.push_integer(modes++);
-					dm->push(mode);
+					dm.push(mode);
 					state.set_table();
 				}else{
 					delete mode;
@@ -53,7 +53,7 @@ namespace LuaSDL {
 			SDL_GetDisplayBounds(display, rect);
 			
 			state.push_literal("bounds");
-			r->push(rect);
+			r.push(rect);
 			state.set_table();
 
 			state.set_table();
@@ -75,11 +75,11 @@ namespace LuaSDL {
 	}
 
 	static int lua_SDL_GetCurrentDisplayMode(lutok::state& state){
-		Lua_SDL_DisplayMode * dm = LOBJECT_INSTANCE(Lua_SDL_DisplayMode);
+		Lua_SDL_DisplayMode & dm = LOBJECT_INSTANCE(Lua_SDL_DisplayMode);
 		SDL_DisplayMode * mode = new SDL_DisplayMode;
 
 		if (SDL_GetCurrentDisplayMode(state.to_integer(1), mode) == 0){
-			dm->push(mode);
+			dm.push(mode);
 			return 1;
 		}else{
 			delete mode;
@@ -87,11 +87,11 @@ namespace LuaSDL {
 		}
 	}
 	static int lua_SDL_GetDesktopDisplayMode(lutok::state& state){
-		Lua_SDL_DisplayMode * dm = LOBJECT_INSTANCE(Lua_SDL_DisplayMode);
+		Lua_SDL_DisplayMode & dm = LOBJECT_INSTANCE(Lua_SDL_DisplayMode);
 		SDL_DisplayMode * mode = new SDL_DisplayMode;
 
 		if (SDL_GetDesktopDisplayMode(state.to_integer(1), mode) == 0){
-			dm->push(mode);
+			dm.push(mode);
 			return 1;
 		}else{
 			delete mode;
@@ -99,14 +99,14 @@ namespace LuaSDL {
 		}
 	}
 	static int lua_SDL_GetClosestDisplayMode(lutok::state& state){
-		Lua_SDL_DisplayMode * dm = LOBJECT_INSTANCE(Lua_SDL_DisplayMode);
+		Lua_SDL_DisplayMode & dm = LOBJECT_INSTANCE(Lua_SDL_DisplayMode);
 		SDL_DisplayMode * mode = new SDL_DisplayMode;
 
 		if (SDL_GetClosestDisplayMode(
 			state.to_integer(1),
-			dm->check(2),
+			dm.check(2),
 			mode) == 0){
-				dm->push(mode);
+				dm.push(mode);
 				return 1;
 		}else{
 			delete mode;
@@ -114,10 +114,10 @@ namespace LuaSDL {
 		}
 	}
 	static int lua_SDL_GetDisplayBounds(lutok::state& state){
-		Lua_SDL_Rect * r = LOBJECT_INSTANCE(Lua_SDL_Rect);
+		Lua_SDL_Rect & r = LOBJECT_INSTANCE(Lua_SDL_Rect);
 		SDL_Rect * rect = new SDL_Rect;
 		if (SDL_GetDisplayBounds(state.to_integer(1), rect) == 0){
-			r->push(rect);
+			r.push(rect);
 			return 1;
 		}else{
 			return 0;
@@ -159,6 +159,21 @@ namespace LuaSDL {
 		return 1;
 	}
 
+	static int lua_SDL_GL_SetAttribute(lutok::state& state){
+		state.push_boolean(SDL_GL_SetAttribute((SDL_GLattr)state.to_integer(1),  state.to_integer(2)) == 0);
+		return 1;
+	}
+	static int lua_SDL_GL_GetAttribute(lutok::state& state){
+		int value = 0;
+		int result = SDL_GL_GetAttribute((SDL_GLattr)state.to_integer(1), &value);
+		if (result==0){
+			state.push_integer(value);
+		}else{
+			state.push_boolean(false);
+		}
+		return 1;
+	}
+
 	void init_video(moduleDef & module){
 		module["videoInit"] = lua_SDL_VideoInit;
 		module["videoQuit"] = lua_SDL_VideoQuit;
@@ -180,6 +195,9 @@ namespace LuaSDL {
 
 		module["GLgetSwapInterval"] = lua_SDL_GL_GetSwapInterval;
 		module["GLsetSwapInterval"] = lua_SDL_GL_SetSwapInterval;
+
+		module["GLgetAttribute"] = lua_SDL_GL_GetAttribute;
+		module["GLsetAttribute"] = lua_SDL_GL_SetAttribute;
 	}
 
 }

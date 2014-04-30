@@ -22,8 +22,8 @@ void LuaSDL::Lua_SDL_AudioDevice::audioCallback(void * data, Uint8 * stream, int
 }
 
 static int lua_SDL_OpenAudioDevice(lutok::state& state){
-	LuaSDL::Lua_SDL_AudioSpec * as = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_AudioSpec);
-	SDL_AudioSpec * inSpec = as->check(3);
+	LuaSDL::Lua_SDL_AudioSpec & as = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_AudioSpec);
+	SDL_AudioSpec * inSpec = as.check(3);
 	SDL_AudioSpec * outSpec = new SDL_AudioSpec;
 	LuaSDL::AudioDevice_Data * adata = new LuaSDL::AudioDevice_Data;
 
@@ -46,7 +46,7 @@ static int lua_SDL_OpenAudioDevice(lutok::state& state){
 			allowedChanges
 		);
 	if (id >= 2){
-		LuaSDL::Lua_SDL_AudioDevice * ad = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_AudioDevice);
+		LuaSDL::Lua_SDL_AudioDevice & ad = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_AudioDevice);
 		
 		adata->id = id;
 		adata->audioSpec = outSpec;
@@ -55,7 +55,7 @@ static int lua_SDL_OpenAudioDevice(lutok::state& state){
 		adata->pos = 0;
 		adata->ownBuffer = true;
 
-		ad->push(adata);
+		ad.push(adata);
 		return 1;
 	}else{
 		delete adata->buffer;
@@ -66,25 +66,25 @@ static int lua_SDL_OpenAudioDevice(lutok::state& state){
 }
 
 int LuaSDL::Lua_SDL_AudioDevice::LOBJECT_METHOD(getAudioSpec, AudioDevice_Data * audiodevice){
-	LuaSDL::Lua_SDL_AudioSpec * as = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_AudioSpec);
-	as->push(audiodevice->audioSpec, false);
+	LuaSDL::Lua_SDL_AudioSpec & as = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_AudioSpec);
+	as.push(audiodevice->audioSpec, false);
 	return 1;
 }
 
 int LuaSDL::Lua_SDL_AudioDevice::LOBJECT_METHOD(getBuffer, LuaSDL::AudioDevice_Data * audiodevice){
-	LuaSDL::Lua_SDL_AudioBuffer * ab = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_AudioBuffer);
-	ab->push(audiodevice->buffer, !audiodevice->ownBuffer);
+	LuaSDL::Lua_SDL_AudioBuffer & ab = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_AudioBuffer);
+	ab.push(audiodevice->buffer, !audiodevice->ownBuffer);
 	return 1;
 }
 
 int LuaSDL::Lua_SDL_AudioDevice::LOBJECT_METHOD(setBuffer, LuaSDL::AudioDevice_Data * audiodevice){
-	LuaSDL::Lua_SDL_AudioBuffer * ab = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_AudioBuffer);
+	LuaSDL::Lua_SDL_AudioBuffer & ab = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_AudioBuffer);
 	SDL_LockAudioDevice(audiodevice->id);
 	if (audiodevice->ownBuffer){
 		delete audiodevice->buffer;
 		audiodevice->ownBuffer = false;
 	}
-	audiodevice->buffer = ab->check(1);
+	audiodevice->buffer = ab.check(1);
 	SDL_UnlockAudioDevice(audiodevice->id);
 	return 0;
 }

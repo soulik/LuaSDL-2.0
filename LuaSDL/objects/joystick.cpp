@@ -2,10 +2,10 @@
 #include <lua.hpp>
 
 static int lua_SDL_JoystickOpen(lutok::state& state){
-	LuaSDL::Lua_SDL_Joystick * j = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Joystick);
+	LuaSDL::Lua_SDL_Joystick & j = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Joystick);
 	SDL_Joystick * joystick = SDL_JoystickOpen(state.to_integer(1));
 	if (joystick){
-		j->push(joystick);
+		j.push(joystick);
 		return 1;
 	}else{
 		return 0;

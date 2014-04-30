@@ -19,12 +19,6 @@
     <Filter Include="Header Files\objects">
       <UniqueIdentifier>{18432a3b-59cc-4eea-8278-555a5b8a3a96}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\lutok">
-      <UniqueIdentifier>{e71abd7d-8e6f-443f-92a6-13ba2f0b1354}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\lutok">
-      <UniqueIdentifier>{4079434e-e5ac-43b8-89b0-0b000f34a1f4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\additional">
       <UniqueIdentifier>{7a7d7f54-1b4c-4d66-93a9-24770f2d2cb6}</UniqueIdentifier>
     </Filter>
@@ -65,24 +59,6 @@
     </ClCompile>
     <ClCompile Include="objects\window.cpp">
       <Filter>Source Files\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\c_gate.cpp">
-      <Filter>Source Files\lutok</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\debug.cpp">
-      <Filter>Source Files\lutok</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\exceptions.cpp">
-      <Filter>Source Files\lutok</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\operations.cpp">
-      <Filter>Source Files\lutok</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\stack_cleaner.cpp">
-      <Filter>Source Files\lutok</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\state.cpp">
-      <Filter>Source Files\lutok</Filter>
     </ClCompile>
     <ClCompile Include="gl_context.cpp">
       <Filter>Source Files\objects</Filter>
@@ -153,6 +129,9 @@
     <ClCompile Include="objects\texture.cpp">
       <Filter>Source Files\objects</Filter>
     </ClCompile>
+    <ClCompile Include="utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.hpp">
@@ -160,33 +139,6 @@
     </ClInclude>
     <ClInclude Include="objects\window.hpp">
       <Filter>Header Files\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\c_gate.hpp">
-      <Filter>Header Files\lutok</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\debug.hpp">
-      <Filter>Header Files\lutok</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\exceptions.hpp">
-      <Filter>Header Files\lutok</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\export.hpp">
-      <Filter>Header Files\lutok</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\operations.hpp">
-      <Filter>Header Files\lutok</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\stack_cleaner.hpp">
-      <Filter>Header Files\lutok</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\state.hpp">
-      <Filter>Header Files\lutok</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\luna.hpp">
-      <Filter>Header Files\lutok</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\projects\Visual Studio 2012\lutok\lutok\lobject.hpp">
-      <Filter>Header Files\lutok</Filter>
     </ClInclude>
     <ClInclude Include="objects\gl_context.hpp">
       <Filter>Header Files\objects</Filter>
@@ -247,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="objects\texture.hpp">
       <Filter>Header Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

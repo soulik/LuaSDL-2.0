@@ -2,11 +2,11 @@
 #include <lua.hpp>
 
 static int lua_Mix_LoadMUS(lutok::state& state){
-	LuaSDL::Lua_SDL_MixMusic * m = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_MixMusic);
+	LuaSDL::Lua_SDL_MixMusic & m = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_MixMusic);
 
 	Mix_Music * music = Mix_LoadMUS(state.to_string(1).c_str());
 	if (music){
-		m->push(music);
+		m.push(music);
 		return 1;
 	}else{
 		return 0;

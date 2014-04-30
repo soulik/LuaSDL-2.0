@@ -13,8 +13,8 @@ void LuaSDL::Lua_SDL_Window::destructor(lutok::state & s, SDL_Window* window){
 int LuaSDL::Lua_SDL_Window::LOBJECT_METHOD(GLcreateContext, SDL_Window * window){
 	SDL_GLContext context = SDL_GL_CreateContext(window);
 	if (context){
-		Lua_SDL_GL_Context * c = LOBJECT_INSTANCE(Lua_SDL_GL_Context);
-		c->push(context);
+		Lua_SDL_GL_Context & c = LOBJECT_INSTANCE(Lua_SDL_GL_Context);
+		c.push(context);
 		return 1;
 	}else{
 		return 0;
@@ -27,22 +27,22 @@ int LuaSDL::Lua_SDL_Window::LOBJECT_METHOD(GLswapWindow, SDL_Window * window){
 }
 
 int LuaSDL::Lua_SDL_Window::LOBJECT_METHOD(GLmakeCurrent, SDL_Window * window){
-	Lua_SDL_GL_Context * c = LOBJECT_INSTANCE(Lua_SDL_GL_Context);
+	Lua_SDL_GL_Context & c = LOBJECT_INSTANCE(Lua_SDL_GL_Context);
 	
 	state.push_boolean(
 		(SDL_GL_MakeCurrent(
 			window,
-			c->check(1)) == 0));
+			c.check(1)) == 0));
 	return 1;
 }
 
 int LuaSDL::Lua_SDL_Window::LOBJECT_METHOD(setDisplayMode, SDL_Window * window){
-	Lua_SDL_DisplayMode * dm = LOBJECT_INSTANCE(Lua_SDL_DisplayMode);
+	Lua_SDL_DisplayMode & dm = LOBJECT_INSTANCE(Lua_SDL_DisplayMode);
 
 	state.push_boolean(
 		SDL_SetWindowDisplayMode(
 			window,
-			dm->check(1)
+			dm.check(1)
 		) == 0);
 	return 1;
 }
@@ -56,8 +56,8 @@ static int lua_SDL_CreateWindow(lutok::state& state){
 		state.to_integer(5),
 		(Uint32)state.to_integer(6));
 	if (window){
-		LuaSDL::Lua_SDL_Window * w = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
-		w->push(window);
+		LuaSDL::Lua_SDL_Window & w = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
+		w.push(window);
 		return 1;
 	}
 	return 0;
@@ -75,16 +75,16 @@ static int lua_SDL_CreateWindowAndRenderer(lutok::state& state){
 		&renderer
 		);
 
-	LuaSDL::Lua_SDL_Window * w = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
-	LuaSDL::Lua_SDL_Renderer * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Renderer);
+	LuaSDL::Lua_SDL_Window & w = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
+	LuaSDL::Lua_SDL_Renderer & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Renderer);
 	if (retval==0){
 		if (window){
-			w->push(window);
+			w.push(window);
 		}else{
 			state.push_nil();
 		}
 		if (renderer){
-			r->push(renderer);
+			r.push(renderer);
 		}else{
 			state.push_nil();
 		}
@@ -97,8 +97,8 @@ static int lua_SDL_CreateWindowAndRenderer(lutok::state& state){
 static int lua_SDL_CreateWindowFrom(lutok::state& state){
 	SDL_Window * window = SDL_CreateWindowFrom(state.to_userdata<void>(1));
 	if (window){
-		LuaSDL::Lua_SDL_Window * w = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
-		w->push(window);
+		LuaSDL::Lua_SDL_Window & w = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
+		w.push(window);
 		return 1;
 	}
 	return 0;
@@ -106,17 +106,17 @@ static int lua_SDL_CreateWindowFrom(lutok::state& state){
 static int lua_SDL_GetWindowFromID(lutok::state& state){
 	SDL_Window * window = SDL_GetWindowFromID(state.to_integer(1));
 	if (window){
-		LuaSDL::Lua_SDL_Window * w = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
-		w->push(window);
+		LuaSDL::Lua_SDL_Window & w = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Window);
+		w.push(window);
 		return 1;
 	}
 	return 0;
 }		
 int LuaSDL::Lua_SDL_Window::LOBJECT_METHOD(getWindowSurface, SDL_Window * window){
-	LuaSDL::Lua_SDL_Surface * s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
+	LuaSDL::Lua_SDL_Surface & s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
 	SDL_Surface * surface = SDL_GetWindowSurface(window);
 	if (surface){
-		s->push(surface);
+		s.push(surface);
 		return 1;
 	}else{
 		return 0;
@@ -124,7 +124,7 @@ int LuaSDL::Lua_SDL_Window::LOBJECT_METHOD(getWindowSurface, SDL_Window * window
 }
 
 int LuaSDL::Lua_SDL_Window::LOBJECT_METHOD(createRenderer, SDL_Window * window){
-	LuaSDL::Lua_SDL_Renderer * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Renderer);
+	LuaSDL::Lua_SDL_Renderer & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Renderer);
 	int index = -1;
 	Uint32 flags = 0;
 
@@ -137,7 +137,7 @@ int LuaSDL::Lua_SDL_Window::LOBJECT_METHOD(createRenderer, SDL_Window * window){
 
 	SDL_Renderer * renderer = SDL_CreateRenderer(window, index, flags);
 	if (renderer){
-		r->push(renderer);
+		r.push(renderer);
 		return 1;
 	}else{
 		return 0;
@@ -145,11 +145,11 @@ int LuaSDL::Lua_SDL_Window::LOBJECT_METHOD(createRenderer, SDL_Window * window){
 }
 
 int LuaSDL::Lua_SDL_Window::LOBJECT_METHOD(getRenderer, SDL_Window * window){
-	LuaSDL::Lua_SDL_Renderer * r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Renderer);
+	LuaSDL::Lua_SDL_Renderer & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Renderer);
 
 	SDL_Renderer * renderer = SDL_GetRenderer(window);
 	if (renderer){
-		r->push(renderer, false);
+		r.push(renderer, false);
 	}else{
 		state.push_boolean(false);
 	}

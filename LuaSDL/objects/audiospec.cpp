@@ -2,7 +2,7 @@
 #include <lua.hpp>
 
 static int lua_AudioSpec(lutok::state& state){
-	LuaSDL::Lua_SDL_AudioSpec * as = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_AudioSpec);
+	LuaSDL::Lua_SDL_AudioSpec & as = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_AudioSpec);
 	
 	SDL_AudioSpec * audiospec = new SDL_AudioSpec;
 
@@ -16,7 +16,7 @@ static int lua_AudioSpec(lutok::state& state){
 	audiospec->callback = nullptr;
 	audiospec->userdata = nullptr;
 
-	as->push(audiospec);
+	as.push(audiospec);
 	return 1;
 }
 
