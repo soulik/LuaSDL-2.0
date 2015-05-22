@@ -4,6 +4,7 @@ Debug/*
 Release/*
 LuaSDL/Debug/*
 LuaSDL/Release/*
+build/*
 *.sdf
 *.opensdf
 *.suo

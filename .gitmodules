@@ -1,0 +1,15 @@
+[submodule "dependencies/lutok2"]
+	path = dependencies/lutok2
+	url = https://github.com/soulik/lutok2.git
+[submodule "dependencies/libsdl2"]
+	path = dependencies/libsdl2
+	url = https://github.com/soulik/libsdl2.git
+[submodule "dependencies/sdl_image"]
+	path = dependencies/sdl_image
+	url = https://github.com/soulik/sdl_image.git
+[submodule "dependencies/sdl_mixer"]
+	path = dependencies/sdl_mixer
+	url = https://github.com/soulik/sdl_mixer.git
+[submodule "dependencies/sdl_ttf"]
+	path = dependencies/sdl_ttf
+	url = https://github.com/soulik/sdl_ttf.git

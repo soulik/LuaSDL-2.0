@@ -1,0 +1,119 @@
+﻿			//SDL_WindowEvent
+ "window_windowID", getWindow_windowID, setWindow_windowID);
+ "window_event", getWindow_event, setWindow_event);
+ "window_data1", getWindow_data1, setWindow_data1);
+ "window_data2", getWindow_data2, setWindow_data2);
+
+			//SDL_KeyboardEvent
+ "keyboard_windowID", getKeyboard_windowID, setKeyboard_windowID);
+ "keyboard_state", getKeyboard_state, setKeyboard_state);
+ "keyboard_repeat", getKeyboard_repeat, setKeyboard_repeat);
+ "keyboard_keysym", getKeyboard_keysym, setKeyboard_keysym);
+
+			//SDL_TextEditingEvent
+ "textediting_windowID", getTextediting_windowID, setTextediting_windowID);
+ "textediting_text", getTextediting_text, setTextediting_text);
+ "textediting_start", getTextediting_start, setTextediting_start);
+ "textediting_length", getTextediting_length, setTextediting_length);
+
+			//SDL_TextInputEvent
+ "textinput_windowID", getTextinput_windowID, setTextinput_windowID);
+ "textinput_text", getTextinput_text, setTextinput_text);
+			
+			//SDL_MouseMotionEvent
+ "mousemotion_windowID", getMousemotion_windowID, setMousemotion_windowID);
+ "mousemotion_which", getMousemotion_which, setMousemotion_which);
+ "mousemotion_state", getMousemotion_state, setMousemotion_state);
+ "mousemotion_x", getMousemotion_x, setMousemotion_x);
+ "mousemotion_y", getMousemotion_y, setMousemotion_y);
+ "mousemotion_xrel", getMousemotion_xrel, setMousemotion_xrel);
+ "mousemotion_yrel", getMousemotion_yrel, setMousemotion_yrel);
+
+			//SDL_MouseButtonEvent
+ "mousebutton_windowID", getMousebutton_windowID, setMousebutton_windowID);
+ "mousebutton_which", getMousebutton_which, setMousebutton_which);
+ "mousebutton_button", getMousebutton_button, setMousebutton_button);
+ "mousebutton_state", getMousebutton_state, setMousebutton_state);
+ "mousebutton_x", getMousebutton_x, setMousebutton_x);
+ "mousebutton_y", getMousebutton_y, setMousebutton_y);
+
+			//SDL_MouseWheelEvent
+ "mousewheel_windowID", getMousewheel_windowID, setMousewheel_windowID);
+ "mousewheel_which", getMousewheel_which, setMousewheel_which);
+ "mousewheel_x", getMousewheel_x, setMousewheel_y);
+ "mousewheel_y", getMousewheel_y, setMousewheel_x);
+
+			//SDL_JoyAxisEvent
+ "joyaxis_which", getJoyaxis_which, setJoyaxis_which);
+ "joyaxis_axis", getJoyaxis_axis, setJoyaxis_axis);
+ "joyaxis_value", getJoyaxis_value, setJoyaxis_value);
+
+			//SDL_JoyBallEvent
+ "joyball_which", getJoyball_which, setJoyball_which);
+ "joyball_ball", getJoyball_ball, setJoyball_ball);
+ "joyball_xrel", getJoyball_xrel, setJoyball_xrel);
+ "joyball_yrel", getJoyball_yrel, setJoyball_yrel);
+
+			//SDL_JoyHatEvent
+ "joyhat_which", getJoyhat_which, setJoyhat_which);
+ "joyhat_hat", getJoyhat_hat, setJoyhat_hat);
+ "joyhat_value", getJoyhat_value, setJoyhat_value);
+
+			//SDL_JoyButtonEvent
+ "joybutton_which", getJoybutton_which, setJoybutton_which);
+ "joyhat_button", getJoyhat_button, setJoyhat_button);
+ "joyhat_state", getJoyhat_state, setJoyhat_state);
+
+			//SDL_JoyDeviceEvent
+ "joydevice_which", getJoydevice_which, setJoydevice_which);
+
+			//SDL_ControllerAxisEvent
+ "controlleraxis_which", getControlleraxis_which, setControlleraxis_which);
+ "controlleraxis_axis", getControlleraxis_axis, setControlleraxis_axis);
+ "controlleraxis_value", getControlleraxis_value, setControlleraxis_value);
+
+			//SDL_ControllerButtonEvent
+ "controllerbutton_which", getControllerbutton_which, setControllerbutton_which);
+ "controllerbutton_button", getControllerbutton_button, setControllerbutton_button);
+ "controllerbutton_state", getControllerbutton_state, setControllerbutton_state);
+
+			//SDL_ControllerDeviceEvent
+ "controllerdevice_which", getControllerdevice_which, setControllerdevice_which);
+
+			//SDL_TouchFingerEvent
+ "touchfinger_touchId", getTouchfinger_touchId, setTouchfinger_touchId);
+ "touchfinger_fingerId", getTouchfinger_fingerId, setTouchfinger_fingerId);
+ "touchfinger_x", getTouchfinger_x, setTouchfinger_x);
+ "touchfinger_y", getTouchfinger_y, setTouchfinger_y);
+ "touchfinger_dx", getTouchfinger_dx, setTouchfinger_dx);
+ "touchfinger_dy", getTouchfinger_dy, setTouchfinger_dy);
+
+			//SDL_MultiGestureEvent
+ "multigesture_touchId", getMultigesture_touchId, setMultigesture_touchId);
+ "multigesture_dTheta", getMultigesture_dTheta, setMultigesture_dTheta);
+ "multigesture_dDist", getMultigesture_dDist, setMultigesture_dDist);
+ "multigesture_x", getMultigesture_x, setMultigesture_x);
+ "multigesture_y", getMultigesture_y, setMultigesture_y);
+ "multigesture_numFingers", getMultigesture_numFingers, setMultigesture_numFingers);
+			
+			//SDL_DollarGestureEvent
+ "dollargesture_touchId", getDollargesture_touchId, setDollargesture_touchId);
+ "dollargesture_gestureId", getDollargesture_gestureId, setDollargesture_gestureId);
+ "dollargesture_numFingers", getDollargesture_numFingers, setDollargesture_numFingers);
+ "dollargesture_error", getDollargesture_error, setDollargesture_error);
+ "dollargesture_x", getDollargesture_x, setDollargesture_x);
+ "dollargesture_y", getDollargesture_y, setDollargesture_y);
+
+			//SDL_DropEvent
+ "dropevent_file", getDrop_file, setDrop_file);
+
+			//SDL_QuitEvent
+
+			//SDL_UserEvent
+ "uservent_windowID", getUser_windowID, setUser_windowID);
+ "uservent_code", getUser_code, setUser_code);
+ "uservent_data1", getUser_data1, setUser_data1);
+ "uservent_data2", getUser_data2, setUser_data2);
+
+			//SDL_SysWMEvent
+ "syswm_msg", getSyswm_msg, setSyswm_msg);

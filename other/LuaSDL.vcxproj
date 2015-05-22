@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{51549C56-05E8-40A0-8295-2BAB9BE2F280}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>LuaSDL</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\lua5.1.props" />
+    <Import Project="..\..\Lua_library.props" />
+    <Import Project="..\..\libSDL - Debug.props" />
+    <Import Project="..\..\libSDL_mixer - Debug.props" />
+    <Import Project="..\..\libSDL_image - Debug.props" />
+    <Import Project="..\..\libSDL_ttf - Debug.props" />
+    <Import Project="..\..\local.props" />
+    <Import Project="..\..\lutok - Debug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\lua5.1.props" />
+    <Import Project="..\..\Lua_library.props" />
+    <Import Project="..\..\libSDL - Release.props" />
+    <Import Project="..\..\libSDL_mixer - Release.props" />
+    <Import Project="..\..\libSDL_image - Release.props" />
+    <Import Project="..\..\libSDL_ttf - Release.props" />
+    <Import Project="..\..\local.props" />
+    <Import Project="..\..\lutok - Release.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\projects\Visual Studio 2012\lutok\lutok\include;C:\Users\Soulik\Documents\Visual Studio 2012\Projects\LuaSDL\LuaSDL;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\Soulik\Documents\Visual Studio 2012\Projects\LuaSDL\LuaSDL;C:\projects\Visual Studio 2012\lutok\lutok\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;LUASDL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LUASDL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="audio.cpp" />
+    <ClCompile Include="basics.cpp" />
+    <ClCompile Include="constants.cpp" />
+    <ClCompile Include="file.cpp" />
+    <ClCompile Include="gl_context.cpp" />
+    <ClCompile Include="input.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="objects\audiobuffer.cpp" />
+    <ClCompile Include="objects\audiodevice.cpp" />
+    <ClCompile Include="objects\audiospec.cpp" />
+    <ClCompile Include="objects\iconv.cpp" />
+    <ClCompile Include="objects\mix_chunk.cpp" />
+    <ClCompile Include="objects\cursor.cpp" />
+    <ClCompile Include="objects\displaymode.cpp" />
+    <ClCompile Include="objects\event.cpp" />
+    <ClCompile Include="objects\gamecontroller.cpp" />
+    <ClCompile Include="objects\joystick.cpp" />
+    <ClCompile Include="objects\mix_music.cpp" />
+    <ClCompile Include="objects\pixelformat.cpp" />
+    <ClCompile Include="objects\rect.cpp" />
+    <ClCompile Include="objects\renderer.cpp" />
+    <ClCompile Include="objects\surface.cpp" />
+    <ClCompile Include="objects\texture.cpp" />
+    <ClCompile Include="objects\thread.cpp" />
+    <ClCompile Include="objects\timer.cpp" />
+    <ClCompile Include="objects\ttf_font.cpp" />
+    <ClCompile Include="objects\window.cpp" />
+    <ClCompile Include="platform.cpp" />
+    <ClCompile Include="power.cpp" />
+    <ClCompile Include="sdl_image.cpp" />
+    <ClCompile Include="sdl_mixer.cpp" />
+    <ClCompile Include="sdl_ttf.cpp" />
+    <ClCompile Include="threads.cpp" />
+    <ClCompile Include="timers.cpp" />
+    <ClCompile Include="utils.cpp" />
+    <ClCompile Include="video.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common.hpp" />
+    <ClInclude Include="objects\audiobuffer.hpp" />
+    <ClInclude Include="objects\audiodevice.hpp" />
+    <ClInclude Include="objects\audiospec.hpp" />
+    <ClInclude Include="objects\iconv.hpp" />
+    <ClInclude Include="objects\mix_chunk.hpp" />
+    <ClInclude Include="objects\cursor.hpp" />
+    <ClInclude Include="objects\displaymode.hpp" />
+    <ClInclude Include="objects\event.hpp" />
+    <ClInclude Include="objects\gamecontroller.hpp" />
+    <ClInclude Include="objects\gl_context.hpp" />
+    <ClInclude Include="objects\joystick.hpp" />
+    <ClInclude Include="objects\mix_music.hpp" />
+    <ClInclude Include="objects\pixelformat.hpp" />
+    <ClInclude Include="objects\rect.hpp" />
+    <ClInclude Include="objects\renderer.hpp" />
+    <ClInclude Include="objects\surface.hpp" />
+    <ClInclude Include="objects\texture.hpp" />
+    <ClInclude Include="objects\thread.hpp" />
+    <ClInclude Include="objects\timer.hpp" />
+    <ClInclude Include="objects\ttf_font.hpp" />
+    <ClInclude Include="objects\window.hpp" />
+    <ClInclude Include="utils.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
