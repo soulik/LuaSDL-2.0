@@ -5,7 +5,7 @@
 
 namespace LuaSDL {
 
-	class Lua_SDL_PixelFormat : public LObject<Lua_SDL_PixelFormat, SDL_PixelFormat*> {
+	class Lua_SDL_PixelFormat : public Object<Lua_SDL_PixelFormat, SDL_PixelFormat*> {
 	public:
 		LOBJECT_DEFINE_CLASS(Lua_SDL_PixelFormat, SDL_PixelFormat*, "PixelFormat") {
 

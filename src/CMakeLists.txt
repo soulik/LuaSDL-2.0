@@ -42,9 +42,40 @@ set(LUASDL2_OBJECTS_SRC
 	objects/window.cpp
 )
 
+set(LUASDL2_H
+	common.hpp
+	utils.hpp
+)
+
+set(LUASDL2_OBJECTS_H
+	objects/audiobuffer.hpp
+	objects/audiodevice.hpp
+	objects/audiospec.hpp
+	objects/cursor.hpp
+	objects/displaymode.hpp
+	objects/event.hpp
+	objects/gamecontroller.hpp
+	objects/gl_context.hpp
+	objects/iconv.hpp
+	objects/joystick.hpp
+	objects/mix_chunk.hpp
+	objects/mix_music.hpp
+	objects/pixelformat.hpp
+	objects/rect.hpp
+	objects/renderer.hpp
+	objects/surface.hpp
+	objects/texture.hpp
+	objects/thread.hpp
+	objects/timer.hpp
+	objects/ttf_font.hpp
+	objects/window.hpp
+)
+
 set(LUASDL2_SOURCES
 	${LUASDL2_SRC}
+	${LUASDL2_H}
 	${LUASDL2_OBJECTS_SRC}
+	${LUASDL2_OBJECTS_H}
 )
 
 source_group(objects FILES ${LUASDL2_OBJECTS_SRC} ${LUASDL2_OBJECTS_HDR})

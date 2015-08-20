@@ -3,7 +3,7 @@
 
 namespace LuaSDL {
 
-	int Texture::lock(State & s, SDL_Texture * texture){
+	int Texture::lock(State & state, SDL_Texture * texture){
 		Stack * stack = state.stack;
 		SDL_Rect * rect;
 		int pitch;
@@ -26,11 +26,12 @@ namespace LuaSDL {
 		}
 		return 0;
 	}
-	int Texture::unlock(State & s, SDL_Texture * texture){
+
+	int Texture::unlock(State & state, SDL_Texture * texture){
 		SDL_UnlockTexture(texture);
 		return 0;
 	}
-	int Texture::update(State & s, SDL_Texture * texture){
+	int Texture::update(State & state, SDL_Texture * texture){
 		Stack * stack = state.stack;
 		SDL_Rect * rect = NULL;
 		int pitch;
@@ -53,7 +54,7 @@ namespace LuaSDL {
 		return 0;
 	}
 
-	void LuaSDL::initTexture(State * state, Module & module){
+	void initTexture(State * state, Module & module){
 		state->registerInterface<Texture>("LuaSDL_Texture");
 	}
 }

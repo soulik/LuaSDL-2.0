@@ -56,7 +56,7 @@ namespace LuaSDL {
 
 		}
 		int setAlphaMod(State & state, SDL_Texture  * texture){
-			SDL_SetTextureAlphaMod(texture, (Uint8)state.stack->to<LUA_TNUMBER>(1));
+			SDL_SetTextureAlphaMod(texture, (Uint8)state.stack->to<LUA_NUMBER>(1));
 			return 0;
 		}
 		int getColorMod(State & state, SDL_Texture  * texture){
