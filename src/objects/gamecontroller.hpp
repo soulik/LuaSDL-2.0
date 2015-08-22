@@ -5,31 +5,22 @@
 
 namespace LuaSDL {
 
-	class Lua_SDL_GameController : public LObject<Lua_SDL_GameController, SDL_GameController *> {
+	class GameController : public Object<SDL_GameController> {
 	public:
-		LOBJECT_DEFINE_CLASS(Lua_SDL_GameController, SDL_GameController *, "GameController") {
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_GameController, "", null_method);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_GameController, SDL_GameController *, "name", getName, null_method);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_GameController, SDL_GameController *, "attached", isAttached, null_method);	
+		explicit GameController(State * state) : Object<SDL_GameController>(state) {
+			//LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_GameController, "", null_method);
+			LUTOK_PROPERTY("name", &GameController::getName, &GameController::nullMethod);	
+			LUTOK_PROPERTY("attached", &GameController::isAttached, &GameController::nullMethod);	
 		}
 
-		void destructor(lutok::state & s, SDL_GameController * gamecontroller){
+		SDL_GameController * constructor(State & state, bool & managed);
+
+		void destructor(State & state, SDL_GameController * gamecontroller){
 			SDL_GameControllerClose(gamecontroller);
 		}
 
-		int LOBJECT_METHOD(getName, SDL_GameController * gamecontroller){
-			const char * name = SDL_GameControllerName(gamecontroller);
-			if (name){
-				state.push_string(name);
-				return 1;
-			}else{
-				return 0;
-			}
-		}
-		int LOBJECT_METHOD(isAttached, SDL_GameController * gamecontroller){
-			state.push_boolean(SDL_GameControllerGetAttached(gamecontroller) == SDL_TRUE);
-			return 1;
-		}
+		int getName(State & state, SDL_GameController * gamecontroller);
+		int isAttached(State & state, SDL_GameController * gamecontroller);
 	};
 }
 

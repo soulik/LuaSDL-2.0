@@ -20,11 +20,12 @@ namespace LuaSDL {
 	}
 	static int lua_IMG_Load(State & state){
 		Stack * stack = state.stack;
-		LuaSDL::Lua_SDL_Surface & s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
+		Surface * interfaceSurface = state.getInterface<Surface>("LuaSDL_Surface");
 		if (stack->is<LUA_TSTRING>(1)){
-			SDL_Surface * surface = IMG_Load(stack->to<const std::string>(1).c_str());
+			const std::string fileName = stack->to<const std::string>(1);
+			SDL_Surface * surface = IMG_Load(fileName.c_str());
 			if (surface){
-				s.push(surface);
+				interfaceSurface->push(surface, true);
 			}else{
 				stack->push<bool>(false);
 			}
@@ -34,11 +35,11 @@ namespace LuaSDL {
 	}
 	static int lua_IMG_GetError(State & state){
 		Stack * stack = state.stack;
-		stack->push<const std::string>(IMG_GetError());
+		stack->push<const std::string &>(IMG_GetError());
 		return 1;
 	}
 
-	void init_sdl_image(Module & module){
+	void initSDLimage(Module & module){
 		module["imageInit"] = lua_IMG_Init;
 		module["imageQuit"] = lua_IMG_Quit;
 

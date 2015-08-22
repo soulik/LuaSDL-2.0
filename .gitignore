@@ -4,7 +4,10 @@ Debug/*
 Release/*
 LuaSDL/Debug/*
 LuaSDL/Release/*
-build/*
 *.sdf
 *.opensdf
 *.suo
+other/*
+build/*
+*.dll
+*.exe

@@ -1,4 +1,4 @@
-﻿local lfs = require 'lfs'
+local lfs = require 'lfs'
 require 'lpeg'
 
 os.mkdir = lfs.mkdir
@@ -34,20 +34,21 @@ function io.save(fname,data)
 	end
 end
 
-function getFiles(path, match)
+local upDirPattern = 1 - (P('.') + P('..'))
+
+function getFiles(path, pattern)
 	local files = {}
-	local match = match or ".+"
+	local pattern = pattern or P(1)^1
 	local function r(path)
 		for p in lfs.dir(path) do
-			if (p~='.' and p~='..') then
+			if (upDirPattern:match(p)) then
 				local p2 = path..'/'..p
 				local attr = lfs.attributes(p2)
 				if (attr) then
 					if attr.mode=="directory" then
 						r(p2)
 					elseif attr.mode=="file" then
-						local m = string.match(p,match)
-						if m then
+						if pattern:match(p) then
 							table.insert(files,p2)
 						end
 					end
@@ -79,31 +80,44 @@ local function replace(s, t)
 	return pattern:match(s)
 end
 
-local content = io.load('objects/renderer.cpp')
+local alphanum = (locale.alpha + locale.digit)
 local space =  locale.space^1
 local space0 =  locale.space^0
-local name = (locale.alpha + P'_')^1 
-
+local name = (alphanum + P'_')^1 
+local fileName = (alphanum + S'_-+')^1
 local nullMethod = Cs((P'null_method' / 'nullMethod' + 1)^0)
 
-print(replace(content, {
+local function wrap(p, e)
+	return e * p * e
+end
+
+local function SW(p)
+	return wrap(p, space0)
+end
+
+local function Q(p)
+	return wrap(p, P'"')
+end
+
+local rules = {
 	-- class def
-	[P'class' * space * P'Lua_SDL_' * C(name) * space0 * P':' * space0 * P'public' * space * P'Object<' * space0 * name * space0 * P',' * space0 * C(name) * space0 * P'*' * space0 * P'>'] =
+	[P'class' * space * P'Lua_SDL_' * C(name) * SW(P':') * P'public' * space * P'LObject<' * SW(name) * P',' * SW(C(name)) * P'*' * space0 * P'>'] =
 	function(n, t)
 		return ('class %s : public Object<%s>'):format(n,t)
 	end,
 	-- class constructor
-	[P'LOBJECT_DEFINE_CLASS(' * space0 * P'Lua_SDL_' * C(name) * space0 * P',' * space0 * C(name) * space0 * P'*' * space0 * P',' * space0 * P'"' * name * P'"' * space0 * P')'] =
+	[P'LOBJECT_DEFINE_CLASS(' * SW(P'Lua_SDL_' * C(name) * SW(P',') * C(name) * SW(P'*') * P',' * SW(Q(name))) * P')'] =
 	function(n, t)
 		return ('explicit %s(State * state) : Object<%s>(state)'):format(n,t)
 	end,
 	-- method
-	[P'LOBJECT_ADD_METHOD(' * space0 * P'LuaSDL::Lua_SDL_' * C(name) * space0 * P',' * space0 * P'"' * C(name) * '"' * space0 * P',' * space0 * C(name) * space0 * P')'] = 
+	--LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_TTF_Font, "sizeTextUTF8", getTextSizeUTF8);
+	[P'LOBJECT_ADD_METHOD(' * space0 * P'LuaSDL::Lua_SDL_' * C(name) * space0 * P',' * space0 * P'"' * C(name) * P'"' * space0 * P',' * space0 * C(name) * space0 * P')'] = 
 	function(n, ln, fn)
 		return ('LUTOK_METHOD("%s", &%s::%s)'):format(ln,n,fn)
 	end,
 	-- property
-	[P'LOBJECT_ADD_PROPERTY(' * space0 * P'LuaSDL::Lua_SDL_' * C(name) * space0 * P',' * space0 * name * space0 * P'*' * space0 * P',' * space0 * P'"' * C(name) * '"' * space0 * P',' * space0 * C(name) * space0 * P',' * space0 * C(name) * space0 * P')'] =
+	[P'LOBJECT_ADD_PROPERTY(' * space0 * P'LuaSDL::Lua_SDL_' * C(name) * space0 * P',' * space0 * name * space0 * P'*' * space0 * P',' * space0 * Q(C(name)) * space0 * P',' * space0 * C(name) * space0 * P',' * space0 * C(name) * space0 * P')'] =
 	function(n, ln, gFn, sFn)
 		gFn, sFn = nullMethod:match(gFn), nullMethod:match(sFn)
 		return ('LUTOK_PROPERTY("%s", &%s::%s, &%s::%s)'):format(ln, n, gFn, n, sFn)
@@ -111,7 +125,7 @@ print(replace(content, {
 	-- method def w/o body
 	[C(P'int' * space * (name * space)^0) * space0 * P'LOBJECT_METHOD(' * space0 * C(name) * space0 * P',' * space0 * C(name) * space0 * P'*' * space0 * C(name) * space0 * P')' * space0 * P';'] = 
 	function(prefix, fn, t, pn)
-		return ('%s%s(State & state, %s * %s)'):format(prefix, fn, t, pn)
+		return ('%s%s(State & state, %s * %s);'):format(prefix, fn, t, pn)
 	end,
 	-- method def w body
 	[C(P'int' * space * (name * space)^0) * space0 * P'LOBJECT_METHOD(' * space0 * C(name) * space0 * P',' * space0 * C(name) * space0 * P'*' * space0 * C(name) * space0 * P')' * space0 * P'{' * (P' ' + P'\t')^0 * C(P'\n' + P'\n\r') * C(space0)] = 
@@ -128,9 +142,13 @@ print(replace(content, {
 	function(prefix, n, fn, t, pn, nl, tt)
 		return ('%s%s::%s(State & state, %s * %s) {%s%sStack * stack = state.stack;%s%s'):format(prefix, n, fn, t, pn, nl, tt, nl, tt)
 	end,
+	-- interface
 	[P'LuaSDL::Lua_SDL_' * C(name) * space0 * P'&' * space0 * name * space0 * P'=' * space0 * P'LOBJECT_INSTANCE(LuaSDL::Lua_SDL_' * name * space0 * P')'] =
 	function(n)
 		return ('%s * interface%s = state.getInterface<%s>("LuaSDL_%s")'):format(n,n,n,n)
+	end,
+	[P'LOBJECT_INSTANCE(' * space0 * P'LuaSDL::Lua_SDL_' * C(name) * space0 * P')' * space0 * P';'] = function(n)
+		return ('state->registerInterface<%s>("LuaSDL_%s");'):format(n, n)
 	end,
 	[P'state.to_integer'] = 'stack->to<int>',
 	[P'state.to_number'] = 'stack->to<LUA_NUMBER>',
@@ -143,12 +161,16 @@ print(replace(content, {
 	[P'state.push_boolean'] = 'stack->push<bool>',
 	[P'state.push_lightuserdata'] = 'stack->push<void*>',
 	[P'state.push_string'] = 'stack->push<const std::string &>',
-	[P'state.obj_len'] = 'stack->objLen'
-}))
+	[P'state.obj_len'] = 'stack->objLen',
+	[P'state.is_number'] = 'stack->is<LUA_TNUMBER>',
+	[P'state.is_table'] = 'stack->is<LUA_TTABLE>',
+	[P'state.new_table'] = 'stack->newTable',
+	[P'state.pop'] = 'stack->pop',
+}
 
---[[
-for _, f in io.files('.', '%.cpp$') do
-	print(f)
+for _, f in io.files('.', fileName * P'.' * S'ch' * P'pp') do
+	io.save(f, replace(io.load(f), rules))
 end
---]]
+
+
 

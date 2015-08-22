@@ -12,14 +12,14 @@ inline void endian_swap(unsigned long& x){
 template<> size_t getArray<double>(State & state, int index, std::vector<double> & out, size_t offset, size_t count){
 	if (stack->is<LUA_TTABLE>(index)){
 		if (count==0 || (offset > count)){
-			count = state.obj_len(index);
+			count = stack->objLen(index);
 		}
 		out.reserve(count);
 		for (size_t i=offset; i<count; i++){
 			stack->push<int>(i+1);
 			state.get_table(index);
 			if (stack->is<LUA_TNUMBER>()){
-				out.push_back((double) state.to_number(-1));
+				out.push_back((double) stack->to<LUA_NUMBER>(-1));
 			}
 			stack->pop(1);
 		}
@@ -29,14 +29,14 @@ template<> size_t getArray<double>(State & state, int index, std::vector<double>
 template<> size_t getArray<float>(State & state, int index, std::vector<float> & out, size_t offset, size_t count){
 	if (stack->is<LUA_TTABLE>(index)){
 		if (count==0 || (offset > count)){
-			count = state.obj_len(index);
+			count = stack->objLen(index);
 		}
 		out.reserve(count);
 		for (size_t i=offset; i<count; i++){
 			stack->push<int>(i+1);
 			state.get_table(index);
 			if (stack->is<LUA_TNUMBER>()){
-				out.push_back((float) state.to_number(-1));
+				out.push_back((float) stack->to<LUA_NUMBER>(-1));
 			}
 			stack->pop(1);
 		}
@@ -46,7 +46,7 @@ template<> size_t getArray<float>(State & state, int index, std::vector<float> &
 template<> size_t getArray<int>(State & state, int index, std::vector<int> & out, size_t offset, size_t count){
 	if (stack->is<LUA_TTABLE>(index)){
 		if (count==0 || (offset > count)){
-			count = state.obj_len(index);
+			count = stack->objLen(index);
 		}
 		out.reserve(count);
 		for (size_t i=offset; i<count; i++){
@@ -63,7 +63,7 @@ template<> size_t getArray<int>(State & state, int index, std::vector<int> & out
 template<> size_t getArray<unsigned int>(State & state, int index, std::vector<unsigned int> & out, size_t offset, size_t count){
 	if (stack->is<LUA_TTABLE>(index)){
 		if (count==0 || (offset > count)){
-			count = state.obj_len(index);
+			count = stack->objLen(index);
 		}
 		out.reserve(count);
 		for (size_t i=offset; i<count; i++){
@@ -79,13 +79,13 @@ template<> size_t getArray<unsigned int>(State & state, int index, std::vector<u
 }
 template<> size_t getArray<double>(State & state, int index, std::vector<double> & out){
 	if (stack->is<LUA_TTABLE>(index)){
-		size_t count = state.obj_len(index);
+		size_t count = stack->objLen(index);
 		out.reserve(count);
 		for (size_t i=0; i<count; i++){
 			stack->push<int>(i+1);
 			state.get_table(index);
 			if (stack->is<LUA_TNUMBER>()){
-				out.push_back((double) state.to_number(-1));
+				out.push_back((double) stack->to<LUA_NUMBER>(-1));
 			}
 			stack->pop(1);
 		}
@@ -94,13 +94,13 @@ template<> size_t getArray<double>(State & state, int index, std::vector<double>
 }
 template<> size_t getArray<float>(State & state, int index, std::vector<float> & out){
 	if (stack->is<LUA_TTABLE>(index)){
-		size_t count = state.obj_len(index);
+		size_t count = stack->objLen(index);
 		out.reserve(count);
 		for (size_t i=0; i<count; i++){
 			stack->push<int>(i+1);
 			state.get_table(index);
 			if (stack->is<LUA_TNUMBER>()){
-				out.push_back((float) state.to_number(-1));
+				out.push_back((float) stack->to<LUA_NUMBER>(-1));
 			}
 			stack->pop(1);
 		}
@@ -109,7 +109,7 @@ template<> size_t getArray<float>(State & state, int index, std::vector<float> &
 }
 template<> size_t getArray<int>(State & state, int index, std::vector<int> & out){
 	if (stack->is<LUA_TTABLE>(index)){
-		size_t count = state.obj_len(index);
+		size_t count = stack->objLen(index);
 		out.reserve(count);
 		for (size_t i=0; i<count; i++){
 			stack->push<int>(i+1);
@@ -124,7 +124,7 @@ template<> size_t getArray<int>(State & state, int index, std::vector<int> & out
 }
 template<> size_t getArray<unsigned int>(State & state, int index, std::vector<unsigned int> & out){
 	if (stack->is<LUA_TTABLE>(index)){
-		size_t count = state.obj_len(index);
+		size_t count = stack->objLen(index);
 		out.reserve(count);
 		for (size_t i=0; i<count; i++){
 			stack->push<int>(i+1);
@@ -140,7 +140,7 @@ template<> size_t getArray<unsigned int>(State & state, int index, std::vector<u
 template<> size_t getArray<unsigned char>(State & state, int index, std::vector<unsigned char> & out){
 	size_t _count = 0;
 	if (stack->is<LUA_TTABLE>(index)){
-		size_t count = state.obj_len(index);
+		size_t count = stack->objLen(index);
 		out.reserve(count);
 		for (size_t i=0; i<count; i++){
 			stack->push<int>(i+1);
@@ -155,7 +155,7 @@ template<> size_t getArray<unsigned char>(State & state, int index, std::vector<
 }
 template<> size_t getArray<std::string>(State & state, int index, std::vector<std::string> & out){
 	if (stack->is<LUA_TTABLE>(index)){
-		size_t count = state.obj_len(index);
+		size_t count = stack->objLen(index);
 		out.reserve(count);
 		for (size_t i=0; i<count; i++){
 			stack->push<int>(i+1);
@@ -172,7 +172,7 @@ template<> void setArray<double>(State & state, std::vector<double> & in){
 	stack->newTable();
 	for (size_t i=0; i < in.size(); i++){
 		stack->push<int>(i+1);
-		state.push_number(in[i]);
+		stack->push<LUA_NUMBER>(in[i]);
 		stack->setTable();
 	}
 }
@@ -180,7 +180,7 @@ template<> void setArray<float>(State & state, std::vector<float> & in){
 	stack->newTable();
 	for (size_t i=0; i < in.size(); i++){
 		stack->push<int>(i+1);
-		state.push_number(in[i]);
+		stack->push<LUA_NUMBER>(in[i]);
 		stack->setTable();
 	}
 }
@@ -213,7 +213,7 @@ template<> void setArray<char*>(State & state, std::vector<char *> & in){
 	stack->newTable();
 	for (size_t i=0; i < in.size(); i++){
 		stack->push<int>(i+1);
-		stack->push<const std::string>(in[i]);
+		stack->push<const std::string &>(in[i]);
 		stack->setTable();
 	}
 }
@@ -222,7 +222,7 @@ template<> void setArray<double>(State & state, double * in, size_t length){
 	stack->newTable();
 	for (size_t i=0; i < length; i++){
 		stack->push<int>(i+1);
-		state.push_number(in[i]);
+		stack->push<LUA_NUMBER>(in[i]);
 		stack->setTable();
 	}
 }
@@ -230,7 +230,7 @@ template<> void setArray<float>(State & state, float * in, size_t length){
 	stack->newTable();
 	for (size_t i=0; i < length; i++){
 		stack->push<int>(i+1);
-		state.push_number(in[i]);
+		stack->push<LUA_NUMBER>(in[i]);
 		stack->setTable();
 	}
 }
@@ -262,7 +262,7 @@ template<> void setArray<char*>(State & state, char ** in, size_t length){
 	stack->newTable();
 	for (size_t i=0; i < length; i++){
 		stack->push<int>(i+1);
-		stack->push<const std::string>(in[i]);
+		stack->push<const std::string &>(in[i]);
 		stack->setTable();
 	}
 }

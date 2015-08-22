@@ -27,52 +27,64 @@
 
 using namespace lutok2;
 
+#if (BUILDING_LIBLUASDL2 || LUASDL2_EXPORTS) && HAVE_VISIBILITY
+#define LIBLUASDL2_DLL_EXPORTED __attribute__((visibility("default")))
+#elif (BUILDING_LIBLUASDL2 || LUASDL2_EXPORTS) && defined _MSC_VER
+#define LIBLUASDL2_DLL_EXPORTED __declspec(dllexport)
+#elif defined _MSC_VER
+#define LIBLUASDL2_DLL_EXPORTED __declspec(dllimport)
+#else
+#define LIBLUASDL2_DLL_EXPORTED
+#endif
+
+
 #define getObject(n) *(static_cast<void**>(stack->to<void*>((n))))
+#define INIT_OBJECT(OBJ_NAME) state->registerInterface<OBJ_NAME>("LuaSDL_" #OBJ_NAME); state->stack->setField(#OBJ_NAME)
 
 namespace LuaSDL{
-	void init_basic(Module & module);
-	void init_video(Module & module);
-	void init_input(Module & module);
-	void init_timers(Module & module);
-	void init_audio(Module & module);
-	void init_constants(State &);
-	void init_power(Module & module);
-	void init_platform(Module & module);
+	void initBasic(Module & module);
+	void initVideo(Module & module);
+	void initInput(Module & module);
+	void initTimers(Module & module);
+	void initAudio(Module & module);
+	void initConstants(State &);
+	void initPower(Module & module);
+	void initPlatform(Module & module);
 
 	//objects
-	void initWindow(State &, Module & module);
-	void init_gl_context(State &, Module & module);
-	void init_displaymode(State &, Module & module);
-	void init_rect(State &, Module & module);
-	void init_surface(State &, Module & module);
-	void init_pixelformat(State &, Module & module);
-	void init_event(State &, Module & module);
-	void init_input(State &, Module & module);
-	void init_cursor(State & state, Module & module);
-	void init_joystick(State & state, Module & module);
-	void init_gamecontroller(State & state, Module & module);
-	void init_timer(State & state, Module & module);
-	void init_audiodevice(State & state, Module & module);
-	void init_audiospec(State & state, Module & module);
-	void init_audiobuffer(State & state, Module & module);
-	void init_thread(State & state, Module & module);
-	void init_renderer(State & state, Module & module);
-	void init_texture(State & state, Module & module);
+	void initWindow(State *, Module &);
+	void initGLContext(State *, Module &);
+	void initDisplayMode(State *, Module &);
+	void initRect(State *, Module &);
+	void initSurface(State *, Module &);
+	void initPixelFormat(State *, Module &);
+	void initEvent(State *, Module &);
+	void initInput(State *, Module &);
+	void initCursor(State *, Module &);
+	void initJoystick(State *, Module &);
+	void initGameController(State *, Module &);
+	void initTimer(State *, Module &);
+	void initAudioDevice(State *, Module &);
+	void initAudioSpec(State *, Module &);
+	void initAudioBuffer(State *, Module &);
+	void initThread(State *, Module &);
+	void initRenderer(State *, Module &);
+	void initTexture(State *, Module &);
 
 	//SDL_mixer
-	void init_sdl_mixer(Module & module);
-	void init_mix_chunk(State & state, Module & module);
-	void init_mix_music(State & state, Module & module);
+	void initSDLmixer(Module & module);
+	void initMixChunk(State *, Module &);
+	void initMixMusic(State *, Module &);
 
 	//SDL_image
-	void init_sdl_image(Module & module);
+	void initSDLimage(Module & module);
 
 	//SDL_ttf
-	void init_sdl_ttf(Module & module);
-	void init_ttf_font(State & state, Module & module);
+	void initSDLttf(Module & module);
+	void initTTFFont(State *, Module &);
 
 	//SDL iconv
-	void init_iconv(State & state, Module & module);
+	void initIconv(State *, Module &);
 
 }
 

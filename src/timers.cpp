@@ -27,7 +27,7 @@ namespace LuaSDL {
 		return 2;
 	}
 
-	void init_timers(Module & module){
+	void initTimers(Module & module){
 		module["delay"] = lua_SDL_Delay;
 		module["getTicks"] = lua_SDL_GetTicks;
 		module["getPerformanceCounter"] = lua_SDL_GetPerformanceCounter;

@@ -25,7 +25,7 @@ namespace LuaSDL {
 		try{
 			SDL_Quit();
 		}catch(std::exception *  e){
-			stack->push<const std::string>(e->what());
+			stack->push<const std::string &>(e->what());
 			return 1;
 		}
 		return 0;
@@ -48,32 +48,41 @@ namespace LuaSDL {
 	}
 	static int lua_SDL_GetHint(State & state){
 		Stack * stack = state.stack;
-		const char * retval = SDL_GetHint(stack->to<const std::string>(1).c_str());
-		if (retval){
-			stack->push<const std::string>(retval);
-			return 1;
-		}else{
-			return 0;
+		if (stack->is<LUA_TSTRING>(1)){
+			const std::string hintName = stack->to<const std::string>(1);
+			const char * retval = SDL_GetHint(hintName.c_str());
+			if (retval){
+				stack->push<const std::string &>(retval);
+				return 1;
+			}
 		}
+		return 0;
 	}
 	static int lua_SDL_SetHint(State & state){
 		Stack * stack = state.stack;
-		stack->push<bool>(
-			(SDL_SetHint(
-				stack->to<const std::string>(1).c_str(),
-				stack->to<const std::string>(2).c_str()
-			)==SDL_TRUE));
-		return 1;
+		if (stack->is<LUA_TSTRING>(1) && stack->is<LUA_TSTRING>(2)){
+			const std::string hintName = stack->to<const std::string>(1);
+			const std::string hintValue = stack->to<const std::string>(2);
+			stack->push<bool>(
+				(SDL_SetHint(hintName.c_str(), hintName.c_str()
+				) == SDL_TRUE));
+			return 1;
+		}
+		return 0;
 	}
 	static int lua_SDL_SetHintWithPriority(State & state){
 		Stack * stack = state.stack;
-		stack->push<bool>(
-			(SDL_SetHintWithPriority(
-				stack->to<const std::string>(1).c_str(),
-				stack->to<const std::string>(2).c_str(),
-				(SDL_HintPriority)stack->to<int>(3)
-			) == SDL_TRUE ));
-		return 1;
+
+		if (stack->is<LUA_TSTRING>(1) && stack->is<LUA_TSTRING>(2)){
+			const std::string hintName = stack->to<const std::string>(1);
+			const std::string hintValue = stack->to<const std::string>(2);
+
+			stack->push<bool>(
+				(SDL_SetHintWithPriority(hintName.c_str(), hintValue.c_str(), (SDL_HintPriority)stack->to<int>(3)
+				) == SDL_TRUE));
+			return 1;
+		}
+		return 0;
 	}
 	static int lua_SDL_ClearError(State & state){
 		Stack * stack = state.stack;
@@ -82,22 +91,27 @@ namespace LuaSDL {
 	}
 	static int lua_SDL_GetError(State & state){
 		Stack * stack = state.stack;
-		stack->push<const std::string>(SDL_GetError());
+		stack->push<const std::string &>(SDL_GetError());
 		return 1;
 	}
 	static int lua_SDL_SetError(State & state){
 		Stack * stack = state.stack;
-		const char * fmt = stack->to<const std::string>(1).c_str();
-		SDL_SetError("%s", fmt);
+		if (stack->is<LUA_TSTRING>(1)){
+			const std::string fmt = stack->to<const std::string>(1);
+			SDL_SetError("%s", fmt.c_str());
+		}
 		return 0;
 	}
 	static int lua_SDL_LogMessage(State & state){
 		Stack * stack = state.stack;
-		SDL_LogMessage(
-			stack->to<int>(1),
-			(SDL_LogPriority) stack->to<int>(2),
-			"%s",
-			stack->to<const std::string>(3).c_str());
+		if (stack->is<LUA_TSTRING>(3)){
+			const std::string text = stack->to<const std::string>(3);
+			SDL_LogMessage(
+				stack->to<int>(1),
+				(SDL_LogPriority)stack->to<int>(2),
+				"%s",
+				text.c_str());
+		}
 		return 0;
 	}
 	static int lua_SDL_LogGetPriority(State & state){
@@ -147,7 +161,9 @@ namespace LuaSDL {
 				Window * interfaceWindow = state.getInterface<Window>("LuaSDL_Window");
 				window = interfaceWindow->get(4);
 			}
-			stack->push<bool>(SDL_ShowSimpleMessageBox(stack->to<int>(1), stack->to<const std::string>(2).c_str(), stack->to<const std::string>(3).c_str(), window) == 0);
+			const std::string title = stack->to<const std::string>(2);
+			const std::string message = stack->to<const std::string>(3);
+			stack->push<bool>(SDL_ShowSimpleMessageBox(stack->to<int>(1), title.c_str(), message.c_str(), window) == 0);
 			return 1;
 		}else{
 			return 0;
@@ -167,9 +183,12 @@ namespace LuaSDL {
 			}else{
 				data.window = NULL;
 			}
+			const std::string title = stack->to<const std::string>(2);
+			const std::string message = stack->to<const std::string>(3);
+
 			data.flags = stack->to<int>(1);
-			data.title = stack->to<const std::string>(2).c_str();
-			data.message = stack->to<const std::string>(3).c_str();
+			data.title = title.c_str();
+			data.message = message.c_str();
 			
 			if (stack->is<LUA_TTABLE>(5)){
 				int count = stack->objLen(5);
@@ -185,7 +204,10 @@ namespace LuaSDL {
 						stack->getField("id", -2);
 						buttons[i].buttonid = stack->to<int>(-1);
 						stack->getField("id", -3);
-						buttons[i].text = stack->to<const std::string>(-1).c_str();
+
+						const std::string text = stack->toLString(-1);
+						buttons[i].text = new const char[text.length()+1];
+						memcpy(const_cast<void*>(static_cast<const void *>(buttons[i].text)), text.c_str(), text.length() + 1);
 						stack->pop(4);
 						realCount++;
 					}else{
@@ -226,6 +248,9 @@ namespace LuaSDL {
 
 			stack->push<bool>(SDL_ShowMessageBox(&data, &button_id) == 0);
 
+			for (size_t i = 0; i < data.numbuttons; i++){
+				delete data.buttons[i].text;
+			}
 			delete[] data.buttons;
 			stack->push<int>(button_id);
 			return 1;
@@ -234,7 +259,7 @@ namespace LuaSDL {
 		}
 	}
 
-	void init_basic(Module & module){
+	void initBasic(Module & module){
 		module["init"] = lua_SDL_Init;
 		module["initSubsystem"] = lua_SDL_InitSubSystem;
 		module["quit"] = lua_SDL_Quit;
@@ -251,7 +276,7 @@ namespace LuaSDL {
 		module["logGetPriority"] = lua_SDL_LogGetPriority;
 		module["logResetPriorities"] = lua_SDL_LogResetPriorities;
 		module["logSetAllPriority"] = lua_SDL_LogSetAllPriority;
-		module["LogSetPriority"] = lua_SDL_LogSetPriority;
+		module["logSetPriority"] = lua_SDL_LogSetPriority;
 		module["getVersion"] = lua_SDL_GetVersion;
 		module["showSimpleMessageBox"] = lua_SDL_ShowSimpleMessageBox;
 		module["showMessageBox"] = lua_SDL_ShowMessageBox;

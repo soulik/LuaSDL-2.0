@@ -3,7 +3,7 @@
 
 namespace LuaSDL {
 	void initRect(State * state, Module & module){
-		state->registerInterface<Rect>("LuaSDL_Rect");
+		INIT_OBJECT(Rect);
 	}
 
 	SDL_Rect * Rect::constructor(State & state, bool & managed){

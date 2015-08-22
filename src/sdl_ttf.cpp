@@ -15,17 +15,18 @@ namespace LuaSDL {
 	}
 	static int lua_TTF_OpenFont(State & state){
 		Stack * stack = state.stack;
-		LuaSDL::Lua_SDL_TTF_Font & f = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_TTF_Font);
+		TTFFont * interfaceTTFFont = state.getInterface<TTFFont>("LuaSDL_TTFFont");
 		if (stack->is<LUA_TSTRING>(1) && stack->is<LUA_TNUMBER>(2)){
 			TTF_Font * font = NULL;
-			
+			const std::string fileName = stack->to<const std::string>(1);
+
 			if (stack->is<LUA_TNUMBER>(3)){
-				font = TTF_OpenFontIndex(stack->to<const std::string>(1).c_str(), stack->to<int>(2), stack->to<int>(3));
+				font = TTF_OpenFontIndex(fileName.c_str(), stack->to<int>(2), stack->to<int>(3));
 			}else{
-				font = TTF_OpenFont(stack->to<const std::string>(1).c_str(), stack->to<int>(2));
+				font = TTF_OpenFont(fileName.c_str(), stack->to<int>(2));
 			}
 			if (font){
-				f.push(font);
+				interfaceTTFFont->push(font, true);
 			}else{
 				stack->push<bool>(false);
 			}
@@ -35,7 +36,7 @@ namespace LuaSDL {
 	}
 	static int lua_TTF_GetError(State & state){
 		Stack * stack = state.stack;
-		stack->push<const std::string>(TTF_GetError());
+		stack->push<const std::string &>(TTF_GetError());
 		return 1;
 	}
 	static int lua_TTF_ByteSwappedUNICODE(State & state){
@@ -48,7 +49,7 @@ namespace LuaSDL {
 		return 0;
 	}
 
-	void init_sdl_ttf(Module & module){
+	void initSDLttf(Module & module){
 		module["ttfInit"] = lua_TTF_Init;
 		module["ttfQuit"] = lua_TTF_Quit;
 

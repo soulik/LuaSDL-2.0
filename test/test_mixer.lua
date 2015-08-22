@@ -1,5 +1,5 @@
 ﻿require 'bit'
-local SDL = require "LuaSDL"
+local SDL = require "LuaSDL2"
 
 
 local function init()

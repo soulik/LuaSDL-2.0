@@ -154,7 +154,7 @@ namespace LuaSDL {
 
 	int Surface::convert(State & state, SDL_Surface * surface){
 		Stack * stack = state.stack;
-		LuaSDL::Lua_SDL_PixelFormat & pf = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_PixelFormat);
+		PixelFormat * interfacePixelFormat = state.getInterface<PixelFormat>("LuaSDL_PixelFormat");
 		Surface * interfaceSurface = state.getInterface<Surface>("LuaSDL_Surface");
 	
 		Uint32 flags;
@@ -164,13 +164,17 @@ namespace LuaSDL {
 			flags = 0;
 		}
 
-		SDL_Surface * newSurface = SDL_ConvertSurface(surface, pf.check(1), flags);
-		if (newSurface){
-			interfaceSurface->push(newSurface, true);
-			return 1;
-		}else{
-			return 0;
+		SDL_PixelFormat * pf = interfacePixelFormat->get(1);
+
+		if (pf){
+			SDL_Surface * newSurface = SDL_ConvertSurface(surface, pf, flags);
+			if (newSurface){
+				interfaceSurface->push(newSurface, true);
+				return 1;
+			}
 		}
+
+		return 0;
 	}
 
 	int Surface::getRawPixels(State & state, SDL_Surface * surface){
@@ -305,16 +309,15 @@ namespace LuaSDL {
 	}
 
 	int Surface::getFormat(State & state, SDL_Surface * surface){
-		LuaSDL::Lua_SDL_PixelFormat & pf = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_PixelFormat);
-
-		pf.push(surface->format, false);
+		PixelFormat * interfacePixelFormat = state.getInterface<PixelFormat>("LuaSDL_PixelFormat");
+		interfacePixelFormat->push(surface->format);
 		return 1;
 	}
 
 	int Surface::setFormat(State & state, SDL_Surface * surface){
-		LuaSDL::Lua_SDL_PixelFormat & pf = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_PixelFormat);
+		PixelFormat * interfacePixelFormat = state.getInterface<PixelFormat>("LuaSDL_PixelFormat");
 	
-		SDL_PixelFormat * format = pf.check(1);
+		SDL_PixelFormat * format = interfacePixelFormat->get(1);
 		if (format){
 			surface->format->format = format->format;
 			surface->format->palette = format->palette;
@@ -338,21 +341,25 @@ namespace LuaSDL {
 	}
 
 	int Surface::createColorCursor(State & state, SDL_Surface * surface){
-		LuaSDL::Lua_SDL_Cursor & c = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Cursor);
-		c.push(
+		Stack * stack = state.stack;
+
+		Cursor * interfaceCursor = state.getInterface<Cursor>("LuaSDL_Cursor");
+		interfaceCursor->push(
 			SDL_CreateColorCursor(
 				surface,
 				stack->to<int>(1),
-				stack->to<int>(2)));
+				stack->to<int>(2)
+			), true
+		);
 		return 1;
 	}
 
 	int Surface::createSoftwareRenderer(State & state, SDL_Surface * surface){
-		LuaSDL::Lua_SDL_Renderer & r = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Renderer);
+		Renderer * interfaceRenderer = state.getInterface<Renderer>("LuaSDL_Renderer");
 
 		SDL_Renderer * renderer = SDL_CreateSoftwareRenderer(surface);
 		if (renderer){
-			r.push(renderer);
+			interfaceRenderer->push(renderer, true);
 			return 1;
 		}else{
 			return 0;
@@ -485,12 +492,11 @@ namespace LuaSDL {
 		SDL_FreeSurface(surface);
 	}
 
-	void initSurface(State * state){
-		state->registerInterface<Surface>("LuaSDL_Surface");
-		/*
-		module["createRGBSurface"] = lua_SDL_CreateRGBSurface;
+	void initSurface(State * state, Module & module){
+		INIT_OBJECT(Surface);
+		
+		//module["createRGBSurface"] = lua_SDL_CreateRGBSurface;
 		module["convertPixels"] = lua_SDL_ConvertPixels;
-		*/
 	}
 
 };

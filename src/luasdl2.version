@@ -1,4 +1,4 @@
 luasdl2 {
-	global: luaopen_luasdl2;
+	global: luaopen_LuaSDL2;
 	local: *;
 };

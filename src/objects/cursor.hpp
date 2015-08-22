@@ -5,21 +5,17 @@
 
 namespace LuaSDL {
 
-	class Lua_SDL_Cursor : public LObject<Lua_SDL_Cursor, SDL_Cursor *> {
+	class Cursor : public Object<SDL_Cursor> {
 	public:
-		LOBJECT_DEFINE_CLASS(Lua_SDL_Cursor, SDL_Cursor *, "Cursor") {
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Cursor, "set", setCursor);
-			//LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Cursor, SDL_Cursor *, "", null_method, null_method);	
+		explicit Cursor(State * state) : Object<SDL_Cursor>(state) {
+			LUTOK_METHOD("set", &Cursor::setCursor);
 		}
 
-		void destructor(lutok::state & s, SDL_Cursor * cursor){
+		void destructor(State & state, SDL_Cursor * cursor){
 			SDL_FreeCursor(cursor);
 		}
 
-		int LOBJECT_METHOD(setCursor, SDL_Cursor * cursor){
-			SDL_SetCursor(cursor);
-			return 0;
-		}
+		int setCursor(State & state, SDL_Cursor * cursor);
 	};
 }
 

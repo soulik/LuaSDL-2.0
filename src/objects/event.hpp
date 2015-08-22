@@ -6,142 +6,142 @@
 
 namespace LuaSDL {
 
-	class Lua_SDL_Event : public LObject<Lua_SDL_Event, SDL_Event *> {
+	class Event : public Object<SDL_Event> {
 	public:
-		LOBJECT_DEFINE_CLASS(Lua_SDL_Event, SDL_Event *, "Event") {
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Event, "push", pushEvent);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Event, "", null_method);
+		explicit Event(State * state) : Object<SDL_Event>(state) {
+			LUTOK_METHOD("push", &Event::pushEvent);
+			//LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Event, "", null_method);
 
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "type", getEventType, setEventType);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "timestamp", getTimestamp, getTimestamp);	
+			LUTOK_PROPERTY("type", &Event::getEventType, &Event::setEventType);	
+			LUTOK_PROPERTY("timestamp", &Event::getTimestamp, &Event::getTimestamp);	
 
 			//SDL_WindowEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "window_windowID", getWindow_windowID, setWindow_windowID);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "window_event", getWindow_event, setWindow_event);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "window_data1", getWindow_data1, setWindow_data1);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "window_data2", getWindow_data2, setWindow_data2);
+			LUTOK_PROPERTY("window_windowID", &Event::getWindow_windowID, &Event::setWindow_windowID);
+			LUTOK_PROPERTY("window_event", &Event::getWindow_event, &Event::setWindow_event);
+			LUTOK_PROPERTY("window_data1", &Event::getWindow_data1, &Event::setWindow_data1);
+			LUTOK_PROPERTY("window_data2", &Event::getWindow_data2, &Event::setWindow_data2);
 
 			//SDL_KeyboardEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "keyboard_windowID", getKeyboard_windowID, setKeyboard_windowID);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "keyboard_state", getKeyboard_state, setKeyboard_state);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "keyboard_repeat", getKeyboard_repeat, setKeyboard_repeat);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "keyboard_keysym_scancode", getKeyboard_keysym_scancode, setKeyboard_keysym_scancode);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "keyboard_keysym_keycode", getKeyboard_keysym_keycode, setKeyboard_keysym_keycode);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "keyboard_keysym_sym", getKeyboard_keysym_sym, setKeyboard_keysym_sym);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "keyboard_keysym_mod", getKeyboard_keysym_mod, setKeyboard_keysym_mod);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "keyboard_keysym_unicode", getKeyboard_keysym_unicode, setKeyboard_keysym_unicode);
+			LUTOK_PROPERTY("keyboard_windowID", &Event::getKeyboard_windowID, &Event::setKeyboard_windowID);
+			LUTOK_PROPERTY("keyboard_state", &Event::getKeyboard_state, &Event::setKeyboard_state);
+			LUTOK_PROPERTY("keyboard_repeat", &Event::getKeyboard_repeat, &Event::setKeyboard_repeat);
+			LUTOK_PROPERTY("keyboard_keysym_scancode", &Event::getKeyboard_keysym_scancode, &Event::setKeyboard_keysym_scancode);
+			LUTOK_PROPERTY("keyboard_keysym_keycode", &Event::getKeyboard_keysym_keycode, &Event::setKeyboard_keysym_keycode);
+			LUTOK_PROPERTY("keyboard_keysym_sym", &Event::getKeyboard_keysym_sym, &Event::setKeyboard_keysym_sym);
+			LUTOK_PROPERTY("keyboard_keysym_mod", &Event::getKeyboard_keysym_mod, &Event::setKeyboard_keysym_mod);
+			LUTOK_PROPERTY("keyboard_keysym_unicode", &Event::getKeyboard_keysym_unicode, &Event::setKeyboard_keysym_unicode);
 
 			//SDL_TextEditingEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "textediting_windowID", getTextediting_windowID, setTextediting_windowID);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "textediting_text", getTextediting_text, setTextediting_text);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "textediting_start", getTextediting_start, setTextediting_start);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "textediting_length", getTextediting_length, setTextediting_length);
+			LUTOK_PROPERTY("textediting_windowID", &Event::getTextediting_windowID, &Event::setTextediting_windowID);
+			LUTOK_PROPERTY("textediting_text", &Event::getTextediting_text, &Event::setTextediting_text);
+			LUTOK_PROPERTY("textediting_start", &Event::getTextediting_start, &Event::setTextediting_start);
+			LUTOK_PROPERTY("textediting_length", &Event::getTextediting_length, &Event::setTextediting_length);
 
 			//SDL_TextInputEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "textinput_windowID", getTextinput_windowID, setTextinput_windowID);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "textinput_text", getTextinput_text, setTextinput_text);
+			LUTOK_PROPERTY("textinput_windowID", &Event::getTextinput_windowID, &Event::setTextinput_windowID);
+			LUTOK_PROPERTY("textinput_text", &Event::getTextinput_text, &Event::setTextinput_text);
 
 			//SDL_MouseMotionEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "mousemotion_windowID", getMousemotion_windowID, setMousemotion_windowID);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "mousemotion_which", getMousemotion_which, setMousemotion_which);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "mousemotion_state", getMousemotion_state, setMousemotion_state);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "mousemotion_x", getMousemotion_x, setMousemotion_x);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "mousemotion_y", getMousemotion_y, setMousemotion_y);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "mousemotion_xrel", getMousemotion_xrel, setMousemotion_xrel);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "mousemotion_yrel", getMousemotion_yrel, setMousemotion_yrel);
+			LUTOK_PROPERTY("mousemotion_windowID", &Event::getMousemotion_windowID, &Event::setMousemotion_windowID);
+			LUTOK_PROPERTY("mousemotion_which", &Event::getMousemotion_which, &Event::setMousemotion_which);
+			LUTOK_PROPERTY("mousemotion_state", &Event::getMousemotion_state, &Event::setMousemotion_state);
+			LUTOK_PROPERTY("mousemotion_x", &Event::getMousemotion_x, &Event::setMousemotion_x);
+			LUTOK_PROPERTY("mousemotion_y", &Event::getMousemotion_y, &Event::setMousemotion_y);
+			LUTOK_PROPERTY("mousemotion_xrel", &Event::getMousemotion_xrel, &Event::setMousemotion_xrel);
+			LUTOK_PROPERTY("mousemotion_yrel", &Event::getMousemotion_yrel, &Event::setMousemotion_yrel);
 
 			//SDL_MouseButtonEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "mousebutton_windowID", getMousebutton_windowID, setMousebutton_windowID);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "mousebutton_which", getMousebutton_which, setMousebutton_which);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "mousebutton_button", getMousebutton_button, setMousebutton_button);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "mousebutton_state", getMousebutton_state, setMousebutton_state);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "mousebutton_x", getMousebutton_x, setMousebutton_x);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "mousebutton_y", getMousebutton_y, setMousebutton_y);
+			LUTOK_PROPERTY("mousebutton_windowID", &Event::getMousebutton_windowID, &Event::setMousebutton_windowID);
+			LUTOK_PROPERTY("mousebutton_which", &Event::getMousebutton_which, &Event::setMousebutton_which);
+			LUTOK_PROPERTY("mousebutton_button", &Event::getMousebutton_button, &Event::setMousebutton_button);
+			LUTOK_PROPERTY("mousebutton_state", &Event::getMousebutton_state, &Event::setMousebutton_state);
+			LUTOK_PROPERTY("mousebutton_x", &Event::getMousebutton_x, &Event::setMousebutton_x);
+			LUTOK_PROPERTY("mousebutton_y", &Event::getMousebutton_y, &Event::setMousebutton_y);
 
 			//SDL_MouseWheelEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "mousewheel_windowID", getMousewheel_windowID, setMousewheel_windowID);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "mousewheel_which", getMousewheel_which, setMousewheel_which);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "mousewheel_x", getMousewheel_x, setMousewheel_x);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "mousewheel_y", getMousewheel_y, setMousewheel_y);
+			LUTOK_PROPERTY("mousewheel_windowID", &Event::getMousewheel_windowID, &Event::setMousewheel_windowID);
+			LUTOK_PROPERTY("mousewheel_which", &Event::getMousewheel_which, &Event::setMousewheel_which);
+			LUTOK_PROPERTY("mousewheel_x", &Event::getMousewheel_x, &Event::setMousewheel_x);
+			LUTOK_PROPERTY("mousewheel_y", &Event::getMousewheel_y, &Event::setMousewheel_y);
 
 			//SDL_JoyAxisEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "joyaxis_which", getJoyaxis_which, setJoyaxis_which);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "joyaxis_axis", getJoyaxis_axis, setJoyaxis_axis);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "joyaxis_value", getJoyaxis_value, setJoyaxis_value);
+			LUTOK_PROPERTY("joyaxis_which", &Event::getJoyaxis_which, &Event::setJoyaxis_which);
+			LUTOK_PROPERTY("joyaxis_axis", &Event::getJoyaxis_axis, &Event::setJoyaxis_axis);
+			LUTOK_PROPERTY("joyaxis_value", &Event::getJoyaxis_value, &Event::setJoyaxis_value);
 
 			//SDL_JoyBallEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "joyball_which", getJoyball_which, setJoyball_which);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "joyball_ball", getJoyball_ball, setJoyball_ball);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "joyball_xrel", getJoyball_xrel, setJoyball_xrel);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "joyball_yrel", getJoyball_yrel, setJoyball_yrel);
+			LUTOK_PROPERTY("joyball_which", &Event::getJoyball_which, &Event::setJoyball_which);
+			LUTOK_PROPERTY("joyball_ball", &Event::getJoyball_ball, &Event::setJoyball_ball);
+			LUTOK_PROPERTY("joyball_xrel", &Event::getJoyball_xrel, &Event::setJoyball_xrel);
+			LUTOK_PROPERTY("joyball_yrel", &Event::getJoyball_yrel, &Event::setJoyball_yrel);
 
 			//SDL_JoyHatEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "joyhat_which", getJoyhat_which, setJoyhat_which);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "joyhat_hat", getJoyhat_hat, setJoyhat_hat);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "joyhat_value", getJoyhat_value, setJoyhat_value);
+			LUTOK_PROPERTY("joyhat_which", &Event::getJoyhat_which, &Event::setJoyhat_which);
+			LUTOK_PROPERTY("joyhat_hat", &Event::getJoyhat_hat, &Event::setJoyhat_hat);
+			LUTOK_PROPERTY("joyhat_value", &Event::getJoyhat_value, &Event::setJoyhat_value);
 
 			//SDL_JoyButtonEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "joybutton_which", getJoybutton_which, setJoybutton_which);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "joybutton_button", getJoybutton_button, setJoybutton_button);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "joybutton_state", getJoybutton_state, setJoybutton_state);
+			LUTOK_PROPERTY("joybutton_which", &Event::getJoybutton_which, &Event::setJoybutton_which);
+			LUTOK_PROPERTY("joybutton_button", &Event::getJoybutton_button, &Event::setJoybutton_button);
+			LUTOK_PROPERTY("joybutton_state", &Event::getJoybutton_state, &Event::setJoybutton_state);
 
 			//SDL_JoyDeviceEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "joydevice_which", getJoydevice_which, setJoydevice_which);
+			LUTOK_PROPERTY("joydevice_which", &Event::getJoydevice_which, &Event::setJoydevice_which);
 
 			//SDL_ControllerAxisEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "controlleraxis_which", getControlleraxis_which, setControlleraxis_which);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "controlleraxis_axis", getControlleraxis_axis, setControlleraxis_axis);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "controlleraxis_value", getControlleraxis_value, setControlleraxis_value);
+			LUTOK_PROPERTY("controlleraxis_which", &Event::getControlleraxis_which, &Event::setControlleraxis_which);
+			LUTOK_PROPERTY("controlleraxis_axis", &Event::getControlleraxis_axis, &Event::setControlleraxis_axis);
+			LUTOK_PROPERTY("controlleraxis_value", &Event::getControlleraxis_value, &Event::setControlleraxis_value);
 
 			//SDL_ControllerButtonEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "controllerbutton_which", getControllerbutton_which, setControllerbutton_which);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "controllerbutton_button", getControllerbutton_button, setControllerbutton_button);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "controllerbutton_state", getControllerbutton_state, setControllerbutton_state);
+			LUTOK_PROPERTY("controllerbutton_which", &Event::getControllerbutton_which, &Event::setControllerbutton_which);
+			LUTOK_PROPERTY("controllerbutton_button", &Event::getControllerbutton_button, &Event::setControllerbutton_button);
+			LUTOK_PROPERTY("controllerbutton_state", &Event::getControllerbutton_state, &Event::setControllerbutton_state);
 
 			//SDL_ControllerDeviceEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "controllerdevice_which", getControllerdevice_which, setControllerdevice_which);
+			LUTOK_PROPERTY("controllerdevice_which", &Event::getControllerdevice_which, &Event::setControllerdevice_which);
 
 			//SDL_TouchFingerEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "touchfinger_touchId", getTouchfinger_touchId, setTouchfinger_touchId);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "touchfinger_fingerId", getTouchfinger_fingerId, setTouchfinger_fingerId);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "touchfinger_x", getTouchfinger_x, setTouchfinger_x);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "touchfinger_y", getTouchfinger_y, setTouchfinger_y);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "touchfinger_dx", getTouchfinger_dx, setTouchfinger_dx);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "touchfinger_dy", getTouchfinger_dy, setTouchfinger_dy);
+			LUTOK_PROPERTY("touchfinger_touchId", &Event::getTouchfinger_touchId, &Event::setTouchfinger_touchId);
+			LUTOK_PROPERTY("touchfinger_fingerId", &Event::getTouchfinger_fingerId, &Event::setTouchfinger_fingerId);
+			LUTOK_PROPERTY("touchfinger_x", &Event::getTouchfinger_x, &Event::setTouchfinger_x);
+			LUTOK_PROPERTY("touchfinger_y", &Event::getTouchfinger_y, &Event::setTouchfinger_y);
+			LUTOK_PROPERTY("touchfinger_dx", &Event::getTouchfinger_dx, &Event::setTouchfinger_dx);
+			LUTOK_PROPERTY("touchfinger_dy", &Event::getTouchfinger_dy, &Event::setTouchfinger_dy);
 
 			//SDL_MultiGestureEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "multigesture_touchId", getMultigesture_touchId, setMultigesture_touchId);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "multigesture_dTheta", getMultigesture_dTheta, setMultigesture_dTheta);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "multigesture_dDist", getMultigesture_dDist, setMultigesture_dDist);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "multigesture_x", getMultigesture_x, setMultigesture_x);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "multigesture_y", getMultigesture_y, setMultigesture_y);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "multigesture_numFingers", getMultigesture_numFingers, setMultigesture_numFingers);
+			LUTOK_PROPERTY("multigesture_touchId", &Event::getMultigesture_touchId, &Event::setMultigesture_touchId);
+			LUTOK_PROPERTY("multigesture_dTheta", &Event::getMultigesture_dTheta, &Event::setMultigesture_dTheta);
+			LUTOK_PROPERTY("multigesture_dDist", &Event::getMultigesture_dDist, &Event::setMultigesture_dDist);
+			LUTOK_PROPERTY("multigesture_x", &Event::getMultigesture_x, &Event::setMultigesture_x);
+			LUTOK_PROPERTY("multigesture_y", &Event::getMultigesture_y, &Event::setMultigesture_y);
+			LUTOK_PROPERTY("multigesture_numFingers", &Event::getMultigesture_numFingers, &Event::setMultigesture_numFingers);
 
 			//SDL_DollarGestureEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "dollargesture_touchId", getDollargesture_touchId, setDollargesture_touchId);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "dollargesture_gestureId", getDollargesture_gestureId, setDollargesture_gestureId);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "dollargesture_numFingers", getDollargesture_numFingers, setDollargesture_numFingers);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "dollargesture_error", getDollargesture_error, setDollargesture_error);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "dollargesture_x", getDollargesture_x, setDollargesture_x);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "dollargesture_y", getDollargesture_y, setDollargesture_y);
+			LUTOK_PROPERTY("dollargesture_touchId", &Event::getDollargesture_touchId, &Event::setDollargesture_touchId);
+			LUTOK_PROPERTY("dollargesture_gestureId", &Event::getDollargesture_gestureId, &Event::setDollargesture_gestureId);
+			LUTOK_PROPERTY("dollargesture_numFingers", &Event::getDollargesture_numFingers, &Event::setDollargesture_numFingers);
+			LUTOK_PROPERTY("dollargesture_error", &Event::getDollargesture_error, &Event::setDollargesture_error);
+			LUTOK_PROPERTY("dollargesture_x", &Event::getDollargesture_x, &Event::setDollargesture_x);
+			LUTOK_PROPERTY("dollargesture_y", &Event::getDollargesture_y, &Event::setDollargesture_y);
 
 			//SDL_DropEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "dropevent_file", getDrop_file, setDrop_file);
+			LUTOK_PROPERTY("dropevent_file", &Event::getDrop_file, &Event::setDrop_file);
 
 			//SDL_QuitEvent
 
 			//SDL_UserEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "userevent_windowID", getUser_windowID, setUser_windowID);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "userevent_code", getUser_code, setUser_code);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "userevent_data1", getUser_data1, setUser_data1);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "userevent_data2", getUser_data2, setUser_data2);
+			LUTOK_PROPERTY("userevent_windowID", &Event::getUser_windowID, &Event::setUser_windowID);
+			LUTOK_PROPERTY("userevent_code", &Event::getUser_code, &Event::setUser_code);
+			LUTOK_PROPERTY("userevent_data1", &Event::getUser_data1, &Event::setUser_data1);
+			LUTOK_PROPERTY("userevent_data2", &Event::getUser_data2, &Event::setUser_data2);
 
 			//SDL_SysWMEvent
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Event, SDL_Event *, "syswm_msg", getSyswm_msg, setSyswm_msg);
+			LUTOK_PROPERTY("syswm_msg", &Event::getSyswm_msg, &Event::setSyswm_msg);
 
 		}
 
-		void destructor(lutok::state & s, SDL_Event * event){
+		void destructor(State & state, SDL_Event * event){
 			if (event->type == SDL_DROPFILE){
 				if (event->drop.file){
 					SDL_free(event->drop.file);
@@ -153,765 +153,257 @@ namespace LuaSDL {
 			delete event;
 		}
 
-		int inline LOBJECT_METHOD(pushEvent, SDL_Event * event){
-			state.push_integer(SDL_PushEvent(event));
-			return 1;
-		}
+		SDL_Event * constructor(State & state, bool & managed);
+
+		int inline pushEvent(State & state, SDL_Event * event);
 
 		//common getters/setters
 
-		int inline LOBJECT_METHOD(getEventType, SDL_Event * event){
-			state.push_integer(event->type);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setEventType, SDL_Event * event){
-			event->type = state.to_integer(1);
-			return 0;
-		}
-		int inline LOBJECT_METHOD(getTimestamp, SDL_Event * event){
-			state.push_integer(((SDL_CommonEvent*)event)->timestamp);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setTimestamp, SDL_Event * event){
-			((SDL_CommonEvent*)event)->timestamp = state.to_integer(1);
-			return 0;
-		}
+		int inline getEventType(State & state, SDL_Event * event);
+		int inline setEventType(State & state, SDL_Event * event);
+		int inline getTimestamp(State & state, SDL_Event * event);
+		int inline setTimestamp(State & state, SDL_Event * event);
 
 		//event specific getters/setters
 
-		int inline LOBJECT_METHOD(getWindow_windowID, SDL_Event * event){
-			state.push_integer(event->window.windowID);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setWindow_windowID, SDL_Event * event){
-			event->window.windowID = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getWindow_event, SDL_Event * event){
-			state.push_integer(event->window.event);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setWindow_event, SDL_Event * event){
-			event->window.event = (Uint8)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getWindow_data1, SDL_Event * event){
-			state.push_integer(event->window.data1);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setWindow_data1, SDL_Event * event){
-			event->window.data1 = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getWindow_data2, SDL_Event * event){
-			state.push_integer(event->window.data2);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setWindow_data2, SDL_Event * event){
-			event->window.data2 = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getKeyboard_windowID, SDL_Event * event){
-			state.push_integer(event->key.windowID);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setKeyboard_windowID, SDL_Event * event){
-			event->key.windowID = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getKeyboard_state, SDL_Event * event){
-			state.push_integer(event->key.state);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setKeyboard_state, SDL_Event * event){
-			event->key.state = (Uint8)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getKeyboard_repeat, SDL_Event * event){
-			state.push_integer(event->key.repeat);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setKeyboard_repeat, SDL_Event * event){
-			event->key.repeat = (Uint8)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getKeyboard_keysym_scancode, SDL_Event * event){
-			state.push_integer(event->key.keysym.scancode);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setKeyboard_keysym_scancode, SDL_Event * event){
-			event->key.keysym.scancode = (SDL_Scancode)state.to_integer(1);
-			return 0;
-		}
-		int inline LOBJECT_METHOD(getKeyboard_keysym_keycode, SDL_Event * event){
-			state.push_integer(SDL_SCANCODE_TO_KEYCODE(event->key.keysym.scancode));
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setKeyboard_keysym_keycode, SDL_Event * event){
-			event->key.keysym.scancode = (SDL_Scancode)(state.to_integer(1) & ~SDLK_SCANCODE_MASK);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getKeyboard_keysym_sym, SDL_Event * event){
-			state.push_integer(event->key.keysym.sym);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setKeyboard_keysym_sym, SDL_Event * event){
-			event->key.keysym.sym = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getKeyboard_keysym_mod, SDL_Event * event){
-			state.push_integer(event->key.keysym.mod);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setKeyboard_keysym_mod, SDL_Event * event){
-			event->key.keysym.mod = (Uint16)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getKeyboard_keysym_unicode, SDL_Event * event){
-			state.push_integer(event->key.keysym.unused);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setKeyboard_keysym_unicode, SDL_Event * event){
-			event->key.keysym.unused = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getTextediting_windowID, SDL_Event * event){
-			state.push_integer(event->edit.windowID);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setTextediting_windowID, SDL_Event * event){
-			event->edit.windowID = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getTextediting_text, SDL_Event * event){
-			state.push_string(event->edit.text);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setTextediting_text, SDL_Event * event){
-			std::string & text = state.to_string(1);
-			size_t text_len = text.length();
-			size_t len = (text_len < SDL_TEXTEDITINGEVENT_TEXT_SIZE-1) ? text_len : SDL_TEXTEDITINGEVENT_TEXT_SIZE-1;
-			strncpy(event->edit.text, text.c_str(),len);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getTextediting_start, SDL_Event * event){
-			state.push_integer(event->edit.start);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setTextediting_start, SDL_Event * event){
-			event->edit.start = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getTextediting_length, SDL_Event * event){
-			state.push_integer(event->edit.length);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setTextediting_length, SDL_Event * event){
-			event->edit.length = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getTextinput_windowID, SDL_Event * event){
-			state.push_integer(event->text.windowID);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setTextinput_windowID, SDL_Event * event){
-			event->text.windowID = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getTextinput_text, SDL_Event * event){
-			state.push_string(event->text.text);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setTextinput_text, SDL_Event * event){
-			std::string & text = state.to_string(1) ;
-			size_t text_len = text.length();
-			size_t len = (text_len < SDL_TEXTINPUTEVENT_TEXT_SIZE-1) ? text_len : SDL_TEXTINPUTEVENT_TEXT_SIZE-1;
-			strncpy(event->text.text, text.c_str(),len);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMousemotion_windowID, SDL_Event * event){
-			state.push_integer(event->motion.windowID);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMousemotion_windowID, SDL_Event * event){
-			event->motion.windowID = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMousemotion_which, SDL_Event * event){
-			state.push_integer(event->motion.which);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMousemotion_which, SDL_Event * event){
-			event->motion.which = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMousemotion_state, SDL_Event * event){
-			state.push_integer(event->motion.state);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMousemotion_state, SDL_Event * event){
-			event->motion.state = (Uint8)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMousemotion_x, SDL_Event * event){
-			state.push_integer(event->motion.x);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMousemotion_x, SDL_Event * event){
-			event->motion.x = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMousemotion_y, SDL_Event * event){
-			state.push_integer(event->motion.y);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMousemotion_y, SDL_Event * event){
-			event->motion.y = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMousemotion_xrel, SDL_Event * event){
-			state.push_integer(event->motion.xrel);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMousemotion_xrel, SDL_Event * event){
-			event->motion.xrel = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMousemotion_yrel, SDL_Event * event){
-			state.push_integer(event->motion.yrel);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMousemotion_yrel, SDL_Event * event){
-			event->motion.yrel = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMousebutton_windowID, SDL_Event * event){
-			state.push_integer(event->button.windowID);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMousebutton_windowID, SDL_Event * event){
-			event->button.windowID = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMousebutton_which, SDL_Event * event){
-			state.push_integer(event->button.which);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMousebutton_which, SDL_Event * event){
-			event->button.which = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMousebutton_button, SDL_Event * event){
-			state.push_integer(event->button.button);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMousebutton_button, SDL_Event * event){
-			event->button.button = (Uint8)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMousebutton_state, SDL_Event * event){
-			state.push_integer(event->button.state);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMousebutton_state, SDL_Event * event){
-			event->button.state = (Uint8)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMousebutton_x, SDL_Event * event){
-			state.push_integer(event->button.x);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMousebutton_x, SDL_Event * event){
-			event->button.x = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMousebutton_y, SDL_Event * event){
-			state.push_integer(event->button.y);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMousebutton_y, SDL_Event * event){
-			event->button.y = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMousewheel_windowID, SDL_Event * event){
-			state.push_integer(event->wheel.windowID);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMousewheel_windowID, SDL_Event * event){
-			event->wheel.windowID = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMousewheel_which, SDL_Event * event){
-			state.push_integer(event->wheel.which);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMousewheel_which, SDL_Event * event){
-			event->wheel.which = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMousewheel_x, SDL_Event * event){
-			state.push_integer(event->wheel.x);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMousewheel_x, SDL_Event * event){
-			event->wheel.x = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMousewheel_y, SDL_Event * event){
-			state.push_integer(event->wheel.y);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMousewheel_y, SDL_Event * event){
-			event->wheel.y = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getJoyaxis_which, SDL_Event * event){
-			state.push_integer(event->jaxis.which);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setJoyaxis_which, SDL_Event * event){
-			event->jaxis.which = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getJoyaxis_axis, SDL_Event * event){
-			state.push_integer(event->jaxis.axis);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setJoyaxis_axis, SDL_Event * event){
-			event->jaxis.axis = (Uint8)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getJoyaxis_value, SDL_Event * event){
-			state.push_integer(event->jaxis.value);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setJoyaxis_value, SDL_Event * event){
-			event->jaxis.value = (Sint16)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getJoyball_which, SDL_Event * event){
-			state.push_integer(event->jball.which);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setJoyball_which, SDL_Event * event){
-			event->jball.which = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getJoyball_ball, SDL_Event * event){
-			state.push_integer(event->jball.ball);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setJoyball_ball, SDL_Event * event){
-			event->jball.ball = (Uint8)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getJoyball_xrel, SDL_Event * event){
-			state.push_integer(event->jball.xrel);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setJoyball_xrel, SDL_Event * event){
-			event->jball.xrel = (Sint16)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getJoyball_yrel, SDL_Event * event){
-			state.push_integer(event->jball.yrel);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setJoyball_yrel, SDL_Event * event){
-			event->jball.yrel = (Sint16)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getJoyhat_which, SDL_Event * event){
-			state.push_integer(event->jhat.which);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setJoyhat_which, SDL_Event * event){
-			event->jhat.which = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getJoyhat_hat, SDL_Event * event){
-			state.push_integer(event->jhat.hat);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setJoyhat_hat, SDL_Event * event){
-			event->jhat.hat = (Uint8)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getJoyhat_value, SDL_Event * event){
-			state.push_integer(event->jhat.value);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setJoyhat_value, SDL_Event * event){
-			event->jhat.value = (Uint8)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getJoybutton_which, SDL_Event * event){
-			state.push_integer(event->jbutton.which);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setJoybutton_which, SDL_Event * event){
-			event->jbutton.which = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getJoybutton_button, SDL_Event * event){
-			state.push_integer(event->jbutton.button);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setJoybutton_button, SDL_Event * event){
-			event->jbutton.button = (Uint8)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getJoybutton_state, SDL_Event * event){
-			state.push_integer(event->jbutton.state);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setJoybutton_state, SDL_Event * event){
-			event->jbutton.state = (Uint8)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getJoydevice_which, SDL_Event * event){
-			state.push_integer(event->jdevice.which);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setJoydevice_which, SDL_Event * event){
-			event->jdevice.which = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getControlleraxis_which, SDL_Event * event){
-			state.push_integer(event->caxis.which);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setControlleraxis_which, SDL_Event * event){
-			event->caxis.which = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getControlleraxis_axis, SDL_Event * event){
-			state.push_integer(event->caxis.axis);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setControlleraxis_axis, SDL_Event * event){
-			event->caxis.axis = (Uint8)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getControlleraxis_value, SDL_Event * event){
-			state.push_integer(event->caxis.value);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setControlleraxis_value, SDL_Event * event){
-			event->caxis.value = (Sint16)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getControllerbutton_which, SDL_Event * event){
-			state.push_integer(event->cbutton.which);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setControllerbutton_which, SDL_Event * event){
-			event->cbutton.which = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getControllerbutton_button, SDL_Event * event){
-			state.push_integer(event->cbutton.button);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setControllerbutton_button, SDL_Event * event){
-			event->cbutton.button = (Uint8)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getControllerbutton_state, SDL_Event * event){
-			state.push_integer(event->cbutton.state);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setControllerbutton_state, SDL_Event * event){
-			event->cbutton.state = (Uint8)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getControllerdevice_which, SDL_Event * event){
-			state.push_integer(event->cdevice.which);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setControllerdevice_which, SDL_Event * event){
-			event->cdevice.which = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getTouchfinger_touchId, SDL_Event * event){
-			state.push_integer((const int)event->tfinger.touchId);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setTouchfinger_touchId, SDL_Event * event){
-			event->tfinger.touchId = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getTouchfinger_fingerId, SDL_Event * event){
-			state.push_integer((const int)event->tfinger.fingerId);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setTouchfinger_fingerId, SDL_Event * event){
-			event->tfinger.fingerId = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getTouchfinger_x, SDL_Event * event){
-			state.push_number(event->tfinger.x);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setTouchfinger_x, SDL_Event * event){
-			event->tfinger.x = (float)state.to_number(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getTouchfinger_y, SDL_Event * event){
-			state.push_number(event->tfinger.y);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setTouchfinger_y, SDL_Event * event){
-			event->tfinger.y = (float)state.to_number(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getTouchfinger_dx, SDL_Event * event){
-			state.push_number(event->tfinger.dx);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setTouchfinger_dx, SDL_Event * event){
-			event->tfinger.dx = (float)state.to_number(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getTouchfinger_dy, SDL_Event * event){
-			state.push_number(event->tfinger.dy);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setTouchfinger_dy, SDL_Event * event){
-			event->tfinger.dy = (float)state.to_number(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMultigesture_touchId, SDL_Event * event){
-			state.push_integer((const int)event->mgesture.touchId);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMultigesture_touchId, SDL_Event * event){
-			event->mgesture.touchId = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMultigesture_dTheta, SDL_Event * event){
-			state.push_number(event->mgesture.dTheta);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMultigesture_dTheta, SDL_Event * event){
-			event->mgesture.dTheta = (float)state.to_number(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMultigesture_dDist, SDL_Event * event){
-			state.push_number(event->mgesture.dDist);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMultigesture_dDist, SDL_Event * event){
-			event->mgesture.dDist = (float)state.to_number(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMultigesture_x, SDL_Event * event){
-			state.push_number(event->mgesture.x);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMultigesture_x, SDL_Event * event){
-			event->mgesture.x = (float)state.to_number(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMultigesture_y, SDL_Event * event){
-			state.push_number(event->mgesture.y);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMultigesture_y, SDL_Event * event){
-			event->mgesture.y = (float)state.to_number(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getMultigesture_numFingers, SDL_Event * event){
-			state.push_integer(event->mgesture.numFingers);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setMultigesture_numFingers, SDL_Event * event){
-			event->mgesture.numFingers = (Uint16)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getDollargesture_touchId, SDL_Event * event){
-			state.push_integer((const int)event->dgesture.touchId);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setDollargesture_touchId, SDL_Event * event){
-			event->dgesture.touchId = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getDollargesture_gestureId, SDL_Event * event){
-			state.push_integer((const int)event->dgesture.gestureId);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setDollargesture_gestureId, SDL_Event * event){
-			event->dgesture.gestureId = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getDollargesture_numFingers, SDL_Event * event){
-			state.push_integer(event->dgesture.numFingers);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setDollargesture_numFingers, SDL_Event * event){
-			event->dgesture.numFingers = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getDollargesture_error, SDL_Event * event){
-			state.push_number(event->dgesture.error);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setDollargesture_error, SDL_Event * event){
-			event->dgesture.error = (float)state.to_number(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getDollargesture_x, SDL_Event * event){
-			state.push_number(event->dgesture.x);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setDollargesture_x, SDL_Event * event){
-			event->dgesture.x = (float)state.to_number(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getDollargesture_y, SDL_Event * event){
-			state.push_number(event->dgesture.y);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setDollargesture_y, SDL_Event * event){
-			event->dgesture.y = (float)state.to_number(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getDrop_file, SDL_Event * event){
-			state.push_string(event->drop.file);
-			return 1;
-		}
-		int LOBJECT_METHOD(setDrop_file, SDL_Event * event){
-			std::string & text = state.to_string(1) ;
-			size_t text_len = text.length();
-			size_t len = (text_len < FILENAME_MAX-1) ? text_len : FILENAME_MAX-1;
-			
-			if (event->drop.file)
-				event->drop.file = (char*)SDL_realloc(event->drop.file, len+1);
-
-			strncpy(event->drop.file, text.c_str(),len);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getUser_windowID, SDL_Event * event){
-			state.push_integer(event->user.windowID);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setUser_windowID, SDL_Event * event){
-			event->user.windowID = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getUser_code, SDL_Event * event){
-			state.push_integer(event->user.code);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setUser_code, SDL_Event * event){
-			event->user.code = state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getUser_data1, SDL_Event * event){
-			if (event->user.code == LUA_SDL_TIMER_CODE){
-				int ref = reinterpret_cast<int>(event->user.data1);
-				state.raw_geti(LUA_REGISTRYINDEX, ref);
-			}else{
-				state.push_lightuserdata(event->user.data1);
-			}
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setUser_data1, SDL_Event * event){
-			event->user.data1 = (void*)state.to_lightuserdata(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getUser_data2, SDL_Event * event){
-			state.push_lightuserdata(event->user.data2);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setUser_data2, SDL_Event * event){
-			event->user.data2 = (void*)state.to_lightuserdata(1);
-			return 0;
-		}
-
-		int LOBJECT_METHOD(getSyswm_msg, SDL_Event * event);
-		int LOBJECT_METHOD(setSyswm_msg, SDL_Event * event);
+		int inline getWindow_windowID(State & state, SDL_Event * event);
+		int inline setWindow_windowID(State & state, SDL_Event * event);
 
+		int inline getWindow_event(State & state, SDL_Event * event);
+		int inline setWindow_event(State & state, SDL_Event * event);
 
+		int inline getWindow_data1(State & state, SDL_Event * event);
+		int inline setWindow_data1(State & state, SDL_Event * event);
 
+		int inline getWindow_data2(State & state, SDL_Event * event);
+		int inline setWindow_data2(State & state, SDL_Event * event);
+
+		int inline getKeyboard_windowID(State & state, SDL_Event * event);
+		int inline setKeyboard_windowID(State & state, SDL_Event * event);
+
+		int inline getKeyboard_state(State & state, SDL_Event * event);
+		int inline setKeyboard_state(State & state, SDL_Event * event);
+
+		int inline getKeyboard_repeat(State & state, SDL_Event * event);
+		int inline setKeyboard_repeat(State & state, SDL_Event * event);
+
+		int inline getKeyboard_keysym_scancode(State & state, SDL_Event * event);
+		int inline setKeyboard_keysym_scancode(State & state, SDL_Event * event);
+		int inline getKeyboard_keysym_keycode(State & state, SDL_Event * event);
+		int inline setKeyboard_keysym_keycode(State & state, SDL_Event * event);
+
+		int inline getKeyboard_keysym_sym(State & state, SDL_Event * event);
+		int inline setKeyboard_keysym_sym(State & state, SDL_Event * event);
+
+		int inline getKeyboard_keysym_mod(State & state, SDL_Event * event);
+		int inline setKeyboard_keysym_mod(State & state, SDL_Event * event);
+
+		int inline getKeyboard_keysym_unicode(State & state, SDL_Event * event);
+		int inline setKeyboard_keysym_unicode(State & state, SDL_Event * event);
+
+		int inline getTextediting_windowID(State & state, SDL_Event * event);
+		int inline setTextediting_windowID(State & state, SDL_Event * event);
+
+		int inline getTextediting_text(State & state, SDL_Event * event);
+		int inline setTextediting_text(State & state, SDL_Event * event);
+
+		int inline getTextediting_start(State & state, SDL_Event * event);
+		int inline setTextediting_start(State & state, SDL_Event * event);
+
+		int inline getTextediting_length(State & state, SDL_Event * event);
+		int inline setTextediting_length(State & state, SDL_Event * event);
+
+		int inline getTextinput_windowID(State & state, SDL_Event * event);
+		int inline setTextinput_windowID(State & state, SDL_Event * event);
+
+		int inline getTextinput_text(State & state, SDL_Event * event);
+		int inline setTextinput_text(State & state, SDL_Event * event);
+
+		int inline getMousemotion_windowID(State & state, SDL_Event * event);
+		int inline setMousemotion_windowID(State & state, SDL_Event * event);
+
+		int inline getMousemotion_which(State & state, SDL_Event * event);
+		int inline setMousemotion_which(State & state, SDL_Event * event);
+
+		int inline getMousemotion_state(State & state, SDL_Event * event);
+		int inline setMousemotion_state(State & state, SDL_Event * event);
+
+		int inline getMousemotion_x(State & state, SDL_Event * event);
+		int inline setMousemotion_x(State & state, SDL_Event * event);
+
+		int inline getMousemotion_y(State & state, SDL_Event * event);
+		int inline setMousemotion_y(State & state, SDL_Event * event);
+
+		int inline getMousemotion_xrel(State & state, SDL_Event * event);
+		int inline setMousemotion_xrel(State & state, SDL_Event * event);
+
+		int inline getMousemotion_yrel(State & state, SDL_Event * event);
+		int inline setMousemotion_yrel(State & state, SDL_Event * event);
+
+		int inline getMousebutton_windowID(State & state, SDL_Event * event);
+		int inline setMousebutton_windowID(State & state, SDL_Event * event);
+
+		int inline getMousebutton_which(State & state, SDL_Event * event);
+		int inline setMousebutton_which(State & state, SDL_Event * event);
+
+		int inline getMousebutton_button(State & state, SDL_Event * event);
+		int inline setMousebutton_button(State & state, SDL_Event * event);
+
+		int inline getMousebutton_state(State & state, SDL_Event * event);
+		int inline setMousebutton_state(State & state, SDL_Event * event);
+
+		int inline getMousebutton_x(State & state, SDL_Event * event);
+		int inline setMousebutton_x(State & state, SDL_Event * event);
+
+		int inline getMousebutton_y(State & state, SDL_Event * event);
+		int inline setMousebutton_y(State & state, SDL_Event * event);
+
+		int inline getMousewheel_windowID(State & state, SDL_Event * event);
+		int inline setMousewheel_windowID(State & state, SDL_Event * event);
+
+		int inline getMousewheel_which(State & state, SDL_Event * event);
+		int inline setMousewheel_which(State & state, SDL_Event * event);
+
+		int inline getMousewheel_x(State & state, SDL_Event * event);
+		int inline setMousewheel_x(State & state, SDL_Event * event);
+
+		int inline getMousewheel_y(State & state, SDL_Event * event);
+		int inline setMousewheel_y(State & state, SDL_Event * event);
+
+		int inline getJoyaxis_which(State & state, SDL_Event * event);
+		int inline setJoyaxis_which(State & state, SDL_Event * event);
+
+		int inline getJoyaxis_axis(State & state, SDL_Event * event);
+		int inline setJoyaxis_axis(State & state, SDL_Event * event);
+
+		int inline getJoyaxis_value(State & state, SDL_Event * event);
+		int inline setJoyaxis_value(State & state, SDL_Event * event);
+
+		int inline getJoyball_which(State & state, SDL_Event * event);
+		int inline setJoyball_which(State & state, SDL_Event * event);
+
+		int inline getJoyball_ball(State & state, SDL_Event * event);
+		int inline setJoyball_ball(State & state, SDL_Event * event);
+
+		int inline getJoyball_xrel(State & state, SDL_Event * event);
+		int inline setJoyball_xrel(State & state, SDL_Event * event);
+
+		int inline getJoyball_yrel(State & state, SDL_Event * event);
+		int inline setJoyball_yrel(State & state, SDL_Event * event);
+
+		int inline getJoyhat_which(State & state, SDL_Event * event);
+		int inline setJoyhat_which(State & state, SDL_Event * event);
+
+		int inline getJoyhat_hat(State & state, SDL_Event * event);
+		int inline setJoyhat_hat(State & state, SDL_Event * event);
+
+		int inline getJoyhat_value(State & state, SDL_Event * event);
+		int inline setJoyhat_value(State & state, SDL_Event * event);
+
+		int inline getJoybutton_which(State & state, SDL_Event * event);
+		int inline setJoybutton_which(State & state, SDL_Event * event);
+
+		int inline getJoybutton_button(State & state, SDL_Event * event);
+		int inline setJoybutton_button(State & state, SDL_Event * event);
+
+		int inline getJoybutton_state(State & state, SDL_Event * event);
+		int inline setJoybutton_state(State & state, SDL_Event * event);
+
+		int inline getJoydevice_which(State & state, SDL_Event * event);
+		int inline setJoydevice_which(State & state, SDL_Event * event);
+
+		int inline getControlleraxis_which(State & state, SDL_Event * event);
+		int inline setControlleraxis_which(State & state, SDL_Event * event);
+
+		int inline getControlleraxis_axis(State & state, SDL_Event * event);
+		int inline setControlleraxis_axis(State & state, SDL_Event * event);
+
+		int inline getControlleraxis_value(State & state, SDL_Event * event);
+		int inline setControlleraxis_value(State & state, SDL_Event * event);
+
+		int inline getControllerbutton_which(State & state, SDL_Event * event);
+		int inline setControllerbutton_which(State & state, SDL_Event * event);
+
+		int inline getControllerbutton_button(State & state, SDL_Event * event);
+		int inline setControllerbutton_button(State & state, SDL_Event * event);
+
+		int inline getControllerbutton_state(State & state, SDL_Event * event);
+		int inline setControllerbutton_state(State & state, SDL_Event * event);
+
+		int inline getControllerdevice_which(State & state, SDL_Event * event);
+		int inline setControllerdevice_which(State & state, SDL_Event * event);
+
+		int inline getTouchfinger_touchId(State & state, SDL_Event * event);
+		int inline setTouchfinger_touchId(State & state, SDL_Event * event);
+
+		int inline getTouchfinger_fingerId(State & state, SDL_Event * event);
+		int inline setTouchfinger_fingerId(State & state, SDL_Event * event);
+
+		int inline getTouchfinger_x(State & state, SDL_Event * event);
+		int inline setTouchfinger_x(State & state, SDL_Event * event);
+
+		int inline getTouchfinger_y(State & state, SDL_Event * event);
+		int inline setTouchfinger_y(State & state, SDL_Event * event);
+
+		int inline getTouchfinger_dx(State & state, SDL_Event * event);
+		int inline setTouchfinger_dx(State & state, SDL_Event * event);
+
+		int inline getTouchfinger_dy(State & state, SDL_Event * event);
+		int inline setTouchfinger_dy(State & state, SDL_Event * event);
+
+		int inline getMultigesture_touchId(State & state, SDL_Event * event);
+		int inline setMultigesture_touchId(State & state, SDL_Event * event);
+
+		int inline getMultigesture_dTheta(State & state, SDL_Event * event);
+		int inline setMultigesture_dTheta(State & state, SDL_Event * event);
+
+		int inline getMultigesture_dDist(State & state, SDL_Event * event);
+		int inline setMultigesture_dDist(State & state, SDL_Event * event);
+
+		int inline getMultigesture_x(State & state, SDL_Event * event);
+		int inline setMultigesture_x(State & state, SDL_Event * event);
+
+		int inline getMultigesture_y(State & state, SDL_Event * event);
+		int inline setMultigesture_y(State & state, SDL_Event * event);
+
+		int inline getMultigesture_numFingers(State & state, SDL_Event * event);
+		int inline setMultigesture_numFingers(State & state, SDL_Event * event);
+
+		int inline getDollargesture_touchId(State & state, SDL_Event * event);
+		int inline setDollargesture_touchId(State & state, SDL_Event * event);
+
+		int inline getDollargesture_gestureId(State & state, SDL_Event * event);
+		int inline setDollargesture_gestureId(State & state, SDL_Event * event);
+
+		int inline getDollargesture_numFingers(State & state, SDL_Event * event);
+		int inline setDollargesture_numFingers(State & state, SDL_Event * event);
+
+		int inline getDollargesture_error(State & state, SDL_Event * event);
+		int inline setDollargesture_error(State & state, SDL_Event * event);
+
+		int inline getDollargesture_x(State & state, SDL_Event * event);
+		int inline setDollargesture_x(State & state, SDL_Event * event);
+
+		int inline getDollargesture_y(State & state, SDL_Event * event);
+		int inline setDollargesture_y(State & state, SDL_Event * event);
+
+		int inline getDrop_file(State & state, SDL_Event * event);
+		int setDrop_file(State & state, SDL_Event * event);
+
+		int inline getUser_windowID(State & state, SDL_Event * event);
+		int inline setUser_windowID(State & state, SDL_Event * event);
+
+		int inline getUser_code(State & state, SDL_Event * event);
+		int inline setUser_code(State & state, SDL_Event * event);
+
+		int inline getUser_data1(State & state, SDL_Event * event);
+		int inline setUser_data1(State & state, SDL_Event * event);
+
+		int inline getUser_data2(State & state, SDL_Event * event);
+		int inline setUser_data2(State & state, SDL_Event * event);
+
+		int getSyswm_msg(State & state, SDL_Event * event);
+		int setSyswm_msg(State & state, SDL_Event * event);
 	};
 }
 

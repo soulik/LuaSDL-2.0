@@ -5,94 +5,40 @@
 
 namespace LuaSDL {
 
-	class Lua_SDL_Joystick : public LObject<Lua_SDL_Joystick, SDL_Joystick *> {
+	class Joystick : public Object<SDL_Joystick> {
 	public:
-		LOBJECT_DEFINE_CLASS(Lua_SDL_Joystick, SDL_Joystick *, "Joystick") {
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Joystick, "axis", getAxis);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Joystick, "ball", getBall);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Joystick, "button", getButton);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Joystick, "hat", getHat);
+		explicit Joystick(State * state) : Object<SDL_Joystick>(state) {
+			LUTOK_METHOD("axis", &Joystick::getAxis);
+			LUTOK_METHOD("ball", &Joystick::getBall);
+			LUTOK_METHOD("button", &Joystick::getButton);
+			LUTOK_METHOD("hat", &Joystick::getHat);
 
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Joystick, SDL_Joystick *, "index", getIndex, null_method);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Joystick, SDL_Joystick *, "name", getName, null_method);	
+			LUTOK_PROPERTY("index", &Joystick::getIndex, &Joystick::nullMethod);	
+			LUTOK_PROPERTY("name", &Joystick::getName, &Joystick::nullMethod);	
 
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Joystick, SDL_Joystick *, "numAxes", getNumAxes, null_method);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Joystick, SDL_Joystick *, "numBalls", getNumBalls, null_method);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Joystick, SDL_Joystick *, "numButtons", getNumButtons, null_method);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Joystick, SDL_Joystick *, "numHats", getNumHats, null_method);	
+			LUTOK_PROPERTY("numAxes", &Joystick::getNumAxes, &Joystick::nullMethod);	
+			LUTOK_PROPERTY("numBalls", &Joystick::getNumBalls, &Joystick::nullMethod);	
+			LUTOK_PROPERTY("numButtons", &Joystick::getNumButtons, &Joystick::nullMethod);	
+			LUTOK_PROPERTY("numHats", &Joystick::getNumHats, &Joystick::nullMethod);	
 		}
 
-		void destructor(lutok::state & s, SDL_Joystick * joystick){
+		SDL_Joystick * constructor(State & state, bool & managed);
+
+		void destructor(State & state, SDL_Joystick * joystick){
 			SDL_JoystickClose(joystick);
 		}
 
-		int LOBJECT_METHOD(getAxis, SDL_Joystick * joystick){
-			state.push_integer(
-				SDL_JoystickGetAxis(
-					joystick,
-					state.to_integer(1)));
-			return 1;
-		}
-		int LOBJECT_METHOD(getBall, SDL_Joystick * joystick){
-			int dx,dy;
+		int getAxis(State & state, SDL_Joystick * joystick);
+		int getBall(State & state, SDL_Joystick * joystick);
+		int getButton(State & state, SDL_Joystick * joystick);
+		int getHat(State & state, SDL_Joystick * joystick);
+		int getIndex(State & state, SDL_Joystick * joystick);
+		int getName(State & state, SDL_Joystick * joystick);
 
-			int retval = SDL_JoystickGetBall(
-				joystick,
-				state.to_integer(1),
-				&dx, &dy
-				);
-			if (retval == 0){
-				state.push_integer(dx);
-				state.push_integer(dy);
-				return 2;
-			}else{
-				return 0;
-			}
-		}
-		int LOBJECT_METHOD(getButton, SDL_Joystick * joystick){
-			state.push_boolean(
-				SDL_JoystickGetButton(
-					joystick,
-					state.to_integer(1)) == 1);
-			return 1;
-		}
-		int LOBJECT_METHOD(getHat, SDL_Joystick * joystick){
-			state.push_integer(
-				SDL_JoystickGetHat(
-					joystick,
-					state.to_integer(1)));
-			return 1;
-		}
-		int LOBJECT_METHOD(getIndex, SDL_Joystick * joystick){
-			//state.push_integer(SDL_JoystickIndex(joystick));
-			return 0;
-		}
-		int LOBJECT_METHOD(getName, SDL_Joystick * joystick){
-			const char * name = SDL_JoystickName(joystick);
-			if (name){
-				state.push_string(name);
-				return 1;
-			}else{
-				return 0;
-			}
-		}
-
-		int LOBJECT_METHOD(getNumAxes, SDL_Joystick * joystick){
-			state.push_integer(SDL_JoystickNumAxes(joystick));
-			return 1;
-		}
-		int LOBJECT_METHOD(getNumBalls, SDL_Joystick * joystick){
-			state.push_integer(SDL_JoystickNumBalls(joystick));
-			return 1;
-		}
-		int LOBJECT_METHOD(getNumButtons, SDL_Joystick * joystick){
-			state.push_integer(SDL_JoystickNumButtons(joystick));
-			return 1;
-		}
-		int LOBJECT_METHOD(getNumHats, SDL_Joystick * joystick){
-			state.push_integer(SDL_JoystickNumHats(joystick));
-			return 1;
-		}
+		int getNumAxes(State & state, SDL_Joystick * joystick);
+		int getNumBalls(State & state, SDL_Joystick * joystick);
+		int getNumButtons(State & state, SDL_Joystick * joystick);
+		int getNumHats(State & state, SDL_Joystick * joystick);
 	};
 }
 

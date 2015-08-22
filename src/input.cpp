@@ -6,11 +6,13 @@ namespace LuaSDL {
 
 	//Keyboard specific
 	static int lua_SDL_GetKeyboardFocus(State & state){
-		Lua_SDL_Window & w = LOBJECT_INSTANCE(Lua_SDL_Window);
-		w.push(SDL_GetKeyboardFocus());
+		Stack * stack = state.stack;
+		Window * interfaceWindow = state.getInterface<Window>("LuaSDL_Window");
+		interfaceWindow->push(SDL_GetKeyboardFocus());
 		return 1;
 	}
 	static int lua_SDL_GetKeyboardState_table(State & state){
+		Stack * stack = state.stack;
 		int numkeys = 0;
 		if (stack->is<LUA_TNUMBER>(2)){
 			int key = stack->to<int>(2);
@@ -26,31 +28,41 @@ namespace LuaSDL {
 		}
 	}
 	static int lua_SDL_GetKeyboardState(State & state){
+		Stack * stack = state.stack;
 		stack->newTable();
 			stack->newTable();
-				state.push_literal("__index");
-				state.push_cxx_function(lua_SDL_GetKeyboardState_table);
+				stack->push<const std::string &>("__index");
+				stack->push<Function>(lua_SDL_GetKeyboardState_table);
 				stack->setTable();
-			state.set_metatable(-2);
+			stack->setMetatable();
 		return 1;
 	}
 	static int lua_SDL_GetKeyFromName(State & state){
-		stack->push<int>(SDL_GetKeyFromName(stack->to<const std::string>(1).c_str()));
-		return 1;
+		Stack * stack = state.stack;
+		if (stack->is<LUA_TSTRING>(1)){
+			const std::string name = stack->to<const std::string>(1);
+			stack->push<int>(SDL_GetKeyFromName(name.c_str()));
+			return 1;
+		}
+		return 0;
 	}
 	static int lua_SDL_GetKeyFromScancode(State & state){
+		Stack * stack = state.stack;
 		stack->push<int>(SDL_GetKeyFromScancode((SDL_Scancode)stack->to<int>(1)));
 		return 1;
 	}
 	static int lua_SDL_GetKeyName(State & state){
-		stack->push<const std::string>(SDL_GetKeyName(stack->to<int>(1)));
+		Stack * stack = state.stack;
+		stack->push<const std::string &>(SDL_GetKeyName(stack->to<int>(1)));
 		return 1;
 	}
 	static int lua_SDL_GetModState(State & state){
+		Stack * stack = state.stack;
 		stack->push<int>(SDL_GetModState());
 		return 1;
 	}
 	static int lua_SDL_GetNumKeyboards(State & state){
+		Stack * stack = state.stack;
 		/*
 		stack->push<int>(SDL_GetNumKeyboards());
 		return 1;
@@ -58,43 +70,59 @@ namespace LuaSDL {
 		return 0;
 	}
 	static int lua_SDL_GetScancodeFromKey(State & state){
+		Stack * stack = state.stack;
 		stack->push<int>(SDL_GetScancodeFromKey(stack->to<int>(1)));
 		return 1;
 	}
 	static int lua_SDL_GetScancodeFromName(State & state){
-		stack->push<int>(SDL_GetScancodeFromName(stack->to<const std::string>(1).c_str()));
-		return 1;
+		Stack * stack = state.stack;
+		if (stack->is<LUA_TSTRING>(1)){
+			const std::string name = stack->to<const std::string>(1);
+			stack->push<int>(SDL_GetScancodeFromName(name.c_str()));
+			return 1;
+		}
+		return 0;
 	}
 	static int lua_SDL_GetScancodeName(State & state){
-		stack->push<const std::string>(SDL_GetScancodeName((SDL_Scancode)stack->to<int>(1)));
+		Stack * stack = state.stack;
+		stack->push<const std::string &>(SDL_GetScancodeName((SDL_Scancode)stack->to<int>(1)));
 		return 1;
 	}
 	static int lua_SDL_SetModState(State & state){
+		Stack * stack = state.stack;
 		SDL_SetModState((SDL_Keymod)stack->to<int>(1));
 		return 0;
 	}
 	static int lua_SDL_SetTextInputRect(State & state){
-		Lua_SDL_Rect & r = LOBJECT_INSTANCE(Lua_SDL_Rect);
-		SDL_SetTextInputRect(r.check(1));
+		Stack * stack = state.stack;
+		Rect * interfaceRect = state.getInterface<Rect>("LuaSDL_Rect");
+		SDL_Rect * r = interfaceRect->get(1);
+		if (r){
+			SDL_SetTextInputRect(r);
+		}
 		return 0;
 	}
 	static int lua_SDL_StartTextInput(State & state){
+		Stack * stack = state.stack;
 		SDL_StartTextInput();
 		return 0;
 	}
 	static int lua_SDL_StopTextInput(State & state){
+		Stack * stack = state.stack;
 		SDL_StopTextInput();
 		return 0;
 	}
 
 	//Mouse specific
 	static int lua_SDL_GetMouseFocus(State & state){
-		Lua_SDL_Window & w = LOBJECT_INSTANCE(Lua_SDL_Window);
-		w.push(SDL_GetMouseFocus());
+		Stack * stack = state.stack;
+		Window * interfaceWindow = state.getInterface<Window>("LuaSDL_Window");
+		interfaceWindow->push(SDL_GetMouseFocus());
 		return 1;
 	}
 	static int lua_SDL_GetMouseState(State & state){
-		int x,y;
+		Stack * stack = state.stack;
+		int x, y;
 		Uint8 buttons;
 
 		buttons = SDL_GetMouseState(&x,&y);
@@ -104,11 +132,13 @@ namespace LuaSDL {
 		return 3;
 	}
 	static int lua_SDL_GetRelativeMouseMode(State & state){
+		Stack * stack = state.stack;
 		stack->push<bool>(SDL_GetRelativeMouseMode() == SDL_TRUE);
 		return 1;
 	}
 	static int lua_SDL_GetRelativeMouseState(State & state){
-		int x,y;
+		Stack * stack = state.stack;
+		int x, y;
 		Uint8 buttons;
 
 		buttons = SDL_GetRelativeMouseState(&x,&y);
@@ -118,15 +148,21 @@ namespace LuaSDL {
 		return 3;
 	}
 	static int lua_SDL_WarpMouseInWindow(State & state){
-		Lua_SDL_Window & w = LOBJECT_INSTANCE(Lua_SDL_Window);
-		SDL_WarpMouseInWindow(
-			w.check(1),
-			stack->to<int>(2),
-			stack->to<int>(3));
+		Stack * stack = state.stack;
+		Window * interfaceWindow = state.getInterface<Window>("LuaSDL_Window");
+		SDL_Window * w = interfaceWindow->get(1);
+
+		if (w){
+			SDL_WarpMouseInWindow(
+				w,
+				stack->to<int>(2),
+				stack->to<int>(3));
+		}
 		return 0;
 	}
 	static int lua_SDL_SetRelativeMouseMode(State & state){
-		stack->push<bool>(SDL_SetRelativeMouseMode((stack->to<bool>(1)) ? SDL_TRUE : SDL_FALSE ) == 0);
+		Stack * stack = state.stack;
+		stack->push<bool>(SDL_SetRelativeMouseMode((stack->to<bool>(1)) ? SDL_TRUE : SDL_FALSE) == 0);
 		return 0;
 	}
 
@@ -135,7 +171,7 @@ namespace LuaSDL {
 
 		return 1;
 	}
-	void init_input(Module & module){
+	void initInput(Module & module){
 		//Keyboard specific
 		module["getKeyboardFocus"] = lua_SDL_GetKeyboardFocus;
 		module["getKeyboardState"] = lua_SDL_GetKeyboardState;

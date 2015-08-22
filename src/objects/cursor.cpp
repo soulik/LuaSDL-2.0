@@ -2,50 +2,73 @@
 #include "objects/surface.hpp"
 #include <lua.hpp>
 
-static int lua_SDL_CreateColorCursor(State & state){
-	LuaSDL::Lua_SDL_Surface & s = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Surface);
-	LuaSDL::Lua_SDL_Cursor & c = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Cursor);
-	c.push(
-		SDL_CreateColorCursor(
-			s.check(1),
-			stack->to<int>(2),
-			stack->to<int>(3)));
-	return 1;
-}
-static int lua_SDL_CreateCursor(State & state){
-	LuaSDL::Lua_SDL_Cursor & c = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Cursor);
+namespace LuaSDL {
+	int Cursor::setCursor(State & state, SDL_Cursor * cursor) {
+		Stack * stack = state.stack;
+		SDL_SetCursor(cursor);
+		return 0;
+	}
 
-	c.push(
-		SDL_CreateCursor(
-			(const Uint8* )state.to_lightuserdata(1),
-			(const Uint8* )state.to_lightuserdata(2),
+	static int lua_SDL_CreateColorCursor(State & state){
+		Stack * stack = state.stack;
+		Surface * interfaceSurface = state.getInterface<Surface>("LuaSDL_Surface");
+		Cursor * interfaceCursor = state.getInterface<Cursor>("LuaSDL_Cursor");
+
+		SDL_Surface * s = interfaceSurface->get(1);
+		if (s){
+			interfaceCursor->push(
+				SDL_CreateColorCursor(
+				s,
+				stack->to<int>(2),
+				stack->to<int>(3)), true
+			);
+			return 1;
+		}
+		return 0;
+	}
+	static int lua_SDL_CreateCursor(State & state){
+		Stack * stack = state.stack;
+		Cursor * interfaceCursor = state.getInterface<Cursor>("LuaSDL_Cursor");
+
+		interfaceCursor->push(
+			SDL_CreateCursor(
+			(const Uint8*)stack->to<void*>(1),
+			(const Uint8*)stack->to<void*>(2),
 			stack->to<int>(3),
 			stack->to<int>(4),
 			stack->to<int>(5),
 			stack->to<int>(6)
-		));
-	return 1;
-}
-static int lua_SDL_GetCursor(State & state){
-	LuaSDL::Lua_SDL_Cursor & c = LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Cursor);
-	c.push(SDL_GetCursor());
-	return 1;
-}
-static int lua_SDL_ShowCursor(State & state){
-	int retval = SDL_ShowCursor(stack->to<int>(1));
-	if (retval >=0){
-		stack->push<bool>(retval == 1);
+			), true
+		);
 		return 1;
-	}else{
-		return 0;
 	}
-}
+
+	static int lua_SDL_GetCursor(State & state){
+		Stack * stack = state.stack;
+		Cursor * interfaceCursor = state.getInterface<Cursor>("LuaSDL_Cursor");
+		interfaceCursor->push(SDL_GetCursor());
+		return 1;
+	}
+
+	static int lua_SDL_ShowCursor(State & state){
+		Stack * stack = state.stack;
+		int retval = SDL_ShowCursor(stack->to<int>(1));
+		if (retval >= 0){
+			stack->push<bool>(retval == 1);
+			return 1;
+		}
+		else{
+			return 0;
+		}
+	}
 
 
-void LuaSDL::init_cursor(State & state, Module & module){
-	LOBJECT_INSTANCE(LuaSDL::Lua_SDL_Cursor);
-	module["createCursor"] = lua_SDL_CreateCursor;
-	module["createColorCursor"] = lua_SDL_CreateColorCursor;
-	module["getCursor"] = lua_SDL_GetCursor;
-	module["showCursor"] = lua_SDL_ShowCursor;
-}
+	void initCursor(State * state, Module & module){
+		INIT_OBJECT(Cursor);
+		module["createCursor"] = lua_SDL_CreateCursor;
+		module["createColorCursor"] = lua_SDL_CreateColorCursor;
+		module["getCursor"] = lua_SDL_GetCursor;
+		module["showCursor"] = lua_SDL_ShowCursor;
+	}
+
+};

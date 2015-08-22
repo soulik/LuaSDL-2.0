@@ -1,6 +1,6 @@
 #include "common.hpp"
 namespace LuaSDL{
-	void init_constants(State & state){
+	void initConstants(State & state){
 		Stack * stack = state.stack;
 		//SDL_Init
 		stack->setField<int>("INIT_TIMER",					SDL_INIT_TIMER);

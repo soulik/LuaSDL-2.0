@@ -2,7 +2,6 @@ set(LUASDL2_SRC
     audio.cpp
     basics.cpp
     constants.cpp
-    events.cpp
     file.cpp
     gl_context.cpp
     input.cpp
@@ -110,6 +109,6 @@ set_target_properties(LUASDL2
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 	PREFIX ""
-	OUTPUT_NAME "luasdl2"
+	OUTPUT_NAME "LuaSDL2"
 )
 

@@ -47,7 +47,7 @@ namespace LuaSDL {
 	}
 	static int lua_Mix_GetError(State & state){
 		Stack * stack = state.stack;
-		stack->push<const std::string>(Mix_GetError());
+		stack->push<const std::string &>(Mix_GetError());
 		return 1;
 	}
 	static int lua_Mix_QuerySpec(State & state){
@@ -181,13 +181,13 @@ namespace LuaSDL {
 			Mix_Fading fading = Mix_FadingChannel(channel);
 			switch (fading){
 			case MIX_NO_FADING:
-				stack->push<const std::string>("none");
+				stack->push<const std::string &>("none");
 				break;
 			case MIX_FADING_OUT:
-				stack->push<const std::string>("out");
+				stack->push<const std::string &>("out");
 				break;
 			case MIX_FADING_IN:
-				stack->push<const std::string>("in");
+				stack->push<const std::string &>("in");
 				break;
 			}
 			return 1;
@@ -394,7 +394,7 @@ namespace LuaSDL {
 		return 1;
 	}
 
-	void init_sdl_mixer(Module & module){
+	void initSDLmixer(Module & module){
 		module["mixerInit"] = lua_Mixer_Init;
 		module["mixerQuit"] = lua_Mixer_Quit;
 		module["mixerOpenAudio"] = lua_Mixer_OpenAudio;

@@ -20,7 +20,7 @@ namespace LuaSDL {
 		return 3;
 	}
 
-	void init_power(Module & module){
+	void initPower(Module & module){
 		module["powerInfo"] = lua_SDL_GetPowerInfo;
 	}
 }

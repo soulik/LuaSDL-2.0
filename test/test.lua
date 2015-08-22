@@ -1,4 +1,4 @@
-﻿local SDL = require "LuaSDL"
+﻿local SDL = require "LuaSDL2"
 
 SDL.init()
 SDL.videoInit()

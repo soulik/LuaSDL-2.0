@@ -5,78 +5,40 @@
 
 namespace LuaSDL {
 
-	class Lua_SDL_AudioSpec : public LObject<Lua_SDL_AudioSpec, SDL_AudioSpec *> {
+	class AudioSpec : public Object<SDL_AudioSpec> {
 	public:
-		LOBJECT_DEFINE_CLASS(Lua_SDL_AudioSpec, SDL_AudioSpec *, "AudioSpec") {
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_AudioSpec, SDL_AudioSpec *, "freq", getFreq, setFreq);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_AudioSpec, SDL_AudioSpec *, "format", getFormat, setFormat);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_AudioSpec, SDL_AudioSpec *, "channels", getChannels, setChannels);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_AudioSpec, SDL_AudioSpec *, "silence", getSilence, null_method);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_AudioSpec, SDL_AudioSpec *, "samples", getSamples, setSamples);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_AudioSpec, SDL_AudioSpec *, "padding", getPadding, setPadding);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_AudioSpec, SDL_AudioSpec *, "size", getSize, null_method);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_AudioSpec, SDL_AudioSpec *, "callback", getCallback, null_method);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_AudioSpec, SDL_AudioSpec *, "userdata", getUserdata, null_method);	
+		explicit AudioSpec(State * state) : Object<SDL_AudioSpec>(state) {
+			LUTOK_PROPERTY("freq", &AudioSpec::getFreq, &AudioSpec::setFreq);	
+			LUTOK_PROPERTY("format", &AudioSpec::getFormat, &AudioSpec::setFormat);	
+			LUTOK_PROPERTY("channels", &AudioSpec::getChannels, &AudioSpec::setChannels);	
+			LUTOK_PROPERTY("silence", &AudioSpec::getSilence, &AudioSpec::nullMethod);	
+			LUTOK_PROPERTY("samples", &AudioSpec::getSamples, &AudioSpec::setSamples);	
+			LUTOK_PROPERTY("padding", &AudioSpec::getPadding, &AudioSpec::setPadding);	
+			LUTOK_PROPERTY("size", &AudioSpec::getSize, &AudioSpec::nullMethod);	
+			LUTOK_PROPERTY("callback", &AudioSpec::getCallback, &AudioSpec::nullMethod);	
+			LUTOK_PROPERTY("userdata", &AudioSpec::getUserdata, &AudioSpec::nullMethod);	
 		}
 
-		void destructor(lutok::state & state, SDL_AudioSpec * audiospec){
+		SDL_AudioSpec * constructor(State & state, bool & managed);
+
+		void destructor(State & state, SDL_AudioSpec * audiospec){
 			delete audiospec;
 		}
 
-		int LOBJECT_METHOD(getFreq, SDL_AudioSpec * audiospec){
-			state.push_integer(audiospec->freq);
-			return 1;
-		}
-		int LOBJECT_METHOD(setFreq, SDL_AudioSpec * audiospec){
-			audiospec->freq = state.to_integer(1);
-			return 0;
-		}
-		int LOBJECT_METHOD(getFormat, SDL_AudioSpec * audiospec){
-			state.push_integer(audiospec->format);
-			return 1;
-		}
-		int LOBJECT_METHOD(setFormat, SDL_AudioSpec * audiospec){
-			audiospec->format = static_cast<SDL_AudioFormat>(state.to_integer(1));
-			return 0;
-		}
-		int LOBJECT_METHOD(getChannels, SDL_AudioSpec * audiospec){
-			state.push_integer(audiospec->channels);
-			return 1;
-		}
-		int LOBJECT_METHOD(setChannels, SDL_AudioSpec * audiospec){
-			audiospec->channels = static_cast<Uint8>(state.to_integer(1));
-			return 0;
-		}
-		int LOBJECT_METHOD(getSilence, SDL_AudioSpec * audiospec){
-			state.push_integer(audiospec->silence);
-			return 1;
-		}
-		int LOBJECT_METHOD(getSamples, SDL_AudioSpec * audiospec){
-			state.push_integer(audiospec->samples);
-			return 1;
-		}
-		int LOBJECT_METHOD(setSamples, SDL_AudioSpec * audiospec){
-			audiospec->samples = static_cast<Uint16>(state.to_integer(1));
-			return 0;
-		}
-		int LOBJECT_METHOD(getPadding, SDL_AudioSpec * audiospec){
-			state.push_integer(audiospec->padding);
-			return 1;
-		}
-		int LOBJECT_METHOD(setPadding, SDL_AudioSpec * audiospec){
-			audiospec->padding = static_cast<Uint16>(state.to_integer(1));
-			return 0;
-		}
-		int LOBJECT_METHOD(getSize, SDL_AudioSpec * audiospec){
-			state.push_integer(audiospec->size);
-			return 1;
-		}
-		int LOBJECT_METHOD(getCallback, SDL_AudioSpec * audiospec){
-			return 0;
-		}
-		int LOBJECT_METHOD(getUserdata, SDL_AudioSpec * audiospec){
-			return 0;
-		}
+		int getFreq(State & state, SDL_AudioSpec * audiospec);
+		int setFreq(State & state, SDL_AudioSpec * audiospec);
+		int getFormat(State & state, SDL_AudioSpec * audiospec);
+		int setFormat(State & state, SDL_AudioSpec * audiospec);
+		int getChannels(State & state, SDL_AudioSpec * audiospec);
+		int setChannels(State & state, SDL_AudioSpec * audiospec);
+		int getSilence(State & state, SDL_AudioSpec * audiospec);
+		int getSamples(State & state, SDL_AudioSpec * audiospec);
+		int setSamples(State & state, SDL_AudioSpec * audiospec);
+		int getPadding(State & state, SDL_AudioSpec * audiospec);
+		int setPadding(State & state, SDL_AudioSpec * audiospec);
+		int getSize(State & state, SDL_AudioSpec * audiospec);
+		int getCallback(State & state, SDL_AudioSpec * audiospec);
+		int getUserdata(State & state, SDL_AudioSpec * audiospec);
 	};
 }
 

@@ -5,252 +5,91 @@
 
 namespace LuaSDL {
 
-	class Lua_SDL_TTF_Font : public LObject<Lua_SDL_TTF_Font, TTF_Font  *> {
+	class TTFFont : public Object<TTF_Font> {
 	public:
-		LOBJECT_DEFINE_CLASS(Lua_SDL_TTF_Font, TTF_Font *, "Font") {
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_TTF_Font, "glyphProvided", isGlyphProvided);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_TTF_Font, "glyphMetrics", getGlyphMetrics);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_TTF_Font, "sizeText", getTextSize);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_TTF_Font, "sizeTextUTF8", getTextSizeUTF8);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_TTF_Font, "sizeTextUNICODE", getTextSizeUNICODE);
+		explicit TTFFont(State * state) : Object<TTF_Font>(state) {
+			LUTOK_METHOD("glyphProvided", &TTFFont::isGlyphProvided);
+			LUTOK_METHOD("glyphMetrics", &TTFFont::getGlyphMetrics);
+			LUTOK_METHOD("sizeText", &TTFFont::getTextSize);
+			LUTOK_METHOD("sizeTextUTF8", &TTFFont::getTextSizeUTF8);
+			LUTOK_METHOD("sizeTextUNICODE", &TTFFont::getTextSizeUNICODE);
 
 			//Solid
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_TTF_Font, "renderSolid", renderSolid);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_TTF_Font, "renderSolidUTF8", renderSolidUTF8);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_TTF_Font, "renderSolidUNICODE", renderSolidUNICODE);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_TTF_Font, "renderSolidGlyph", renderSolidGlyph);
+			LUTOK_METHOD("renderSolid", &TTFFont::renderSolid);
+			LUTOK_METHOD("renderSolidUTF8", &TTFFont::renderSolidUTF8);
+			LUTOK_METHOD("renderSolidUNICODE", &TTFFont::renderSolidUNICODE);
+			LUTOK_METHOD("renderSolidGlyph", &TTFFont::renderSolidGlyph);
 			
 			//Shaded
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_TTF_Font, "renderShaded", renderShaded);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_TTF_Font, "renderShadedUTF8", renderShadedUTF8);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_TTF_Font, "renderShadedUNICODE", renderShadedUNICODE);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_TTF_Font, "renderShadedGlyph", renderShadedGlyph);
+			LUTOK_METHOD("renderShaded", &TTFFont::renderShaded);
+			LUTOK_METHOD("renderShadedUTF8", &TTFFont::renderShadedUTF8);
+			LUTOK_METHOD("renderShadedUNICODE", &TTFFont::renderShadedUNICODE);
+			LUTOK_METHOD("renderShadedGlyph", &TTFFont::renderShadedGlyph);
 
 			//Blended
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_TTF_Font, "renderBlended", renderBlended);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_TTF_Font, "renderBlendedUTF8", renderBlendedUTF8);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_TTF_Font, "renderBlendedUNICODE", renderBlendedUNICODE);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_TTF_Font, "renderBlendedGlyph", renderBlendedGlyph);
+			LUTOK_METHOD("renderBlended", &TTFFont::renderBlended);
+			LUTOK_METHOD("renderBlendedUTF8", &TTFFont::renderBlendedUTF8);
+			LUTOK_METHOD("renderBlendedUNICODE", &TTFFont::renderBlendedUNICODE);
+			LUTOK_METHOD("renderBlendedGlyph", &TTFFont::renderBlendedGlyph);
 
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_TTF_Font, TTF_Font *, "style", getFontStyle, setFontStyle);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_TTF_Font, TTF_Font *, "outline", getFontOutline, setFontOutline);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_TTF_Font, TTF_Font *, "hinting", getFontHinting, setFontHinting);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_TTF_Font, TTF_Font *, "kerning", getFontKerning, setFontKerning);	
+			LUTOK_PROPERTY("style", &TTFFont::getFontStyle, &TTFFont::setFontStyle);	
+			LUTOK_PROPERTY("outline", &TTFFont::getFontOutline, &TTFFont::setFontOutline);	
+			LUTOK_PROPERTY("hinting", &TTFFont::getFontHinting, &TTFFont::setFontHinting);	
+			LUTOK_PROPERTY("kerning", &TTFFont::getFontKerning, &TTFFont::setFontKerning);	
 
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_TTF_Font, TTF_Font *, "height", getFontHeight, null_method);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_TTF_Font, TTF_Font *, "ascent", getFontAscent, null_method);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_TTF_Font, TTF_Font *, "descent", getFontDescent, null_method);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_TTF_Font, TTF_Font *, "lineSkip", getFontLineSkip, null_method);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_TTF_Font, TTF_Font *, "faces", getFontFaces, null_method);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_TTF_Font, TTF_Font *, "fixedWidth", getFontFixedWidth, null_method);	
+			LUTOK_PROPERTY("height", &TTFFont::getFontHeight, &TTFFont::nullMethod);	
+			LUTOK_PROPERTY("ascent", &TTFFont::getFontAscent, &TTFFont::nullMethod);	
+			LUTOK_PROPERTY("descent", &TTFFont::getFontDescent, &TTFFont::nullMethod);	
+			LUTOK_PROPERTY("lineSkip", &TTFFont::getFontLineSkip, &TTFFont::nullMethod);	
+			LUTOK_PROPERTY("faces", &TTFFont::getFontFaces, &TTFFont::nullMethod);	
+			LUTOK_PROPERTY("fixedWidth", &TTFFont::getFontFixedWidth, &TTFFont::nullMethod);	
 
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_TTF_Font, TTF_Font *, "familyName", getFontFamilyName, null_method);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_TTF_Font, TTF_Font *, "styleName", getFontStyleName, null_method);	
+			LUTOK_PROPERTY("familyName", &TTFFont::getFontFamilyName, &TTFFont::nullMethod);	
+			LUTOK_PROPERTY("styleName", &TTFFont::getFontStyleName, &TTFFont::nullMethod);	
 		}
 
-		void destructor(lutok::state & s, TTF_Font * font){
+		TTF_Font * constructor(State & state, bool & managed);
+
+		void destructor(State & state, TTF_Font * font){
 			TTF_CloseFont(font);
 		}
 
-		int LOBJECT_METHOD(isGlyphProvided, TTF_Font * font){
-			if (state.is_number(1)){
-				Uint16 glyph = static_cast<Uint16>(state.to_integer(1));
-				int result = TTF_GlyphIsProvided(font, glyph);
-				state.push_integer(result);
-				return 1;
-			}
-			return 0;
-		}
-		int LOBJECT_METHOD(getGlyphMetrics, TTF_Font * font){
-			if (state.is_number(1)){
-				Uint16 glyph = static_cast<Uint16>(state.to_integer(1));
-				int minx = 0;
-				int maxx = 0;
-				int miny = 0;
-				int maxy = 0;
-				int advance = 0;
+		int isGlyphProvided(State & state, TTF_Font * font);
+		int getGlyphMetrics(State & state, TTF_Font * font);
+		int getTextSize(State & state, TTF_Font * font);
+		int getTextSizeUTF8(State & state, TTF_Font * font);
+		int getTextSizeUNICODE(State & state, TTF_Font * font);
 
-				int result = TTF_GlyphMetrics(font, glyph, &minx, &maxx, &miny, &maxy, &advance);
-				if (result == 0){
-					state.push_integer(minx);
-					state.push_integer(maxx);
-					state.push_integer(miny);
-					state.push_integer(maxy);
-					state.push_integer(advance);
-					return 5;
-				}else{
-					state.push_boolean(false);
-					return 1;
-				}
-			}
-			return 0;
-		}
-		int LOBJECT_METHOD(getTextSize, TTF_Font * font){
-			if (state.is_string(1)){
-				int w = 0;
-				int h = 0;
+		int renderSolid(State & state, TTF_Font * font);
+		int renderSolidUTF8(State & state, TTF_Font * font);
+		int renderSolidUNICODE(State & state, TTF_Font * font);
+		int renderSolidGlyph(State & state, TTF_Font * font);
+		int renderShaded(State & state, TTF_Font * font);
+		int renderShadedUTF8(State & state, TTF_Font * font);
+		int renderShadedUNICODE(State & state, TTF_Font * font);
+		int renderShadedGlyph(State & state, TTF_Font * font);
+		int renderBlended(State & state, TTF_Font * font);
+		int renderBlendedUTF8(State & state, TTF_Font * font);
+		int renderBlendedUNICODE(State & state, TTF_Font * font);
+		int renderBlendedGlyph(State & state, TTF_Font * font);
 
-				int result = TTF_SizeText(font, state.to_string(1).c_str(), &w, &h);
-				if (result == 0){
-					state.push_integer(w);
-					state.push_integer(h);
-					return 2;
-				}else{
-					state.push_boolean(false);
-					return 1;
-				}
-			}
-			return 0;
-		}
-		int LOBJECT_METHOD(getTextSizeUTF8, TTF_Font * font){
-			if (state.is_string(1)){
-				int w = 0;
-				int h = 0;
+		int getFontStyle(State & state, TTF_Font * font);
+		int setFontStyle(State & state, TTF_Font * font);
+		int getFontOutline(State & state, TTF_Font * font);
+		int setFontOutline(State & state, TTF_Font * font);
+		int getFontHinting(State & state, TTF_Font * font);
+		int setFontHinting(State & state, TTF_Font * font);
+		int getFontKerning(State & state, TTF_Font * font);
+		int setFontKerning(State & state, TTF_Font * font);
 
-				int result = TTF_SizeUTF8(font, state.to_string(1).c_str(), &w, &h);
-				if (result == 0){
-					state.push_integer(w);
-					state.push_integer(h);
-					return 2;
-				}else{
-					state.push_boolean(false);
-					return 1;
-				}
-			}
-			return 0;
-		}
-		int LOBJECT_METHOD(getTextSizeUNICODE, TTF_Font * font){
-			if (state.is_string(1)){
-				int w = 0;
-				int h = 0;
-
-				int result = TTF_SizeUNICODE(font, reinterpret_cast<const Uint16*>(state.to_string(1).c_str()), &w, &h);
-				if (result == 0){
-					state.push_integer(w);
-					state.push_integer(h);
-					return 2;
-				}else{
-					state.push_boolean(false);
-					return 1;
-				}
-			}
-			return 0;
-		}
-
-		int LOBJECT_METHOD(renderSolid, TTF_Font * font);
-		int LOBJECT_METHOD(renderSolidUTF8, TTF_Font * font);
-		int LOBJECT_METHOD(renderSolidUNICODE, TTF_Font * font);
-		int LOBJECT_METHOD(renderSolidGlyph, TTF_Font * font);
-		int LOBJECT_METHOD(renderShaded, TTF_Font * font);
-		int LOBJECT_METHOD(renderShadedUTF8, TTF_Font * font);
-		int LOBJECT_METHOD(renderShadedUNICODE, TTF_Font * font);
-		int LOBJECT_METHOD(renderShadedGlyph, TTF_Font * font);
-		int LOBJECT_METHOD(renderBlended, TTF_Font * font);
-		int LOBJECT_METHOD(renderBlendedUTF8, TTF_Font * font);
-		int LOBJECT_METHOD(renderBlendedUNICODE, TTF_Font * font);
-		int LOBJECT_METHOD(renderBlendedGlyph, TTF_Font * font);
-
-		int LOBJECT_METHOD(getFontStyle, TTF_Font * font){
-			int result = TTF_GetFontStyle(font);
-			state.push_integer(result);
-			return 1;
-		}
-		int LOBJECT_METHOD(setFontStyle, TTF_Font * font){
-			int style = TTF_STYLE_NORMAL;
-			if (state.is_number(1)){
-				style = state.to_integer(1);
-			}
-			TTF_SetFontStyle(font, style);
-			return 0;
-		}
-		int LOBJECT_METHOD(getFontOutline, TTF_Font * font){
-			int result = TTF_GetFontOutline(font);
-			state.push_integer(result);
-			return 1;
-		}
-		int LOBJECT_METHOD(setFontOutline, TTF_Font * font){
-			int style = 0;
-			if (state.is_number(1)){
-				style = state.to_integer(1);
-			}
-			TTF_SetFontOutline(font, style);
-			return 0;
-		}
-		int LOBJECT_METHOD(getFontHinting, TTF_Font * font){
-			int result = TTF_GetFontHinting(font);
-			state.push_integer(result);
-			return 1;
-		}
-		int LOBJECT_METHOD(setFontHinting, TTF_Font * font){
-			int style = TTF_HINTING_NORMAL;
-			if (state.is_number(1)){
-				style = state.to_integer(1);
-			}
-			TTF_SetFontHinting(font, style);
-			return 0;
-		}
-		int LOBJECT_METHOD(getFontKerning, TTF_Font * font){
-			int result = TTF_GetFontKerning(font);
-			state.push_integer(result);
-			return 1;
-		}
-		int LOBJECT_METHOD(setFontKerning, TTF_Font * font){
-			int style = 1;
-			if (state.is_number(1)){
-				style = state.to_integer(1);
-			}
-			TTF_SetFontKerning(font, style);
-			return 0;
-		}
-
-		int LOBJECT_METHOD(getFontHeight, TTF_Font * font){
-			int result = TTF_FontHeight(font);
-			state.push_integer(result);
-			return 1;
-		}
-		int LOBJECT_METHOD(getFontAscent, TTF_Font * font){
-			int result = TTF_FontAscent(font);
-			state.push_integer(result);
-			return 1;
-		}
-		int LOBJECT_METHOD(getFontDescent, TTF_Font * font){
-			int result = TTF_FontDescent(font);
-			state.push_integer(result);
-			return 1;
-		}
-		int LOBJECT_METHOD(getFontLineSkip, TTF_Font * font){
-			int result = TTF_FontLineSkip(font);
-			state.push_integer(result);
-			return 1;
-		}
-		int LOBJECT_METHOD(getFontFaces, TTF_Font * font){
-			int result = TTF_FontFaces(font);
-			state.push_integer(result);
-			return 1;
-		}
-		int LOBJECT_METHOD(getFontFixedWidth, TTF_Font * font){
-			int result = TTF_FontFaceIsFixedWidth(font);
-			state.push_boolean(result > 0);
-			return 1;
-		}
-		int LOBJECT_METHOD(getFontFamilyName, TTF_Font * font){
-			char * name = TTF_FontFaceFamilyName(font);
-			if (name){
-				state.push_string(name);
-			}else{
-				state.push_literal("");
-			}
-			return 1;
-		}
-		int LOBJECT_METHOD(getFontStyleName, TTF_Font * font){
-			char * name = TTF_FontFaceStyleName(font);
-			if (name){
-				state.push_string(name);
-			}else{
-				state.push_literal("");
-			}
-			return 1;
-		}
+		int getFontHeight(State & state, TTF_Font * font);
+		int getFontAscent(State & state, TTF_Font * font);
+		int getFontDescent(State & state, TTF_Font * font);
+		int getFontLineSkip(State & state, TTF_Font * font);
+		int getFontFaces(State & state, TTF_Font * font);
+		int getFontFixedWidth(State & state, TTF_Font * font);
+		int getFontFamilyName(State & state, TTF_Font * font);
+		int getFontStyleName(State & state, TTF_Font * font);
 
 	};
 }

@@ -5,8 +5,6 @@ namespace LuaSDL {
 	static int lua_SDL_AudioInit(State & state){
 		Stack * stack = state.stack;
 		if (stack->is<LUA_TSTRING>(1)){
-			//std::string & str = stack->to<const std::string>(1);
-			//const char * driver = ;
 			std::string driverName = stack->to<const std::string>(1);
 			int retval = SDL_AudioInit(driverName.c_str());
 			stack->push<bool>( retval == 0 );
@@ -57,7 +55,7 @@ namespace LuaSDL {
 		Stack * stack = state.stack;
 		const char * name = SDL_GetAudioDeviceName(stack->to<int>(1), (stack->to<bool>(2)) ? 1 : 0);
 		if (name){
-			stack->push<const std::string>(name);
+			stack->push<const std::string &>(name);
 			return 1;
 		}else{
 			return 0;
@@ -67,7 +65,7 @@ namespace LuaSDL {
 		Stack * stack = state.stack;
 		const char * name = SDL_GetAudioDriver(stack->to<int>(1));
 		if (name){
-			stack->push<const std::string>(name);
+			stack->push<const std::string &>(name);
 			return 1;
 		}else{
 			return 0;
@@ -83,7 +81,7 @@ namespace LuaSDL {
 				stack->push<int>(ii++);
 				stack->newTable();
 					stack->setField<int>("id", i);
-					stack->setField<const std::string>("name", name);
+					stack->setField<const std::string &>("name", name);
 				stack->setTable();
 			}
 		}
@@ -93,7 +91,7 @@ namespace LuaSDL {
 		Stack * stack = state.stack;
 		stack->newTable();
 		for (int capturing=0; capturing<2; capturing++){
-			stack->push<const std::string>( (capturing == 0) ? "playback" : "capture");
+			stack->push<const std::string &>( (capturing == 0) ? "playback" : "capture");
 			stack->newTable();
 			int ii=1;
 			for (int i=0; i<SDL_GetNumAudioDevices(capturing); i++){
@@ -102,7 +100,7 @@ namespace LuaSDL {
 					stack->push<int>(ii++);
 					stack->newTable();
 						stack->setField<int>("id", i);
-						stack->setField<const std::string>("name", name);
+						stack->setField<const std::string &>("name", name);
 					stack->setTable();
 				}
 			}
@@ -119,7 +117,7 @@ namespace LuaSDL {
 		Stack * stack = state.stack;
 		const char * name = SDL_GetCurrentAudioDriver();
 		if (name){
-			stack->push<const std::string>(name);
+			stack->push<const std::string &>(name);
 			return 1;
 		}else{
 			return 0;
@@ -131,7 +129,7 @@ namespace LuaSDL {
 		//SDL_MixAudioFormat();
 		return 0;
 	}
-	void init_audio(Module & module){
+	void initAudio(Module & module){
 		module["audioInit"] = lua_SDL_AudioInit;
 		module["audioQuit"] = lua_SDL_AudioQuit;
 		module["audioDeviceConnected"] = lua_SDL_AudioDeviceConnected;

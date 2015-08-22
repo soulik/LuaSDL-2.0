@@ -4,6 +4,7 @@
 #include "common.hpp"
 
 namespace LuaSDL {
+	/*
 	struct LuaThread {
 		lutok::state *state;
 		SDL_Thread * thread;
@@ -12,23 +13,23 @@ namespace LuaSDL {
 		const char *channel;
 		struct LuaThread *previous, *next;
 	};
-	class Lua_SDL_Thread : public LObject<Lua_SDL_Thread, LuaThread *> {
+	class Thread : public Object<LuaThread> {
 	public:
-		LOBJECT_DEFINE_CLASS(Lua_SDL_Thread, LuaThread *, "Thread") {
-			/*
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Thread, "start", null_method);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Thread, "send", null_method);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_Thread, "receive", null_method);
-			*/
+		explicit Thread(State * state) : Object<LuaThread>(state) {
+			//LUTOK_METHOD("start", &Thread::null_method);
+			//LUTOK_METHOD("send", &Thread::null_method);
+			//LUTOK_METHOD("receive", &Thread::null_method);
 			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_Thread, LuaThread *, "", null_method, null_method);	
 		}
 
-		void destructor(lutok::state & state, LuaThread * luathread){
+		void destructor(State & state, LuaThread * luathread){
 		}
 
-		int LOBJECT_METHOD(method, LuaThread * luathread){
+		int method(State & state, LuaThread * luathread) {
+		Stack * stack = state.stack;
 		}
 	};
+	*/
 }
 
 #endif

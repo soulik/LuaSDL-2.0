@@ -5,227 +5,77 @@
 
 namespace LuaSDL {
 
-	class Lua_SDL_PixelFormat : public Object<Lua_SDL_PixelFormat, SDL_PixelFormat*> {
+	class PixelFormat : public Object<SDL_PixelFormat> {
 	public:
-		LOBJECT_DEFINE_CLASS(Lua_SDL_PixelFormat, SDL_PixelFormat*, "PixelFormat") {
+		explicit PixelFormat(State * state) : Object<SDL_PixelFormat>(state) {
 
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_PixelFormat, "getRGB", getRGB);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_PixelFormat, "getRGBA", getRGBA);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_PixelFormat, "mapRGB", mapRGB);
-			LOBJECT_ADD_METHOD(LuaSDL::Lua_SDL_PixelFormat, "mapRGBA", mapRGBA);
+			LUTOK_METHOD("getRGB", &PixelFormat::getRGB);
+			LUTOK_METHOD("getRGBA", &PixelFormat::getRGBA);
+			LUTOK_METHOD("mapRGB", &PixelFormat::mapRGB);
+			LUTOK_METHOD("mapRGBA", &PixelFormat::mapRGBA);
 
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "name", getName, null_method);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "format", getFormat, setFormat);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "BitsPerPixel", getBitsPerPixel, setBitsPerPixel);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "BytesPerPixel", getBytesPerPixel, setBytesPerPixel);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Rmask", getRmask, setRmask);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Gmask", getGmask, setGmask);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Bmask", getBmask, setBmask);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Amask", getAmask, setAmask);	
+			LUTOK_PROPERTY("name", &PixelFormat::getName, &PixelFormat::nullMethod);	
+			LUTOK_PROPERTY("format", &PixelFormat::getFormat, &PixelFormat::setFormat);	
+			LUTOK_PROPERTY("BitsPerPixel", &PixelFormat::getBitsPerPixel, &PixelFormat::setBitsPerPixel);	
+			LUTOK_PROPERTY("BytesPerPixel", &PixelFormat::getBytesPerPixel, &PixelFormat::setBytesPerPixel);	
+			LUTOK_PROPERTY("Rmask", &PixelFormat::getRmask, &PixelFormat::setRmask);	
+			LUTOK_PROPERTY("Gmask", &PixelFormat::getGmask, &PixelFormat::setGmask);	
+			LUTOK_PROPERTY("Bmask", &PixelFormat::getBmask, &PixelFormat::setBmask);	
+			LUTOK_PROPERTY("Amask", &PixelFormat::getAmask, &PixelFormat::setAmask);	
 
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Rloss", getRloss, setRloss);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Gloss", getGloss, setGloss);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Bloss", getBloss, setBloss);	
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Aloss", getAloss, setAloss);	
+			LUTOK_PROPERTY("Rloss", &PixelFormat::getRloss, &PixelFormat::setRloss);	
+			LUTOK_PROPERTY("Gloss", &PixelFormat::getGloss, &PixelFormat::setGloss);	
+			LUTOK_PROPERTY("Bloss", &PixelFormat::getBloss, &PixelFormat::setBloss);	
+			LUTOK_PROPERTY("Aloss", &PixelFormat::getAloss, &PixelFormat::setAloss);	
 
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Rshift", getRshift, setRshift);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Gshift", getGshift, setGshift);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Bshift", getBshift, setBshift);
-			LOBJECT_ADD_PROPERTY(LuaSDL::Lua_SDL_PixelFormat, SDL_PixelFormat*, "Ashift", getAshift, setAshift);
+			LUTOK_PROPERTY("Rshift", &PixelFormat::getRshift, &PixelFormat::setRshift);
+			LUTOK_PROPERTY("Gshift", &PixelFormat::getGshift, &PixelFormat::setGshift);
+			LUTOK_PROPERTY("Bshift", &PixelFormat::getBshift, &PixelFormat::setBshift);
+			LUTOK_PROPERTY("Ashift", &PixelFormat::getAshift, &PixelFormat::setAshift);
 		}
 
-		void destructor(lutok::state & s, SDL_PixelFormat * pixelformat){
+		SDL_PixelFormat * constructor(State & state, bool & managed);
+
+		void destructor(State & state, SDL_PixelFormat * pixelformat){
 			SDL_FreeFormat(pixelformat);
 		}
 
-		int inline LOBJECT_METHOD(mapRGB, SDL_PixelFormat * format){
-			state.push_integer(
-				SDL_MapRGB(
-					format,
-					(Uint8)state.to_integer(1),
-					(Uint8)state.to_integer(2),
-					(Uint8)state.to_integer(3)
-					));
-
-			return 1;
-		}
-
-		int inline LOBJECT_METHOD(mapRGBA, SDL_PixelFormat * format){
-			state.push_integer(
-				SDL_MapRGBA(
-					format,
-					(Uint8)state.to_integer(1),
-					(Uint8)state.to_integer(2),
-					(Uint8)state.to_integer(3),
-					(Uint8)state.to_integer(4)
-					));
-
-			return 1;
-		}
-
-		int inline LOBJECT_METHOD(getRGB, SDL_PixelFormat * format){
-			Uint8 r,g,b;
-
-			SDL_GetRGB(
-				state.to_integer(1),
-				format,
-				&r,&g,&b);
-
-			state.push_integer(r);
-			state.push_integer(g);
-			state.push_integer(b);
-			return 3;
-		}
-
-		int inline LOBJECT_METHOD(getRGBA, SDL_PixelFormat * format){
-			Uint8 r,g,b,a;
-
-			SDL_GetRGBA(
-				state.to_integer(1),
-				format,
-				&r,&g,&b,&a);
-
-			state.push_integer(r);
-			state.push_integer(g);
-			state.push_integer(b);
-			state.push_integer(a);
-			return 4;
-		}
-
-		int inline LOBJECT_METHOD(getName, SDL_PixelFormat * format){
-			state.push_string(SDL_GetPixelFormatName(format->format));
-			return 1;
-		}
-
-		int inline LOBJECT_METHOD(getFormat, SDL_PixelFormat * format){
-			state.push_integer(format->format);
-			return 1;
-		}
-
-		int inline LOBJECT_METHOD(setFormat, SDL_PixelFormat * format){
-			format->format = state.to_integer(1);
-			return 0;
-		}
-		int inline LOBJECT_METHOD(getBitsPerPixel, SDL_PixelFormat * format){
-			state.push_integer(format->BitsPerPixel);
-			return 1;
-		}
-
-		int inline LOBJECT_METHOD(setBitsPerPixel, SDL_PixelFormat * format){
-			format->BitsPerPixel = (Uint8)state.to_integer(1);
-			return 0;
-		}
-		int inline LOBJECT_METHOD(getBytesPerPixel, SDL_PixelFormat * format){
-			state.push_integer(format->BytesPerPixel);
-			return 1;
-		}
-
-		int inline LOBJECT_METHOD(setBytesPerPixel, SDL_PixelFormat * format){
-			format->BytesPerPixel = (Uint8)state.to_integer(1);
-			return 0;
-		}
-		int inline LOBJECT_METHOD(getRmask, SDL_PixelFormat * format){
-			state.push_integer(format->Rmask);
-			return 1;
-		}
-
-		int inline LOBJECT_METHOD(setRmask, SDL_PixelFormat * format){
-			format->Rmask = (Uint32)state.to_integer(1);
-			return 0;
-		}
-		int inline LOBJECT_METHOD(getGmask, SDL_PixelFormat * format){
-			state.push_integer(format->Gmask);
-			return 1;
-		}
-
-		int inline LOBJECT_METHOD(setGmask, SDL_PixelFormat * format){
-			format->Gmask = (Uint32)state.to_integer(1);
-			return 0;
-		}
-		int inline LOBJECT_METHOD(getBmask, SDL_PixelFormat * format){
-			state.push_integer(format->Bmask);
-			return 1;
-		}
-
-		int inline LOBJECT_METHOD(setBmask, SDL_PixelFormat * format){
-			format->Bmask = (Uint32)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getAmask, SDL_PixelFormat * format){
-			state.push_integer(format->Amask);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setAmask, SDL_PixelFormat * format){
-			format->Amask = (Uint32)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getRloss, SDL_PixelFormat * format){
-			state.push_integer(format->Rloss);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setRloss, SDL_PixelFormat * format){
-			format->Rloss = (Uint8)state.to_integer(1);
-			return 0;
-		}
-		int inline LOBJECT_METHOD(getGloss, SDL_PixelFormat * format){
-			state.push_integer(format->Gloss);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setGloss, SDL_PixelFormat * format){
-			format->Gloss = (Uint8)state.to_integer(1);
-			return 0;
-		}
-		int inline LOBJECT_METHOD(getBloss, SDL_PixelFormat * format){
-			state.push_integer(format->Bloss);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setBloss, SDL_PixelFormat * format){
-			format->Bloss = (Uint8)state.to_integer(1);
-			return 0;
-		}
-		int inline LOBJECT_METHOD(getAloss, SDL_PixelFormat * format){
-			state.push_integer(format->Aloss);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setAloss, SDL_PixelFormat * format){
-			format->Aloss = (Uint8)state.to_integer(1);
-			return 0;
-		}
-
-		int inline LOBJECT_METHOD(getRshift, SDL_PixelFormat * format){
-			state.push_integer(format->Rshift);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setRshift, SDL_PixelFormat * format){
-			format->Rshift = (Uint8)state.to_integer(1);
-			return 0;
-		}
-		int inline LOBJECT_METHOD(getGshift, SDL_PixelFormat * format){
-			state.push_integer(format->Gshift);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setGshift, SDL_PixelFormat * format){
-			format->Gshift = (Uint8)state.to_integer(1);
-			return 0;
-		}
-		int inline LOBJECT_METHOD(getBshift, SDL_PixelFormat * format){
-			state.push_integer(format->Bshift);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setBshift, SDL_PixelFormat * format){
-			format->Bshift = (Uint8)state.to_integer(1);
-			return 0;
-		}
-		int inline LOBJECT_METHOD(getAshift, SDL_PixelFormat * format){
-			state.push_integer(format->Ashift);
-			return 1;
-		}
-		int inline LOBJECT_METHOD(setAshift, SDL_PixelFormat * format){
-			format->Ashift = (Uint8)state.to_integer(1);
-			return 0;
-		}
+		int inline mapRGB(State & state, SDL_PixelFormat * format);
+		int inline mapRGBA(State & state, SDL_PixelFormat * format);
+		int inline getRGB(State & state, SDL_PixelFormat * format);
+		int inline getRGBA(State & state, SDL_PixelFormat * format);
+		int inline getName(State & state, SDL_PixelFormat * format);
+		int inline getFormat(State & state, SDL_PixelFormat * format);
+		int inline setFormat(State & state, SDL_PixelFormat * format);
+		int inline getBitsPerPixel(State & state, SDL_PixelFormat * format);
+		int inline setBitsPerPixel(State & state, SDL_PixelFormat * format);
+		int inline getBytesPerPixel(State & state, SDL_PixelFormat * format);
+		int inline setBytesPerPixel(State & state, SDL_PixelFormat * format);
+		
+		int inline getRmask(State & state, SDL_PixelFormat * format);
+		int inline setRmask(State & state, SDL_PixelFormat * format);
+		int inline getGmask(State & state, SDL_PixelFormat * format);
+		int inline setGmask(State & state, SDL_PixelFormat * format);
+		int inline getBmask(State & state, SDL_PixelFormat * format);
+		int inline setBmask(State & state, SDL_PixelFormat * format);
+		int inline getAmask(State & state, SDL_PixelFormat * format);
+		int inline setAmask(State & state, SDL_PixelFormat * format);
+		int inline getRloss(State & state, SDL_PixelFormat * format);
+		int inline setRloss(State & state, SDL_PixelFormat * format);
+		int inline getGloss(State & state, SDL_PixelFormat * format);
+		int inline setGloss(State & state, SDL_PixelFormat * format);
+		int inline getBloss(State & state, SDL_PixelFormat * format);
+		int inline setBloss(State & state, SDL_PixelFormat * format);
+		int inline getAloss(State & state, SDL_PixelFormat * format);
+		int inline setAloss(State & state, SDL_PixelFormat * format);
+		int inline getRshift(State & state, SDL_PixelFormat * format);
+		int inline setRshift(State & state, SDL_PixelFormat * format);
+		int inline getGshift(State & state, SDL_PixelFormat * format);
+		int inline setGshift(State & state, SDL_PixelFormat * format);
+		int inline getBshift(State & state, SDL_PixelFormat * format);
+		int inline setBshift(State & state, SDL_PixelFormat * format);
+		int inline getAshift(State & state, SDL_PixelFormat * format);
+		int inline setAshift(State & state, SDL_PixelFormat * format);
 	};
 }
 
