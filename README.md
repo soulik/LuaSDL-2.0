@@ -7,13 +7,8 @@ Dependencies
 ------------
 
 - lua 5.1.x or luajit 2.x.x (prefered)
-- libSDL2 2.x.x
-- libSDL2_mixer 2.x.x
-- libSDL2_image 2.x.x
-- libSDL2_ttf 2.x.x
 - compiler with C++11 support
-
-Only MS Visual C++ 2012 project files are present at the moment.
+- CMake 3.1+
 
 What works
 -------------
@@ -60,9 +55,6 @@ What works
 
 Credits
 -------------
-
-- This project makes a use of modified version of "Lutok - Lightweight C++ API for Lua" - available at: https://code.google.com/p/lutok/
-- C++ Class wrapper "LObject" was inspired by "Luna Five" wrapper - available at: http://lua-users.org/wiki/LunaFive
 
 - Stephane Peter and Ryan Gordon - SDL2_mixer
 - Mattias Engdegård - SDL2_image
