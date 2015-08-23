@@ -102,12 +102,19 @@ namespace LuaSDL {
 
 	int inline HapticEffect::getType(State & state, HapticEffect_pack * hapticEffect){
 		Stack * stack = state.stack;
+
 		stack->push<int>(hapticEffect->effect.type);
 		return 1;
 	}
 	int inline HapticEffect::setType(State & state, HapticEffect_pack * hapticEffect){
 		Stack * stack = state.stack;
-		hapticEffect->effect.type = stack->to<int>(1);
+		int newType = stack->to<int>(1);
+		if (hapticEffect->effect.type == SDL_HAPTIC_CUSTOM && newType != SDL_HAPTIC_CUSTOM){
+			if (hapticEffect->effect.custom.data){
+				SDL_free(hapticEffect->effect.custom.data);
+			}
+		}
+		hapticEffect->effect.type = newType;
 		return 0;
 	}
 	int inline HapticEffect::getDirectionType(State & state, HapticEffect_pack * hapticEffect){
