@@ -108,6 +108,7 @@ namespace LuaSDL {
 			LUTOK_PROPERTY("touchfinger_y", &Event::getTouchfinger_y, &Event::setTouchfinger_y);
 			LUTOK_PROPERTY("touchfinger_dx", &Event::getTouchfinger_dx, &Event::setTouchfinger_dx);
 			LUTOK_PROPERTY("touchfinger_dy", &Event::getTouchfinger_dy, &Event::setTouchfinger_dy);
+			LUTOK_PROPERTY("touchfinger_pressure", &Event::getTouchfinger_pressure, &Event::setTouchfinger_pressure);
 
 			//SDL_MultiGestureEvent
 			LUTOK_PROPERTY("multigesture_touchId", &Event::getMultigesture_touchId, &Event::setMultigesture_touchId);
@@ -129,6 +130,10 @@ namespace LuaSDL {
 			LUTOK_PROPERTY("dropevent_file", &Event::getDrop_file, &Event::setDrop_file);
 
 			//SDL_QuitEvent
+
+			//SDL_AudioDeviceEvent
+			LUTOK_PROPERTY("audiodevice_which", &Event::getAudioDevice_which, &Event::setAudioDevice_which);
+			LUTOK_PROPERTY("audiodevice_iscapture", &Event::getAudioDevice_iscapture, &Event::setAudioDevice_iscapture);
 
 			//SDL_UserEvent
 			LUTOK_PROPERTY("userevent_windowID", &Event::getUser_windowID, &Event::setUser_windowID);
@@ -351,6 +356,9 @@ namespace LuaSDL {
 		int inline getTouchfinger_dy(State & state, SDL_Event * event);
 		int inline setTouchfinger_dy(State & state, SDL_Event * event);
 
+		int inline getTouchfinger_pressure(State & state, SDL_Event * event);
+		int inline setTouchfinger_pressure(State & state, SDL_Event * event);
+
 		int inline getMultigesture_touchId(State & state, SDL_Event * event);
 		int inline setMultigesture_touchId(State & state, SDL_Event * event);
 
@@ -404,6 +412,13 @@ namespace LuaSDL {
 
 		int getSyswm_msg(State & state, SDL_Event * event);
 		int setSyswm_msg(State & state, SDL_Event * event);
+
+		int inline getAudioDevice_which(State & state, SDL_Event * event);
+		int inline setAudioDevice_which(State & state, SDL_Event * event);
+
+		int inline getAudioDevice_iscapture(State & state, SDL_Event * event);
+		int inline setAudioDevice_iscapture(State & state, SDL_Event * event);
+		
 	};
 }
 

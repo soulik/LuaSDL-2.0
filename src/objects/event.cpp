@@ -721,6 +721,17 @@ namespace LuaSDL {
 		return 0;
 	}
 
+	int inline Event::getTouchfinger_pressure(State & state, SDL_Event * event){
+		Stack * stack = state.stack;
+		stack->push<LUA_NUMBER>(event->tfinger.pressure);
+		return 1;
+	}
+	int inline Event::setTouchfinger_pressure(State & state, SDL_Event * event){
+		Stack * stack = state.stack;
+		event->tfinger.pressure = (float)stack->to<LUA_NUMBER>(1);
+		return 0;
+	}
+
 	int inline Event::getMultigesture_touchId(State & state, SDL_Event * event) {
 		Stack * stack = state.stack;
 		stack->push<int>((const int)event->mgesture.touchId);
@@ -964,6 +975,28 @@ namespace LuaSDL {
 				event->user.data2 = reinterpret_cast<void*>(ref);
 			}
 		}
+		return 0;
+	}
+
+	int inline Event::getAudioDevice_which(State & state, SDL_Event * event){
+		Stack * stack = state.stack;
+		stack->push<int>(event->adevice.which);
+		return 1;
+	}
+	int inline Event::setAudioDevice_which(State & state, SDL_Event * event){
+		Stack * stack = state.stack;
+		event->adevice.which = stack->to<int>(1);
+		return 0;
+	}
+
+	int inline Event::getAudioDevice_iscapture(State & state, SDL_Event * event){
+		Stack * stack = state.stack;
+		stack->push<int>(event->adevice.iscapture);
+		return 1;
+	}
+	int inline Event::setAudioDevice_iscapture(State & state, SDL_Event * event){
+		Stack * stack = state.stack;
+		event->adevice.iscapture = stack->to<int>(1);
 		return 0;
 	}
 
