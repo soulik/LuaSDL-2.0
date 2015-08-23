@@ -1,5 +1,4 @@
 #include "objects/displaymode.hpp"
-#include <lua.hpp>
 
 namespace LuaSDL {
 	static int lua_getPixelFormatName(State & state){

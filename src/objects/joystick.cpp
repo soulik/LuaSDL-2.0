@@ -1,4 +1,5 @@
 #include "objects/joystick.hpp"
+#include "objects/haptic.hpp"
 #include <lua.hpp>
 
 namespace LuaSDL {
@@ -79,6 +80,24 @@ namespace LuaSDL {
 	int Joystick::getNumHats(State & state, SDL_Joystick * joystick) {
 		Stack * stack = state.stack;
 		stack->push<int>(SDL_JoystickNumHats(joystick));
+		return 1;
+	}
+	int Joystick::getHaptic(State & state, SDL_Joystick * joystick){
+		Stack * stack = state.stack;
+		Haptic * interfaceHaptic = state.getInterface<Haptic>("LuaSDL_Haptic");
+		SDL_Haptic * haptic = SDL_HapticOpenFromJoystick(joystick);
+		if (haptic){
+			interfaceHaptic->push(haptic, true);
+			return 1;
+		}
+		else{
+			return 0;
+		}
+	}
+
+	int Joystick::isHaptic(State & state, SDL_Joystick * joystick) {
+		Stack * stack = state.stack;
+		stack->push<bool>(SDL_JoystickIsHaptic(joystick) == 1);
 		return 1;
 	}
 

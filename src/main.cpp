@@ -32,6 +32,8 @@ extern "C" LIBLUASDL2_DLL_EXPORTED int luaopen_LuaSDL2(lua_State * L){
 	initAudioSpec(state, module);
 	initAudioBuffer(state, module);
 	initThread(state, module);
+	initHaptic(state, module);
+	initHapticEffect(state, module);
 
 	//SDL Mixer
 	initSDLmixer(module);

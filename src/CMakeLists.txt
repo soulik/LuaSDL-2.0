@@ -26,6 +26,8 @@ set(LUASDL2_OBJECTS_SRC
 	objects/event.cpp
 	objects/gamecontroller.cpp
 	objects/gl_context.cpp
+	objects/haptic.cpp
+	objects/hapticeffect.cpp
 	objects/iconv.cpp
 	objects/joystick.cpp
 	objects/mix_chunk.cpp
@@ -55,6 +57,8 @@ set(LUASDL2_OBJECTS_H
 	objects/event.hpp
 	objects/gamecontroller.hpp
 	objects/gl_context.hpp
+	objects/haptic.hpp
+	objects/hapticeffect.hpp
 	objects/iconv.hpp
 	objects/joystick.hpp
 	objects/mix_chunk.hpp

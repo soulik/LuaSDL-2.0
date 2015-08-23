@@ -19,7 +19,9 @@ namespace LuaSDL {
 			LUTOK_PROPERTY("numAxes", &Joystick::getNumAxes, &Joystick::nullMethod);	
 			LUTOK_PROPERTY("numBalls", &Joystick::getNumBalls, &Joystick::nullMethod);	
 			LUTOK_PROPERTY("numButtons", &Joystick::getNumButtons, &Joystick::nullMethod);	
-			LUTOK_PROPERTY("numHats", &Joystick::getNumHats, &Joystick::nullMethod);	
+			LUTOK_PROPERTY("numHats", &Joystick::getNumHats, &Joystick::nullMethod);
+			LUTOK_PROPERTY("haptic", &Joystick::getHaptic, &Joystick::nullMethod);
+			LUTOK_PROPERTY("isHaptic", &Joystick::isHaptic, &Joystick::nullMethod);
 		}
 
 		SDL_Joystick * constructor(State & state, bool & managed);
@@ -41,6 +43,9 @@ namespace LuaSDL {
 		int getNumBalls(State & state, SDL_Joystick * joystick);
 		int getNumButtons(State & state, SDL_Joystick * joystick);
 		int getNumHats(State & state, SDL_Joystick * joystick);
+
+		int getHaptic(State & state, SDL_Joystick * joystick);
+		int isHaptic(State & state, SDL_Joystick * joystick);
 	};
 }
 

@@ -1,6 +1,7 @@
 #include "common.hpp"
 #include "objects/window.hpp"
 #include "objects/rect.hpp"
+#include "objects/haptic.hpp"
 
 namespace LuaSDL {
 
@@ -165,6 +166,24 @@ namespace LuaSDL {
 		stack->push<bool>(SDL_SetRelativeMouseMode((stack->to<bool>(1)) ? SDL_TRUE : SDL_FALSE) == 0);
 		return 0;
 	}
+	static int lua_SDL_MouseHaptic(State & state){
+		Stack * stack = state.stack;
+		Haptic * interfaceHaptic = state.getInterface<Haptic>("LuaSDL_Haptic");
+		SDL_Haptic * haptic = SDL_HapticOpenFromMouse();
+		if (haptic){
+			interfaceHaptic->push(haptic, true);
+			return 1;
+		}
+		else{
+			return 0;
+		}
+	}
+
+	inline static int lua_SDL_MouseIsHaptic(State & state){
+		Stack * stack = state.stack;
+		stack->push<bool>(SDL_MouseIsHaptic() == SDL_TRUE);
+		return 1;
+	}
 
 	void initInput(Module & module){
 		//Keyboard specific
@@ -190,5 +209,7 @@ namespace LuaSDL {
 		module["getRelativeMouseState"] = lua_SDL_GetRelativeMouseState;
 		module["warpMouseInWindow"] = lua_SDL_WarpMouseInWindow;
 		module["setRelativeMouseMode"] = lua_SDL_SetRelativeMouseMode;
+		module["mouseHaptic"] = lua_SDL_MouseHaptic;
+		module["mouseIsHaptic"] = lua_SDL_MouseIsHaptic;
 	}
 }

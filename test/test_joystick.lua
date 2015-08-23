@@ -53,6 +53,30 @@ SDLmain(function()
 	end
 
 	local c = C[1]
+	local haptic = c.joystick.haptic
+	--haptic.rumbleInit()
+
+	--haptic.rumblePlay(1, 1000)
+	local iterations = 0
+	local maxNumEffects = haptic.numEffects
+
+	local effect1 = SDL.HapticEffect()
+	effect1.type = SDL.HAPTIC_LEFTRIGHT
+	effect1.largeMagnitude = 0xFFFF
+	effect1.smallMagnitude = 0x0
+	effect1.length = 5000
+
+	local effectSupported = haptic.effectSupported(effect1)
+
+	if (effectSupported) then
+		if effect1.apply(haptic) then
+			if not effect1.run(1) then
+				print('Cannot run effect', SDL.getError())
+			end
+		else
+			print('Cannot apply effect', SDL.getError())
+		end
+	end
 
 	local timer = SDL.Timer(100, function()
 		local left = {
@@ -89,12 +113,17 @@ SDLmain(function()
 			left = c.button(SDL.CONTROLLER_BUTTON_DPAD_LEFT),
 			right = c.button(SDL.CONTROLLER_BUTTON_DPAD_RIGHT),
 		}
-
+		--[[
+		print(("Is haptic: %s Effects: %d Effect supported: %s"):format(tostring(haptic), maxNumEffects, tostring(effectSupported)))
 		print(("L(%d, %d) R(%d, %d) S(%d, %d)"):format(left.x, left.y, right.x, right.y, trigger.left, trigger.right))
 		print(("Buttons [A%dB%dX%dY%d] Back: %d Guide: %d Start: %d LStick: %d RStick: %d LShoulder: %d RShoulder: %d"):format(button.a, button.b, button.x, button.y, button.back, button.guide, button.start, button.leftStick, button.rightStick, button.leftShoulder, button.rightShoulder))
 		print(("U%d D%d L%d R%d"):format(button.up, button.down, button.left, button.right))
+		--]]
 		SDL.gameControllerUpdate()
-	end)
+
+		--haptic.rumblePlay((iterations % 101) / 100, 100)
+		iterations = iterations + 1
+end)
 
 	while running do
 		local event = SDL.Event()
@@ -106,5 +135,8 @@ SDLmain(function()
        	end
 	end
 
+	--haptic.rumbleStop()
+	haptic = nil
 	timer.stop()
+	collectgarbage()
 end)

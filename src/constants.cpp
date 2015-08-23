@@ -223,6 +223,26 @@ namespace LuaSDL{
 		stack->setField<int>("CONTROLLER_BINDTYPE_AXIS", SDL_CONTROLLER_BINDTYPE_AXIS);
 		stack->setField<int>("CONTROLLER_BINDTYPE_HAT", SDL_CONTROLLER_BINDTYPE_HAT);
 
+		stack->setField<int>("HAPTIC_CONSTANT", SDL_HAPTIC_CONSTANT);
+		stack->setField<int>("HAPTIC_SINE", SDL_HAPTIC_SINE);
+#ifdef SDL_HAPTIC_SQUARE
+		stack->setField<int>("HAPTIC_SQUARE", SDL_HAPTIC_SQUARE);
+#endif
+		stack->setField<int>("HAPTIC_TRIANGLE", SDL_HAPTIC_TRIANGLE);
+		stack->setField<int>("HAPTIC_SAWTOOTHUP", SDL_HAPTIC_SAWTOOTHUP);
+		stack->setField<int>("HAPTIC_SAWTOOTHDOWN", SDL_HAPTIC_SAWTOOTHDOWN);
+		stack->setField<int>("HAPTIC_SPRING", SDL_HAPTIC_SPRING);
+		stack->setField<int>("HAPTIC_DAMPER", SDL_HAPTIC_DAMPER);
+		stack->setField<int>("HAPTIC_INERTIA", SDL_HAPTIC_INERTIA);
+		stack->setField<int>("HAPTIC_FRICTION", SDL_HAPTIC_FRICTION);
+		stack->setField<int>("HAPTIC_RAMP", SDL_HAPTIC_RAMP);
+		stack->setField<int>("HAPTIC_LEFTRIGHT", SDL_HAPTIC_LEFTRIGHT);
+		stack->setField<int>("HAPTIC_CUSTOM", SDL_HAPTIC_CUSTOM);
+
+		stack->setField<int>("HAPTIC_POLAR", SDL_HAPTIC_POLAR);
+		stack->setField<int>("HAPTIC_CARTESIAN", SDL_HAPTIC_CARTESIAN);
+		stack->setField<int>("HAPTIC_SPHERICAL", SDL_HAPTIC_SPHERICAL);
+
 		stack->setField<int>("FINGERMOTION", SDL_FINGERMOTION);
 		stack->setField<int>("FINGERMOTION", SDL_FINGERMOTION);
 		stack->setField<int>("FINGERMOTION", SDL_FINGERMOTION);

@@ -70,6 +70,8 @@ namespace LuaSDL{
 	void initThread(State *, Module &);
 	void initRenderer(State *, Module &);
 	void initTexture(State *, Module &);
+	void initHaptic(State * state, Module & module);
+	void initHapticEffect(State * state, Module & module);
 
 	//SDL_mixer
 	void initSDLmixer(Module & module);
