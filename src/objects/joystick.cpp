@@ -46,8 +46,8 @@ namespace LuaSDL {
 	}
 	int Joystick::getIndex(State & state, SDL_Joystick * joystick) {
 		Stack * stack = state.stack;
-		//stack->push<int>(SDL_JoystickIndex(joystick));
-		return 0;
+		stack->push<int>(SDL_JoystickInstanceID(joystick));
+		return 1;
 	}
 	int Joystick::getName(State & state, SDL_Joystick * joystick) {
 		Stack * stack = state.stack;
@@ -93,19 +93,6 @@ namespace LuaSDL {
 		Stack * stack = state.stack;
 		stack->push<int>(SDL_NumJoysticks());
 		return 1;
-	}
-
-	static int lua_SDL_JoystickOpened(State & state){
-		Stack * stack = state.stack;
-		/*
-		int retval = SDL_JoystickOpened(stack->to<int>(1));
-		if (retval>=0){
-		stack->push<bool>(retval == 1);
-		}else{
-		return 0;
-		}
-		*/
-		return 0;
 	}
 
 	static int lua_SDL_JoystickUpdate(State & state){

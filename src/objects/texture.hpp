@@ -13,6 +13,9 @@ namespace LuaSDL {
 			LUTOK_METHOD("update", &Texture::update);
 			LUTOK_METHOD("query", &Texture::query);
 
+			LUTOK_METHOD("bind", &Texture::bind);
+			LUTOK_METHOD("unbind", &Texture::unbind);
+
 			LUTOK_PROPERTY("alphaMod", &Texture::getAlphaMod, &Texture::setAlphaMod);
 			LUTOK_PROPERTY("colorMod", &Texture::getColorMod, &Texture::setColorMod);
 			LUTOK_PROPERTY("blendMode", &Texture::getBlendMode, &Texture::setBlendMode);
@@ -26,6 +29,9 @@ namespace LuaSDL {
 		int lock(State & state, SDL_Texture * texture);
 		int unlock(State & state, SDL_Texture * texture);
 		int update(State & state, SDL_Texture * texture);
+
+		int bind(State & state, SDL_Texture  * texture);
+		int unbind(State & state, SDL_Texture  * texture);
 
 		int query(State & state, SDL_Texture  * texture);
 

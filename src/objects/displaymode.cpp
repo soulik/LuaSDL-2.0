@@ -136,6 +136,25 @@ namespace LuaSDL {
 		return 0;
 	}
 
+	int DisplayMode::getClosestDisplayMode(State & state, SDL_DisplayMode * displayMode){
+		Stack * stack = state.stack;
+		DisplayMode * interfaceDisplayMode = state.getInterface<DisplayMode>("LuaSDL_DisplayMode");
+		int displayIndex = 0;
+		if (stack->is<LUA_TNUMBER>(1)){
+			displayIndex = stack->to<int>(1);
+		}
+		SDL_DisplayMode * closest = new SDL_DisplayMode;
+		SDL_DisplayMode * closestOut = SDL_GetClosestDisplayMode(displayIndex, displayMode, closest);
+		if (closestOut){
+			interfaceDisplayMode->push(closestOut, true);
+			return 1;
+		}
+		else{
+			delete closest;
+		}
+		return 0;
+	}
+
 	void initDisplayMode(State * state, Module & module){
 		INIT_OBJECT(DisplayMode);
 		module["getPixelFormatName"] = lua_getPixelFormatName;

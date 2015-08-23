@@ -8,7 +8,8 @@ namespace LuaSDL {
 	class DisplayMode : public Object<SDL_DisplayMode> {
 	public:
 		explicit DisplayMode(State * state) : Object<SDL_DisplayMode>(state) {
-			LUTOK_METHOD("fullscreen", &DisplayMode::nullMethod);
+			LUTOK_METHOD("closestDisplayMode", &DisplayMode::getClosestDisplayMode);
+
 			LUTOK_PROPERTY("format", &DisplayMode::getFormat, &DisplayMode::setFormat);
 			LUTOK_PROPERTY("w", &DisplayMode::getW, &DisplayMode::setW);
 			LUTOK_PROPERTY("h", &DisplayMode::getH, &DisplayMode::setH);
@@ -19,6 +20,8 @@ namespace LuaSDL {
 		void destructor(State & state, SDL_DisplayMode * displayMode){
 			delete displayMode;
 		}
+
+		int getClosestDisplayMode(State & state, SDL_DisplayMode * displayMode);
 
 		int inline getFormat(State & state, SDL_DisplayMode * displayMode);
 		int inline setFormat(State & state, SDL_DisplayMode * displayMode);

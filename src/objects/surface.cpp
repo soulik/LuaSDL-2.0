@@ -375,8 +375,6 @@ namespace LuaSDL {
 		return 0;
 	}
 
-	int createColorCursor(State & state, SDL_Surface  * surface);
-
 	int inline Surface::getW(State & state, SDL_Surface  * surface){
 		state.stack->push<int>(surface->w);
 		return 1;
@@ -495,7 +493,6 @@ namespace LuaSDL {
 	void initSurface(State * state, Module & module){
 		INIT_OBJECT(Surface);
 		
-		//module["createRGBSurface"] = lua_SDL_CreateRGBSurface;
 		module["convertPixels"] = lua_SDL_ConvertPixels;
 	}
 

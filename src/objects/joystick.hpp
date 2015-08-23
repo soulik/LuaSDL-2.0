@@ -25,7 +25,9 @@ namespace LuaSDL {
 		SDL_Joystick * constructor(State & state, bool & managed);
 
 		void destructor(State & state, SDL_Joystick * joystick){
-			SDL_JoystickClose(joystick);
+			if (SDL_JoystickGetAttached(joystick)){
+				SDL_JoystickClose(joystick);
+			}
 		}
 
 		int getAxis(State & state, SDL_Joystick * joystick);

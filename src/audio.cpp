@@ -132,7 +132,7 @@ namespace LuaSDL {
 	void initAudio(Module & module){
 		module["audioInit"] = lua_SDL_AudioInit;
 		module["audioQuit"] = lua_SDL_AudioQuit;
-		module["audioDeviceConnected"] = lua_SDL_AudioDeviceConnected;
+		//module["audioDeviceConnected"] = lua_SDL_AudioDeviceConnected;
 		module["getNumAudioDrivers"] = lua_SDL_GetNumAudioDrivers;
 		module["getNumAudioDevices"] = lua_SDL_GetNumAudioDevices;
 		module["getAudioDeviceName"] = lua_SDL_GetAudioDeviceName;

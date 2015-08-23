@@ -10,7 +10,8 @@ namespace LuaSDL {
 		explicit MixChunk(State * state) : Object<Mix_Chunk>(state) {
 			LUTOK_METHOD("play", &MixChunk::play);
 			LUTOK_METHOD("fadeIn", &MixChunk::fadeIn);
-			LUTOK_PROPERTY("volume", &MixChunk::getVolume, &MixChunk::setVolume);	
+			LUTOK_PROPERTY("volume", &MixChunk::getVolume, &MixChunk::setVolume);
+			LUTOK_PROPERTY("buf", &MixChunk::getBuf, &MixChunk::setBuf);
 		}
 
 		void destructor(State & state, Mix_Chunk * chunk){
@@ -21,6 +22,9 @@ namespace LuaSDL {
 		int setVolume(State & state, Mix_Chunk * chunk);
 		int play(State & state, Mix_Chunk * chunk);
 		int fadeIn(State & state, Mix_Chunk * chunk);
+
+		int getBuf(State & state, Mix_Chunk * chunk);
+		int setBuf(State & state, Mix_Chunk * chunk);
 	};
 }
 

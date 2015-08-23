@@ -7,9 +7,9 @@ namespace LuaSDL {
 		Stack * stack = state.stack;
 
 		if (stack->is<LUA_TSTRING>(1)){
-			std::string input = stack->to<const std::string>(1);
+			const std::string input = stack->toLString(1);
 			const char * inbuf = input.c_str();
-			size_t inbytesleft = SDL_strlen(inbuf) + 1;
+			size_t inbytesleft = input.length() + 1;
 			size_t stringsize = inbytesleft > 4 ? inbytesleft : 4;;
 			size_t outbytesleft = stringsize;
 
@@ -49,7 +49,7 @@ namespace LuaSDL {
 						break;
 					}
 				}
-				stack->push<const std::string &>(string);
+				stack->pushLString(string, stringsize);
 				SDL_free(string);
 				return 1;
 			}
@@ -66,11 +66,11 @@ namespace LuaSDL {
 		std::string from_code = "UTF-8";
 
 		if (stack->is<LUA_TSTRING>(1)){
-			to_code = stack->to<const std::string>(1);
+			to_code = stack->toLString(1);
 		}
 
 		if (stack->is<LUA_TSTRING>(2)){
-			from_code = stack->to<const std::string>(2);
+			from_code = stack->toLString(2);
 		}
 
 		SDL_iconv_t _iconv = SDL_iconv_open(to_code.c_str(), from_code.c_str());
@@ -86,20 +86,20 @@ namespace LuaSDL {
 		std::string to_code = "UTF-8";
 		std::string from_code = "UTF-8";
 		if (stack->is<LUA_TSTRING>(1)){
-			std::string input = stack->to<const std::string>(1);
-			size_t inbytesleft = SDL_strlen(input.c_str()) + 1;
+			const std::string input = stack->toLString(1);
+			size_t inbytesleft = input.length() + 1;
 
 			if (stack->is<LUA_TSTRING>(2)){
-				to_code = stack->to<const std::string>(1);
+				to_code = stack->toLString(2);
 			}
 
 			if (stack->is<LUA_TSTRING>(3)){
-				from_code = stack->to<const std::string>(2);
+				from_code = stack->toLString(3);
 			}
 
 			char * output = SDL_iconv_string(to_code.c_str(), from_code.c_str(), input.c_str(), inbytesleft);
 			if (output){
-				stack->push<const std::string &>(output);
+				stack->pushLString(output, inbytesleft);
 				SDL_free(output);
 			}
 			else{

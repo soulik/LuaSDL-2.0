@@ -259,6 +259,25 @@ namespace LuaSDL {
 		}
 	}
 
+	static int lua_SDL_GetBasePath(State & state){
+		Stack * stack = state.stack;
+		stack->push<const std::string &>(SDL_GetBasePath());
+		return 1;
+	}
+
+	static int lua_SDL_GetPrefPath(State & state){
+		Stack * stack = state.stack;
+		if (stack->is<LUA_TSTRING>(1) && stack->is<LUA_TSTRING>(2)){
+			const std::string org = stack->to<const std::string>(1);
+			const std::string app = stack->to<const std::string>(2);
+			stack->push<const std::string &>(SDL_GetPrefPath(org.c_str(), app.c_str()));
+			return 1;
+		}
+		else{
+			return 0;
+		}
+	}
+
 	void initBasic(Module & module){
 		module["init"] = lua_SDL_Init;
 		module["initSubsystem"] = lua_SDL_InitSubSystem;
@@ -280,7 +299,9 @@ namespace LuaSDL {
 		module["getVersion"] = lua_SDL_GetVersion;
 		module["showSimpleMessageBox"] = lua_SDL_ShowSimpleMessageBox;
 		module["showMessageBox"] = lua_SDL_ShowMessageBox;
-		
+		module["basePath"] = lua_SDL_GetBasePath;
+		module["prefPath"] = lua_SDL_GetPrefPath;
+
 	}
 
 }

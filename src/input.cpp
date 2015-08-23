@@ -166,11 +166,6 @@ namespace LuaSDL {
 		return 0;
 	}
 
-	//Joystick specific
-	static int lua_SDL_JoystickOpen(State & state){
-
-		return 1;
-	}
 	void initInput(Module & module){
 		//Keyboard specific
 		module["getKeyboardFocus"] = lua_SDL_GetKeyboardFocus;

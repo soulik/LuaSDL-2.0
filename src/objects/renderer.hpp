@@ -33,6 +33,8 @@ namespace LuaSDL {
 			LUTOK_PROPERTY("renderTarget", &Renderer::nullMethod, &Renderer::setRenderTarget);
 		}
 
+		SDL_Renderer * constructor(State & state, bool & managed);
+
 		void destructor(State & state, SDL_Renderer * renderer){
 			SDL_DestroyRenderer(renderer);
 		}

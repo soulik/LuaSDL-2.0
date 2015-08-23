@@ -54,6 +54,32 @@ namespace LuaSDL {
 		return 0;
 	}
 
+	int Texture::bind(State & state, SDL_Texture  * texture){
+		Stack * stack = state.stack;
+		float texw = 0, texh = 0;
+		if (SDL_GL_BindTexture(texture, &texw, &texh) == 0){
+			stack->push<LUA_NUMBER>(texw);
+			stack->push<LUA_NUMBER>(texh);
+			return 2;
+		}
+		else{
+			stack->push<bool>(false);
+			return 1;
+		}
+	}
+
+	int Texture::unbind(State & state, SDL_Texture  * texture){
+		Stack * stack = state.stack;
+		float texw = 0, texh = 0;
+		if (SDL_GL_UnbindTexture(texture) == 0){
+			stack->push<bool>(true);
+		}
+		else{
+			stack->push<bool>(false);
+		}
+		return 1;
+	}
+
 	int Texture::query(State & state, SDL_Texture  * texture){
 		Stack * stack = state.stack;
 		Uint32 format;

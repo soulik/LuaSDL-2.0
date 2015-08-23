@@ -133,6 +133,19 @@ namespace LuaSDL {
 			return 0;
 		}
 	}
+	static int lua_SDL_GetDisplayDPI(State & state){
+		Stack * stack = state.stack;
+		float ddpi = 0, hdpi = 0, vdpi = 0;
+		if (SDL_GetDisplayDPI(stack->to<int>(1), &ddpi, &hdpi, &vdpi) == 0){
+			stack->push<LUA_NUMBER>(ddpi);
+			stack->push<LUA_NUMBER>(hdpi);
+			stack->push<LUA_NUMBER>(vdpi);
+			return 3;
+		}
+		else{
+			return 0;
+		}
+	}
 	static int lua_SDL_GetCurrentVideoDriver(State & state){
 		Stack * stack = state.stack;
 		const char * driver = SDL_GetCurrentVideoDriver();
@@ -196,6 +209,12 @@ namespace LuaSDL {
 		return 1;
 	}
 
+	static int lua_SDL_GL_ResetAttributes(State & state){
+		Stack * stack = state.stack;
+		SDL_GL_ResetAttributes();
+		return 0;
+	}
+
 	void initVideo(Module & module){
 		module["videoInit"] = lua_SDL_VideoInit;
 		module["videoQuit"] = lua_SDL_VideoQuit;
@@ -210,6 +229,7 @@ namespace LuaSDL {
 		module["getCurrentVideoDriver"] = lua_SDL_GetCurrentVideoDriver;
 		module["getClosestDisplayMode"] = lua_SDL_GetClosestDisplayMode;
 		module["getDisplayBounds"] = lua_SDL_GetDisplayBounds;
+		module["getDisplayDPI"] = lua_SDL_GetDisplayDPI;
 
 		module["hasClipboardText"] = lua_SDL_HasClipboardText;
 		module["getClipboardText"] = lua_SDL_GetClipboardText;
@@ -220,6 +240,8 @@ namespace LuaSDL {
 
 		module["GLgetAttribute"] = lua_SDL_GL_GetAttribute;
 		module["GLsetAttribute"] = lua_SDL_GL_SetAttribute;
+		module["GLresetAttributes"] = lua_SDL_GL_ResetAttributes;
+
 	}
 
 }

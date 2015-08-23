@@ -7,6 +7,32 @@ namespace LuaSDL {
 		stack->push<int>(Mix_VolumeChunk(chunk, -1));
 		return 1;
 	}
+
+	int MixChunk::getBuf(State & state, Mix_Chunk * chunk){
+		Stack * stack = state.stack;
+		const std::string buf = std::string(reinterpret_cast<char *>(chunk->abuf), chunk->alen);
+		stack->pushLString(buf);
+		return 1;
+	}
+
+	int MixChunk::setBuf(State & state, Mix_Chunk * chunk){
+		Stack * stack = state.stack;
+		if (stack->is<LUA_TSTRING>(1)){
+			const std::string buf = stack->toLString(1);
+
+			if (chunk->alen > 0 && chunk->abuf && chunk->alen != buf.length()){
+				chunk->abuf = static_cast<Uint8 *>(SDL_realloc(chunk->abuf, buf.length()));
+			}
+			else{
+				chunk->abuf = static_cast<Uint8 *>(SDL_malloc(buf.length()));
+			}
+			SDL_memcpy(chunk->abuf, buf.c_str(), buf.length());
+			chunk->allocated = 1;
+		}
+
+		return 0;
+	}
+
 	int MixChunk::setVolume(State & state, Mix_Chunk * chunk) {
 		Stack * stack = state.stack;
 		int _volume = stack->to<int>(1);

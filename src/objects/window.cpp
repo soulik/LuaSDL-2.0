@@ -3,6 +3,7 @@
 #include "objects/gl_context.hpp"
 #include "objects/surface.hpp"
 #include "objects/renderer.hpp"
+#include "objects/rect.hpp"
 
 namespace LuaSDL {
 	void Window::destructor(State & s, SDL_Window* window){
@@ -217,29 +218,68 @@ namespace LuaSDL {
 		stack->push<bool>(SDL_UpdateWindowSurface(window) == 0);
 		return 1;
 	}
-	int Window::updateRects(State & state, SDL_Window  * window){
-		/*
-		const SDL_Rect * rects= nullptr;
-		int num_rects=0;
-		stack->push<bool>(SDL_UpdateWindowSurfaceRects(window, rects, num_rects) == 0);
+	int inline Window::getWindowID(State & state, SDL_Window  * window){
+		Stack * stack = state.stack;
+		stack->push<int>(SDL_GetWindowID(window));
 		return 1;
-		*/
+	}
+	int inline Window::setWindowBordered(State & state, SDL_Window  * window){
+		Stack * stack = state.stack;
+		SDL_SetWindowBordered(window, static_cast<SDL_bool>(stack->to<bool>(1)));
 		return 0;
 	}
+	int Window::updateRects(State & state, SDL_Window  * window){
+		Stack * stack = state.stack;
+		Rect * interfaceRect = state.getInterface<Rect>("LuaSDL_Rect");
+
+		if (stack->is<LUA_TTABLE>(1)){
+			int count = stack->objLen(1);
+			int totalCount = 0;
+			SDL_Rect * rects = new SDL_Rect[count];
+
+			for (int i = 0; i < count; i++){
+				stack->getField(i + 1, 1);
+				SDL_Rect * r = interfaceRect->get(-1);
+				if (r){
+					rects[totalCount] = *r;
+					totalCount++;
+				}
+			}
+
+			int result = SDL_UpdateWindowSurfaceRects(window, rects, totalCount);
+			delete[] rects;
+			stack->push<bool>(result == 0);
+			return 1;
+		}
+		return 0;
+	}
+
 	int inline Window::warpMouseInWindow(State & state, SDL_Window  * window){
 		Stack * stack = state.stack;
 		SDL_WarpMouseInWindow(window, stack->to<int>(1), stack->to<int>(2));
 		return 0;
 	}
 
-	int inline Window::getWindowDisplay(State & state, SDL_Window  * window){
-		//stack->push_lightuserdata(SDL_GetWindowDisplay(window, stack->stack->to<const std::string &>(1).c_str()));
-		//SDL_GetWindowDisplay();
-		return 0;
+	int inline Window::getWindowDisplayMode(State & state, SDL_Window  * window){
+		Stack * stack = state.stack;
+		DisplayMode * interfaceDisplayMode = state.getInterface<DisplayMode>("LuaSDL_DisplayMode");
+		SDL_DisplayMode * displayMode = new SDL_DisplayMode;
+		if (SDL_GetWindowDisplayMode(window, displayMode) == 0){
+			interfaceDisplayMode->push(displayMode, true);
+			return 1;
+		}
+		else{
+			delete displayMode;
+			return 0;
+		}
 	}
-	int inline Window::setWindowDisplay(State & state, SDL_Window  * window){
-		//stack->push_lightuserdata(SDL_GetWindowDisplay(window, stack->stack->to<const std::string &>(1).c_str()));
-		//SDL_GetWindowDisplay();
+	int inline Window::setWindowDisplayMode(State & state, SDL_Window  * window){
+		Stack * stack = state.stack;
+		DisplayMode * interfaceDisplayMode = state.getInterface<DisplayMode>("LuaSDL_DisplayMode");
+		SDL_DisplayMode * displayMode = interfaceDisplayMode->get(1);
+		if (displayMode){
+			SDL_SetWindowDisplayMode(window, displayMode);
+		}
 		return 0;
 	}
 	int inline Window::getWindowData(State & state, SDL_Window  * window){
@@ -261,13 +301,13 @@ namespace LuaSDL {
 	}
 	int inline Window::getWindowTitle(State & state, SDL_Window  * window){
 		Stack * stack = state.stack;
-		stack->push<const std::string &>(SDL_GetWindowTitle(window));
+		stack->pushLString(SDL_GetWindowTitle(window));
 		return 1;
 	}
 	int inline Window::setWindowTitle(State & state, SDL_Window  * window){
 		Stack * stack = state.stack;
 		if (stack->is<LUA_TSTRING>(1)){
-			const std::string name = stack->to<const std::string>(1);
+			const std::string name = stack->toLString(1);
 			SDL_SetWindowTitle(window, name.c_str());
 		}
 		return 0;
@@ -359,11 +399,79 @@ namespace LuaSDL {
 		*/
 		return 0;
 	}
+
+	int Window::getDrawableSize(State & state, SDL_Window  * window){
+		Stack * stack = state.stack;
+		int w = 0, h = 0;
+		SDL_GL_GetDrawableSize(window, &w, &h);
+		stack->push<int>(w);
+		stack->push<int>(h);
+		return 2;
+	}
+
+	int Window::setWindowIcon(State & state, SDL_Window  * window){
+		Stack * stack = state.stack;
+		Surface * interfaceSurface = state.getInterface<Surface>("LuaSDL_Surface");
+		SDL_Surface * surface = interfaceSurface->get(1);
+		if (surface){
+			SDL_SetWindowIcon(window, surface);
+		}
+		return 0;
+	}
+
+	int Window::setMinimumSize(State & state, SDL_Window  * window){
+		Stack * stack = state.stack;
+		if (stack->is<LUA_TNUMBER>(1) && stack->is<LUA_TNUMBER>(2)){
+			SDL_SetWindowMinimumSize(window, stack->to<int>(1), stack->to<int>(2));
+		}
+		return 0;
+	}
+
+	int Window::setMaximumSize(State & state, SDL_Window  * window){
+		Stack * stack = state.stack;
+		if (stack->is<LUA_TNUMBER>(1) && stack->is<LUA_TNUMBER>(2)){
+			SDL_SetWindowMaximumSize(window, stack->to<int>(1), stack->to<int>(2));
+		}
+		return 0;
+	}
+
+	int Window::getMinimumSize(State & state, SDL_Window  * window){
+		Stack * stack = state.stack;
+		int w = 0, h = 0;
+		SDL_GetWindowMinimumSize(window, &w, &h);
+		stack->push<int>(w);
+		stack->push<int>(h);
+		return 2;
+	}
+
+	int Window::getMaximumSize(State & state, SDL_Window  * window){
+		Stack * stack = state.stack;
+		int w = 0, h = 0;
+		SDL_GetWindowMaximumSize(window, &w, &h);
+		stack->push<int>(w);
+		stack->push<int>(h);
+		return 2;
+	}
+
+	static int lua_SDL_GetGrabbedWindow(State & state){
+		Stack * stack = state.stack;
+		Window * interfaceWindow = state.getInterface<Window>("LuaSDL_Window");
+		SDL_Window * window = SDL_GetGrabbedWindow();
+		if (window){
+			interfaceWindow->push(window);
+			return 1;
+		}
+		else{
+			return 0;
+		}
+	}
+
 	void initWindow(State * state, Module & module){
 		INIT_OBJECT(Window);
 		module["createWindow"] = lua_SDL_CreateWindow;
 		module["createWindowAndRenderer"] = lua_SDL_CreateWindowAndRenderer;
 		module["createWindowFrom"] = lua_SDL_CreateWindowFrom;
 		module["getWindowFromID"] = lua_SDL_GetWindowFromID;
+		module["getGrabbedWindow"] = lua_SDL_GetGrabbedWindow;
 	}
 }

@@ -2,6 +2,7 @@
 #include "objects/texture.hpp"
 #include "objects/surface.hpp"
 #include "objects/rect.hpp"
+#include "objects/window.hpp"
 #include <lua.hpp>
 
 namespace LuaSDL {
@@ -503,7 +504,27 @@ namespace LuaSDL {
 		else{
 			return 0;
 		}
+	}
 
+	SDL_Renderer * Renderer::constructor(State & state, bool & managed){
+		Stack * stack = state.stack;
+		if (stack->is<LUA_TUSERDATA>(1)){
+			if (stack->is<LUA_TNUMBER>(2) && stack->is<LUA_TNUMBER>(3)){
+				Window * interfaceWindow = state.getInterface<Window>("LuaSDL_Window");
+				SDL_Window * w = interfaceWindow->get(1);
+				if (w){
+					return SDL_CreateRenderer(w, stack->to<int>(2), stack->to<int>(3));
+				}
+			}
+			else{
+				Surface * interfaceSurface = state.getInterface<Surface>("LuaSDL_Surface");
+				SDL_Surface * s = interfaceSurface->get(1);
+				if (s){
+					return SDL_CreateSoftwareRenderer(s);
+				}
+			}
+		}
+		return nullptr;
 	}
 
 	void initRenderer(State * state, Module & module){

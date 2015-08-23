@@ -1,4 +1,5 @@
 #include "objects/gl_context.hpp"
+#include "objects/window.hpp"
 #include <lua.hpp>
 
 namespace LuaSDL {
