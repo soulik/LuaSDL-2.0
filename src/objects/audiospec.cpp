@@ -1,4 +1,6 @@
 #include "objects/audiospec.hpp"
+#include "objects/audiodevice.hpp"
+
 #include <lua.hpp>
 namespace LuaSDL {
 	int AudioSpec::getFreq(State & state, SDL_AudioSpec * audiospec) {
@@ -61,12 +63,38 @@ namespace LuaSDL {
 		stack->push<int>(audiospec->size);
 		return 1;
 	}
+
+	void AudioSpec::freeCallbackData(State & state, SDL_AudioSpec * audiospec){
+		Stack * stack = state.stack;
+	}
+
+	void AudioSpec::audioCallback(void *userdata, Uint8 * stream, int len){
+	}
+
 	int AudioSpec::getCallback(State & state, SDL_AudioSpec * audiospec) {
+		Stack * stack = state.stack;
+		stack->pushNil();
+		return 1;
+	}
+
+	int AudioSpec::setCallback(State & state, SDL_AudioSpec * audiospec) {
+		Stack * stack = state.stack;
+		if (stack->is<LUA_TLIGHTUSERDATA>(1)){
+			audiospec->callback = reinterpret_cast<SDL_AudioCallback>(stack->to<void*>(1));
+		}
+		return 0;
+	}
+
+	int AudioSpec::getUserdata(State & state, SDL_AudioSpec * audiospec) {
 		Stack * stack = state.stack;
 		return 0;
 	}
-	int AudioSpec::getUserdata(State & state, SDL_AudioSpec * audiospec) {
+
+	int AudioSpec::setUserdata(State & state, SDL_AudioSpec * audiospec) {
 		Stack * stack = state.stack;
+		if (stack->is<LUA_TLIGHTUSERDATA>(1)){
+			audiospec->userdata = stack->to<void*>(1);
+		}
 		return 0;
 	}
 
@@ -86,6 +114,10 @@ namespace LuaSDL {
 		audiospec->userdata = nullptr;
 
 		return audiospec;
+	}
+
+	void AudioSpec::destructor(State & state, SDL_AudioSpec * audiospec){
+		delete audiospec;
 	}
 
 	void initAudioSpec(State * state, Module & module){

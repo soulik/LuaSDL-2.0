@@ -15,15 +15,13 @@ namespace LuaSDL {
 			LUTOK_PROPERTY("samples", &AudioSpec::getSamples, &AudioSpec::setSamples);	
 			LUTOK_PROPERTY("padding", &AudioSpec::getPadding, &AudioSpec::setPadding);	
 			LUTOK_PROPERTY("size", &AudioSpec::getSize, &AudioSpec::nullMethod);	
-			LUTOK_PROPERTY("callback", &AudioSpec::getCallback, &AudioSpec::nullMethod);	
-			LUTOK_PROPERTY("userdata", &AudioSpec::getUserdata, &AudioSpec::nullMethod);	
+			LUTOK_PROPERTY("callback", &AudioSpec::getCallback, &AudioSpec::setCallback);	
+			LUTOK_PROPERTY("userdata", &AudioSpec::getUserdata, &AudioSpec::setUserdata);	
 		}
 
 		SDL_AudioSpec * constructor(State & state, bool & managed);
 
-		void destructor(State & state, SDL_AudioSpec * audiospec){
-			delete audiospec;
-		}
+		void destructor(State & state, SDL_AudioSpec * audiospec);
 
 		int getFreq(State & state, SDL_AudioSpec * audiospec);
 		int setFreq(State & state, SDL_AudioSpec * audiospec);
@@ -38,7 +36,12 @@ namespace LuaSDL {
 		int setPadding(State & state, SDL_AudioSpec * audiospec);
 		int getSize(State & state, SDL_AudioSpec * audiospec);
 		int getCallback(State & state, SDL_AudioSpec * audiospec);
+		int setCallback(State & state, SDL_AudioSpec * audiospec);
 		int getUserdata(State & state, SDL_AudioSpec * audiospec);
+		int setUserdata(State & state, SDL_AudioSpec * audiospec);
+
+		static void audioCallback(void *userdata, Uint8 * stream, int len);
+		void freeCallbackData(State & state, SDL_AudioSpec * audiospec);
 	};
 }
 

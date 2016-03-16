@@ -1,7 +1,43 @@
 #include "common.hpp"
 #include "objects/mix_chunk.hpp"
+#include "objects/audiospec.hpp"
 
 namespace LuaSDL {
+
+	/* Magic numbers for various audio file formats */
+#define RIFF        0x46464952      /* "RIFF" */
+#define WAVE        0x45564157      /* "WAVE" */
+#define FORM        0x4d524f46      /* "FORM" */
+#define OGGS        0x5367674f      /* "OggS" */
+#define CREA        0x61657243      /* "Crea" */
+#define FLAC        0x43614C66      /* "fLaC" */
+
+	extern "C" SDL_AudioSpec *Mix_LoadAIFF_RW(SDL_RWops *src, int freesrc, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);
+	extern "C" SDL_AudioSpec *Mix_LoadOGG_RW(SDL_RWops *src, int freesrc, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);
+	extern "C" SDL_AudioSpec *Mix_LoadFLAC_RW(SDL_RWops *src, int freesrc, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);
+	extern "C" SDL_AudioSpec *Mix_LoadVOC_RW(SDL_RWops *src, int freesrc, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);
+	extern "C" SDL_AudioSpec *Mix_LoadMP3_RW(SDL_RWops *src, int freesrc, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);
+	extern "C" SDL_AudioSpec *Mix_LoadAIFF_RW(SDL_RWops *src, int freesrc, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);
+	extern "C" SDL_AudioSpec *Mix_LoadAIFF_RW(SDL_RWops *src, int freesrc, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);
+	extern "C" SDL_AudioSpec *Mix_LoadAIFF_RW(SDL_RWops *src, int freesrc, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);
+
+	static int detect_mp3(Uint8 *magic)
+	{
+		if (strncmp((char *)magic, "ID3", 3) == 0) {
+			return 1;
+		}
+
+		/* Detection code lifted from SMPEG */
+		if (((magic[0] & 0xff) != 0xff) || // No sync bits
+			((magic[1] & 0xf0) != 0xf0) || //
+			((magic[2] & 0xf0) == 0x00) || // Bitrate is 0
+			((magic[2] & 0xf0) == 0xf0) || // Bitrate is 15
+			((magic[2] & 0x0c) == 0x0c) || // Frequency is 3
+			((magic[1] & 0x06) == 0x00)) { // Layer is 4
+			return(0);
+		}
+		return 1;
+	}
 
 	static int lua_Mixer_Init(State & state){
 		Stack * stack = state.stack;
@@ -394,6 +430,154 @@ namespace LuaSDL {
 		return 1;
 	}
 
+	static void lua_Mix_EffectCallback(int chan, void *stream, int len, void *udata){
+		lua_EffectWrapper * wrapper = reinterpret_cast<lua_EffectWrapper*>(udata);
+		State * state = wrapper->state;
+		Stack * stack = state->stack;
+
+		stack->regValue(wrapper->fnRef);
+		if (stack->is<LUA_TFUNCTION>(-1)){
+			stack->pushLString(std::string(reinterpret_cast<const char *>(stream), len));
+
+			try{
+				stack->pcall(1, 1, 0);
+
+				if (stack->is<LUA_TSTRING>(-1)){
+					const std::string resultData = stack->toLString(-1);
+					memcpy(stream, resultData.c_str(), len);
+				}
+			}
+			catch (std::runtime_error & e){
+				if (wrapper->errFnRef != LUA_REFNIL){
+					stack->regValue(wrapper->errFnRef);
+					stack->pushValue(-2);
+					if (stack->is<LUA_TFUNCTION>(-1)){
+						try{
+							stack->pcall(1, 0, 0);
+						}
+						catch (std::runtime_error & e){
+							stack->pop(1);
+						}
+					}
+				}
+			}
+
+			stack->pop(1);
+		}
+	}
+
+	static void lua_Mix_EffectDoneCallback(int chan, void *udata){
+		lua_EffectWrapper * wrapper = reinterpret_cast<lua_EffectWrapper*>(udata);
+		State * state = wrapper->state;
+		Stack * stack = state->stack;
+		stack->unref(wrapper->fnRef);
+		if (wrapper->errFnRef != LUA_REFNIL){
+			stack->unref(wrapper->errFnRef);
+		}
+		delete wrapper;
+	}
+
+	static int lua_Mix_RegisterEffect(State & state){
+		Stack * stack = state.stack;
+		if (stack->is<LUA_TFUNCTION>(2)){
+			lua_EffectWrapper * wrapper = new lua_EffectWrapper;
+			
+			wrapper->state = &state;
+			
+			stack->pushValue(2);
+			wrapper->fnRef = stack->ref();
+
+			if (stack->is<LUA_TFUNCTION>(3)){
+				stack->pushValue(3);
+				wrapper->fnRef = stack->ref();
+			}
+			else{
+				wrapper->errFnRef = LUA_REFNIL;
+			}
+
+			int channel = stack->to<int>(1);
+
+			Mix_RegisterEffect(channel, lua_Mix_EffectCallback, lua_Mix_EffectDoneCallback, wrapper);
+			return 1;
+		}
+		else{
+			return 0;
+		}
+	}
+
+	static int lua_Mix_Load(State & state){
+		Stack * stack = state.stack;
+
+		if (stack->is<LUA_TSTRING>(1)){
+			AudioSpec * interfaceAS = state.getInterface<AudioSpec>("LuaSDL_AudioSpec");
+			SDL_AudioSpec * inputSpec = interfaceAS->get(2);
+			if (inputSpec){
+
+				const std::string filename = stack->toLString(1);
+				SDL_RWops * src = SDL_RWFromFile(filename.c_str(), "rb");
+				if (!src){
+					state.error("Couldn't open audio file: %s\n", filename.c_str());
+				}
+				Uint32 magic;
+				SDL_AudioSpec wavespec, *audiospec = nullptr;
+				Uint8 *abuf = nullptr;
+				Uint32 alen;
+
+				/* note: send a copy of the mixer spec */
+				wavespec = *inputSpec;
+
+				/* Find out what kind of audio file this is */
+				magic = SDL_ReadLE32(src);
+				/* Seek backwards for compatibility with older loaders */
+				SDL_RWseek(src, -(int)sizeof(Uint32), RW_SEEK_CUR);
+
+				switch (magic) {
+				case WAVE:
+				case RIFF:
+					audiospec = SDL_LoadWAV_RW(src, 0, &wavespec,
+						(Uint8 **)&abuf, &alen);
+					break;
+				case FORM:
+					audiospec = Mix_LoadAIFF_RW(src, 0, &wavespec,
+						(Uint8 **)&abuf, &alen);
+					break;
+				case OGGS:
+					audiospec = Mix_LoadOGG_RW(src, 0, &wavespec,
+						(Uint8 **)&abuf, &alen);
+					break;
+				case FLAC:
+					audiospec = Mix_LoadFLAC_RW(src, 0, &wavespec,
+						(Uint8 **)&abuf, &alen);
+					break;
+				case CREA:
+					audiospec = Mix_LoadVOC_RW(src, 0, &wavespec,
+						(Uint8 **)&abuf, &alen);
+					break;
+				default:
+					if (detect_mp3((Uint8*)&magic))	{
+						audiospec = Mix_LoadMP3_RW(src, 0, &wavespec,
+							(Uint8 **)&abuf, &alen);
+						break;
+					}
+					break;
+				}
+				SDL_RWclose(src);
+
+				if (audiospec) {
+					stack->pushLString(std::string(reinterpret_cast<char*>(abuf), alen));
+					interfaceAS->push(audiospec, true);
+					return 2;
+				}
+				else{
+					state.error("Unreckonized audio file\n");
+				}
+			}
+		}
+		return 0;
+	}
+
+	
+
 	void initSDLmixer(Module & module){
 		module["mixerInit"] = lua_Mixer_Init;
 		module["mixerQuit"] = lua_Mixer_Quit;
@@ -401,6 +585,8 @@ namespace LuaSDL {
 		module["mixerCloseAudio"] = lua_Mixer_CloseAudio;
 		module["mixerGetError"] = lua_Mix_GetError;
 		module["mixerQuerySpec"] = lua_Mix_QuerySpec;
+
+		module["mixerLoad"] = lua_Mix_Load;
 
 		//channels
 		module["mixerAllocateChannels"] = lua_Mix_AllocateChannels;
@@ -431,6 +617,7 @@ namespace LuaSDL {
 		module["mixerSetPosition"] = lua_Mix_SetPosition;
 		module["mixerSetReverseStereo"] = lua_Mix_SetReverseStereo;
 		module["mixerUnregisterAllEffects"] = lua_Mix_UnregisterAllEffects;
+		module["mixerRegisterEffect"] = lua_Mix_RegisterEffect;
 
 		
 

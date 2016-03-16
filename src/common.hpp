@@ -42,6 +42,13 @@ using namespace lutok2;
 #define INIT_OBJECT(OBJ_NAME) state->registerInterface<OBJ_NAME>("LuaSDL_" #OBJ_NAME); state->stack->setField(#OBJ_NAME)
 
 namespace LuaSDL{
+	struct lua_EffectWrapper {
+		State * state;
+		int fnRef;
+		int errFnRef;
+		bool managed;
+	};
+
 	void initBasic(Module & module);
 	void initVideo(Module & module);
 	void initInput(Module & module);
